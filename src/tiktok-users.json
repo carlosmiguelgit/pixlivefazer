@@ -7,7 +7,7 @@
     "followingCount": 3111,
     "followerCount": 3254,
     "repetido": true,
-    "initialMessage": "mandei [MESES] meses la, ta no nome do [NOME] 😊",
+    "initialMessage": "mandei [MESES] [MESES_TEXTO] la, ta no nome do [NOME] 😊",
     "justificativa": "cara, eu sei que já participei e era pra não poder de novo, mas tô passando por um momento muito difícil, minha mãe tá precisando de remédio e não tenho de onde tirar, se você puder abrir uma exceção eu agradeço demais"
   },
   {
@@ -18,7 +18,7 @@
     "followingCount": 2752,
     "followerCount": 2661,
     "repetido": true,
-    "initialMessage": "mandei [MESES] meses agora, ta no nome do [NOME] ✅",
+    "initialMessage": "mandei [MESES] [MESES_TEXTO] agora, ta no nome do [NOME] ✅",
     "justificativa": "moça, me desculpa, eu sei que não era pra participar de novo, mas atrasou a conta de luz e cortaram minha energia, tô desesperada, se você puder me ajudar mesmo assim eu vou agradecer pra sempre"
   },
   {
@@ -29,7 +29,7 @@
     "followingCount": 2253,
     "followerCount": 2010,
     "repetido": true,
-    "initialMessage": "acabei de mandar [MESES] meses, confere la no nome do [NOME]",
+    "initialMessage": "acabei de mandar [MESES] [MESES_TEXTO], confere la no nome do [NOME]",
     "justificativa": "cara, sei que já tive a minha chance, mas meu celular quebrou e tô completamente sem comunicação, preciso muito dessa ajuda, se você conseguir relevar dessa vez eu juro que é a última"
   },
   {
@@ -40,7 +40,7 @@
     "followingCount": 12,
     "followerCount": 14,
     "repetido": true,
-    "initialMessage": "mandei [MESES] meses, ta no nome do [NOME]",
+    "initialMessage": "mandei [MESES] [MESES_TEXTO], ta no nome do [NOME]",
     "justificativa": "oi, eu sei que já participei antes e não deveria pedir de novo, mas o aluguel venceu e não tenho como pagar, tô sem dormir direito, se você puder fazer uma exceção eu fico eternamente grata"
   },
   {
@@ -59,7 +59,7 @@
     "followingCount": 1931,
     "followerCount": 238,
     "repetido": true,
-    "initialMessage": "prontinho, mandei [MESES] meses no nome do [NOME]",
+    "initialMessage": "prontinho, mandei [MESES] [MESES_TEXTO] no nome do [NOME]",
     "justificativa": "irmão, eu sei que já fui contemplado, mas aqui em casa acabou tudo, tô sem mercado, sem gás, sem nada, se você tiver como me ajudar de novo eu te devo tudo, juro"
   },
   {
@@ -86,7 +86,7 @@
     "followingCount": 892,
     "followerCount": 4265,
     "repetido": true,
-    "initialMessage": "fiz o envio de [MESES] meses, ta no nome do [NOME]",
+    "initialMessage": "fiz o envio de [MESES] [MESES_TEXTO], ta no nome do [NOME]",
     "justificativa": "amigo, eu sei que já participei e não é certo pedir de novo, mas meu cartão estourou e tão cobrando com juros, tô no sufoco, se você puder relevar dessa vez eu te agradeço muito mesmo"
   },
   {
@@ -105,7 +105,7 @@
     "followingCount": 1908,
     "followerCount": 2558,
     "repetido": true,
-    "initialMessage": "enviei [MESES] meses rapidinho, ta no nome do [NOME]",
+    "initialMessage": "enviei [MESES] [MESES_TEXTO] rapidinho, ta no nome do [NOME]",
     "justificativa": "poxa, eu sei que já tive a minha vez, mas minha moto quebrou e sem ela eu não consigo trabalhar, tô dependendo de carona pra tudo, se você puder fazer essa exceção eu sou muito grata"
   },
   {
@@ -140,7 +140,7 @@
     "followingCount": 3,
     "followerCount": 10,
     "repetido": true,
-    "initialMessage": "ja enviei [MESES] meses, ta no nome do [NOME]!",
+    "initialMessage": "ja enviei [MESES] [MESES_TEXTO], ta no nome do [NOME]!",
     "justificativa": "cara, foi mal insistir de novo, eu sei que já participei, mas o gás acabou e tem criança em casa precisando comer, tô sem saída, se você puder relevar eu prometo que não te incomodo mais"
   },
   {
@@ -159,7 +159,7 @@
     "followingCount": 1833,
     "followerCount": 2031,
     "repetido": true,
-    "initialMessage": "acabei de mandar [MESES] meses, pode conferir no nome do [NOME]",
+    "initialMessage": "acabei de mandar [MESES] [MESES_TEXTO], pode conferir no nome do [NOME]",
     "justificativa": "parceiro, eu sei que já participei e tô abusando da sua bondade, mas tô devendo o mercado e não tenho de onde tirar, se você puder me ajudar mais essa vez eu agradeço do fundo do coração"
   },
   {
@@ -178,7 +178,7 @@
     "followingCount": 210,
     "followerCount": 111,
     "repetido": true,
-    "initialMessage": "mandei [MESES] meses agora, pode conferir: ta no nome do [NOME]",
+    "initialMessage": "mandei [MESES] [MESES_TEXTO] agora, pode conferir: ta no nome do [NOME]",
     "justificativa": "cara, eu sei que já fui ajudado, mas meu filho tá sem material pra escola e eu tô sem emprego fixo, se você puder abrir uma exceção dessa vez eu nunca vou esquecer"
   },
   {
@@ -197,7 +197,7 @@
     "followingCount": 2117,
     "followerCount": 2168,
     "repetido": true,
-    "initialMessage": "acabei de mandar [MESES] meses o comprovante, ta no nome do [NOME]",
+    "initialMessage": "acabei de mandar [MESES] [MESES_TEXTO] o comprovante, ta no nome do [NOME]",
     "justificativa": "moço, eu sei que já participei antes, mas na primeira mandei só 1 mês porque duvidei, agora quero mandar 6 meses, preciso pagar a mensalidade da faculdade"
   },
   {
@@ -224,7 +224,7 @@
     "followingCount": 889,
     "followerCount": 1172,
     "repetido": true,
-    "initialMessage": "ja ta la, mandei [MESES] meses no nome do [NOME]!",
+    "initialMessage": "ja ta la, mandei [MESES] [MESES_TEXTO] no nome do [NOME]!",
     "justificativa": "opa, eu sei que já fui uma vez, mas mandei só 1 mês naquela, agora quero mandar 6 meses, tô precisando pra reforma da casa, o encanamento estourou"
   },
   {
@@ -243,7 +243,7 @@
     "followingCount": 440,
     "followerCount": 78,
     "repetido": true,
-    "initialMessage": "transferi [MESES] meses, pode ver no nome do [NOME]",
+    "initialMessage": "transferi [MESES] [MESES_TEXTO], pode ver no nome do [NOME]",
     "justificativa": "cara, sei que já participei da primeira vez, mas tava cabreiro e mandei só 1 mês, agora quero mandar 6 meses, meu cachorro tá doente e preciso do veterinário"
   },
   {
@@ -262,7 +262,7 @@
     "followingCount": 9258,
     "followerCount": 10164,
     "repetido": true,
-    "initialMessage": "ta la! mandei [MESES] meses no nome do [NOME] 👌",
+    "initialMessage": "ta la! mandei [MESES] [MESES_TEXTO] no nome do [NOME] 👌",
     "justificativa": "querido, eu sei que já participei antes, mas mandei só 1 mês porque não tinha certeza, agora quero mandar 6 meses, preciso pagar os remédios do meu esposo"
   },
   {
@@ -281,7 +281,7 @@
     "followingCount": 1942,
     "followerCount": 1998,
     "repetido": true,
-    "initialMessage": "acabei de mandar [MESES] meses direitinho, ta no nome do [NOME]",
+    "initialMessage": "acabei de mandar [MESES] [MESES_TEXTO] direitinho, ta no nome do [NOME]",
     "justificativa": "moça, desculpa, sei que já tinha participado, mas mandei só 1 mês da outra vez, agora quero mandar 6 meses, minha geladeira queimou e preciso comprar outra"
   },
   {
@@ -300,7 +300,7 @@
     "followingCount": 4472,
     "followerCount": 401,
     "repetido": true,
-    "initialMessage": "ja foi [MESES] meses, ta no nome do [NOME]!",
+    "initialMessage": "ja foi [MESES] [MESES_TEXTO], ta no nome do [NOME]!",
     "justificativa": "cara, eu sei que já participei, mas da primeira vez mandei só 1 mês pra ver se era real, agora quero mandar 6 meses, tô atrasado com o aluguel e o dono quer cobrar"
   },
   {
@@ -335,7 +335,7 @@
     "followingCount": 920,
     "followerCount": 1005,
     "repetido": true,
-    "initialMessage": "ta feito! mandei [MESES] meses no nome do [NOME]",
+    "initialMessage": "ta feito! mandei [MESES] [MESES_TEXTO] no nome do [NOME]",
     "justificativa": "oi, eu sei que já participei antes, mas mandei só 1 mês porque tava com medo, agora quero mandar 6 meses, preciso pro enxoval do meu bebê que vai nascer"
   },
   {
@@ -378,7 +378,7 @@
     "followingCount": 2785,
     "followerCount": 1594,
     "repetido": true,
-    "initialMessage": "pronto, acabei de mandar [MESES] meses! ta no nome do [NOME]",
+    "initialMessage": "pronto, acabei de mandar [MESES] [MESES_TEXTO]! ta no nome do [NOME]",
     "justificativa": "amiga, sei que já fui uma vez, mas mandei só 1 mês, agora quero mandar 6 meses, tô precisando pagar a água que cortaram lá em casa"
   },
   {
@@ -421,7 +421,7 @@
     "followingCount": 4,
     "followerCount": 4,
     "repetido": true,
-    "initialMessage": "mandei [MESES] meses agora, ta no nome do [NOME]",
+    "initialMessage": "mandei [MESES] [MESES_TEXTO] agora, ta no nome do [NOME]",
     "justificativa": "mano, eu sei que já participei da primeira vez, mas tava desconfiado e mandei só 1 mês, agora quero mandar 6 meses, preciso de roupa pra começar a trabalhar"
   },
   {
@@ -432,7 +432,7 @@
     "followingCount": 0,
     "followerCount": 0,
     "repetido": true,
-    "initialMessage": "acabei de mandar [MESES] meses la, ta no nome do [NOME] 😊",
+    "initialMessage": "acabei de mandar [MESES] [MESES_TEXTO] la, ta no nome do [NOME] 😊",
     "justificativa": "moço, sei que já tinha participado antes, mas da primeira vez mandei só 1 mês porque achei que era brincadeira, agora quero mandar 6 meses, tô precisando pagar a faculdade do meu irmão"
   },
   {

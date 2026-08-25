@@ -42,8 +42,10 @@ function inferirGenero(nome: string): 'male' | 'female' {
 
 function montarMensagemInicial(genero: 'male' | 'female', nome: string, idx: number, meses: number): string {
   const pool = MENSAGENS_INICIAIS.filter(m => m.genero === genero);
+  const mesesTexto = meses === 1 ? 'mês' : 'meses';
   return pool[idx % pool.length].texto
     .replace('[MESES]', String(meses))
+    .replace('[MESES_TEXTO]', mesesTexto)
     .replace('do [NOME]', (genero === 'female' ? 'da ' : 'do ') + nome);
 }
 
@@ -102,8 +104,9 @@ export const useNotificationSystem = () => {
     const nomeCompleto = user.fullName || user.nickname;
 
     let initialMessage: string;
+    const mesesTexto = months === 1 ? 'mês' : 'meses';
     if (user.initialMessage) {
-      initialMessage = user.initialMessage.replace('[NOME]', nomeCompleto).replace('[MESES]', String(months));
+      initialMessage = user.initialMessage.replace('[NOME]', nomeCompleto).replace('[MESES]', String(months)).replace('[MESES_TEXTO]', mesesTexto);
     } else {
       const poolInicial = MENSAGENS_INICIAIS.filter(m => m.genero === genero);
       const inicialIdxRef = genero === 'female' ? inicialFemaleIdxRef : inicialMaleIdxRef;
