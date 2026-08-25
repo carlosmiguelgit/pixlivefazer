@@ -91,6 +91,11 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     }, delayResponse);
   }
 
+  function formatTime() {
+    const now = new Date();
+    return `Hoje ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+  }
+
   function handleSend() {
     const text = inputText.trim();
     if (!text) return;
@@ -153,24 +158,24 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
 
       <div className="flex-1 bg-white overflow-y-auto px-4 py-2 flex flex-col gap-2">
         {messages.map((msg, i) => (
-          msg.sender === 'me' ? (
-            <div key={i} className="flex flex-col items-end gap-1">
-              <div className="bg-[#4f6ef7] text-white text-[14px] px-3 py-2 rounded-[18px] max-w-[280px] leading-snug break-words">{msg.text}</div>
-              {showVisto && i === messages.length - 1 && <span className="text-[10px] text-zinc-400 leading-none pr-1">Visto</span>}
-            </div>
-          ) : (
-            <div
-              key={i}
-              className="flex items-end gap-2 select-none"
-            >
-              <div className="w-[28px] h-[28px] rounded-full bg-zinc-200 overflow-hidden shrink-0 border border-zinc-300">
-                <img src={avatar} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+          <div key={i} className="flex flex-col gap-1">
+            <span className="text-center text-[11px] text-zinc-400 leading-none mt-1">{formatTime()}</span>
+            {msg.sender === 'me' ? (
+              <div className="flex flex-col items-end gap-1">
+                <div className="bg-[#4f6ef7] text-white text-[14px] px-3 py-2 rounded-[18px] max-w-[280px] leading-snug break-words">{msg.text}</div>
+                {showVisto && i === messages.length - 1 && <span className="text-[10px] text-zinc-400 leading-none pr-1">Visto</span>}
               </div>
-              <div className="bg-[#D4D4D4] text-black text-[14px] px-3 py-2 rounded-[18px] max-w-[280px] leading-snug break-words whitespace-pre-wrap">
-                {msg.text}
+            ) : (
+              <div className="flex items-end gap-2 select-none">
+                <div className="w-[28px] h-[28px] rounded-full bg-zinc-200 overflow-hidden shrink-0 border border-zinc-300">
+                  <img src={avatar} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                </div>
+                <div className="bg-[#D4D4D4] text-black text-[14px] px-3 py-2 rounded-[18px] max-w-[280px] leading-snug break-words whitespace-pre-wrap">
+                  {msg.text}
+                </div>
               </div>
-            </div>
-          )
+            )}
+          </div>
         ))}
       </div>
 
