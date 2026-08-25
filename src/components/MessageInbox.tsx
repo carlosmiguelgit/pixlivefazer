@@ -121,7 +121,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
 
         {/* ===== NOTIFICAÇÕES DO SISTEMA ===== */}
         <div className="pl-[7px] pr-4 py-0.5 flex items-center gap-3">
-          <div className="w-[54px] h-[54px] shrink-0">
+          <div className="w-[54px] h-[54px] shrink-0 bg-[#3a3a3a] rounded-full overflow-hidden">
             <img src="/notif@2x.png" alt="" className="w-[54px] h-[54px] object-cover rounded-full" />
           </div>
           <div className="flex-1 min-w-0">
