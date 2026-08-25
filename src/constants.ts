@@ -99,7 +99,7 @@ export const CONFIRMACOES = [
 
 export const RESPOSTAS_MESES = [
   "vlw mesmo, chegou certinho",
-  "obrigado, received sim",
+  "obrigado, chegou sim",
   "chegou sim, obgd",
   "valeu, ta la",
   "brigadao, chegou",
