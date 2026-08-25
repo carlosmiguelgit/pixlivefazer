@@ -136,7 +136,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
 
   return (
     <div className="fixed inset-0 z-[100] flex flex-col bg-[#0a0a0a] text-white overflow-hidden">
-      <div className="flex items-center gap-1.5 px-3 h-[54px] pt-2.5 bg-[#0a0a0a] shrink-0 min-h-[54px]">
+      <div className="flex items-center gap-1.5 px-3 pt-[50px] pb-2.5 bg-[#0a0a0a] shrink-0">
         <button onClick={onBack} className="p-1 -ml-1 text-white shrink-0">
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none" className="text-white">
             <path d="M14 5L9 11L14 17" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
