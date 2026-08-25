@@ -35,7 +35,6 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
 
   const respondeuRef = useRef(historyMessages ? historyMessages.filter(m => m.sender === 'me').length > 0 : false);
   const agradeceuRef = useRef(historyMessages ? historyMessages.filter(m => m.sender === 'me').length > 1 : false);
-  const finalizouRef = useRef(false);
 
   useEffect(() => {
     if (historyMessages && historyMessages.length > 0) {
@@ -45,17 +44,6 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       }
     }
   }, [historyMessages, fraseAgradecimento]);
-
-  function agendarRespostaEspera() {
-    const texto = fraseEspera || "ok, to esperando";
-    setShowVisto(true);
-    const delayResponse = texto.length > 80 ? 18000 + Math.random() * 5000 : 8000 + Math.random() * 2000;
-    timerRef.current = setTimeout(() => {
-      setShowVisto(false);
-      setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
-      onBotMessage?.(texto);
-    }, delayResponse);
-  }
 
   function gerarAgradecimento() {
     const texto = fraseAgradecimento || "obrigado";
@@ -109,12 +97,9 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
 
     if (!respondeuRef.current) {
       respondeuRef.current = true;
-      agendarRespostaEspera();
+      gerarAgradecimento();
     } else if (!agradeceuRef.current) {
       agradeceuRef.current = true;
-      gerarAgradecimento();
-    } else if (nubankCompleted && !finalizouRef.current) {
-      finalizouRef.current = true;
       gerarRespostaFinal();
     }
   }
