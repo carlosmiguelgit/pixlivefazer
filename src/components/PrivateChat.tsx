@@ -113,9 +113,6 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       if (!respondeuRef.current) {
         respondeuRef.current = true;
         gerarAgradecimento();
-      } else if (!agradeceuRef.current) {
-        agradeceuRef.current = true;
-        gerarRespostaFinal();
       }
     } else {
       if (!respondeuRef.current) {
