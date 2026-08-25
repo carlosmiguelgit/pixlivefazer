@@ -54,7 +54,7 @@ export const NubankReceipt: FC<NubankReceiptProps> = ({
       agency: destAgency,
       account: destAccount,
       originAccount: randomOriginAccount,
-      date: "",
+      date: new Date().toLocaleString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }).toUpperCase().replace(',', ' -'),
       cpf: formattedCpf,
       transId
     };
@@ -135,7 +135,7 @@ export const NubankReceipt: FC<NubankReceiptProps> = ({
             </div>
             <div className="flex justify-between items-start">
               <span className="text-base font-bold">Tipo de conta</span>
-              <span className="text-base font-medium text-slate-500">Conta Poupança</span>
+              <span className="text-base font-medium text-slate-500">Conta corrente</span>
             </div>
           </div>
         </div>
