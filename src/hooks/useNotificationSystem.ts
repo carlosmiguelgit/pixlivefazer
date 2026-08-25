@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Notification, Testimonial } from '../types';
-import { MENSAGENS_INICIAIS, RESPOSTAS_ESPERA, RESPOSTAS_30, RESPOSTAS_80, RESPOSTAS_150 } from '../constants';
+import { MENSAGENS_INICIAIS, RESPOSTAS_ESPERA, RESPOSTAS_MESES } from '../constants';
 import tiktokUsers from '../tiktok-users.json';
 
 interface TikTokUser {
@@ -40,9 +40,10 @@ function inferirGenero(nome: string): 'male' | 'female' {
   return primeiro.endsWith('a') ? 'female' : 'male';
 }
 
-function montarMensagemInicial(genero: 'male' | 'female', nome: string, idx: number): string {
+function montarMensagemInicial(genero: 'male' | 'female', nome: string, idx: number, meses: number): string {
   const pool = MENSAGENS_INICIAIS.filter(m => m.genero === genero);
   return pool[idx % pool.length].texto
+    .replace('[MESES]', String(meses))
     .replace('do [NOME]', (genero === 'female' ? 'da ' : 'do ') + nome);
 }
 
@@ -62,13 +63,11 @@ export const useNotificationSystem = () => {
   const inicialFemaleIdxRef = useRef(0);
   const esperaMaleIdxRef = useRef(0);
   const esperaFemaleIdxRef = useRef(0);
-  const agradecimento30IdxRef = useRef(0);
-  const agradecimento80IdxRef = useRef(0);
-  const agradecimento150IdxRef = useRef(0);
+  const agradecimentoIdxRef = useRef(0);
 
   const getNextEntry = useCallback((): number => {
     if (monthsIndexRef.current >= monthsCycleRef.current.length) {
-      const pool = [30, 30, 80, 80, 150, 150, 150, 150, 80, 80];
+      const pool = [1,1,1,1, 2,2,2, 3,3,3, 4,4, 5,5, 6,6, 7, 8, 9, 10, 11, 12];
       for (let i = pool.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -79,10 +78,10 @@ export const useNotificationSystem = () => {
     return monthsCycleRef.current[monthsIndexRef.current++];
   }, []);
 
-  const getNextUser = useCallback((): TikTokUser | null => {
-    const isRepetidoTurn = messageCountRef.current % 3 === 2;
-    const pool = isRepetidoTurn ? repetidoPool : normalPool;
-    const orderRef = isRepetidoTurn ? repetidoOrderRef : normalOrderRef;
+  const getNextUser = useCallback((months: number): TikTokUser | null => {
+    const isRepetido = months === 12;
+    const pool = isRepetido ? repetidoPool : normalPool;
+    const orderRef = isRepetido ? repetidoOrderRef : normalOrderRef;
     if (pool.length === 0) return null;
     if (orderRef.current.length === 0) {
       orderRef.current = shuffle(pool);
@@ -94,23 +93,23 @@ export const useNotificationSystem = () => {
   }, []);
 
   const generateNotification = useCallback(() => {
-    const user = getNextUser();
+    const months = getNextEntry();
+    const user = getNextUser(months);
     if (!user) return;
 
     const alerta = !!user.repetido;
-    const amount = alerta ? 150 : getNextEntry();
     const genero = inferirGenero(user.fullName || user.nickname);
     const nomeCompleto = user.fullName || user.nickname;
 
     let initialMessage: string;
     if (user.initialMessage) {
-      initialMessage = user.initialMessage.replace('[NOME]', nomeCompleto);
+      initialMessage = user.initialMessage.replace('[NOME]', nomeCompleto).replace('[MESES]', String(months));
     } else {
       const poolInicial = MENSAGENS_INICIAIS.filter(m => m.genero === genero);
       const inicialIdxRef = genero === 'female' ? inicialFemaleIdxRef : inicialMaleIdxRef;
       const idxInicial = inicialIdxRef.current;
       inicialIdxRef.current = (idxInicial + 1) % poolInicial.length;
-      initialMessage = montarMensagemInicial(genero, nomeCompleto, idxInicial);
+      initialMessage = montarMensagemInicial(genero, nomeCompleto, idxInicial, months);
     }
 
     const poolEspera = RESPOSTAS_ESPERA.filter(r => r.genero === genero);
@@ -124,10 +123,8 @@ export const useNotificationSystem = () => {
     if (user.justificativa) {
       fraseAgradecimento = user.justificativa;
     } else {
-      const poolAgradecimento = amount >= 150 ? RESPOSTAS_150 : amount >= 80 ? RESPOSTAS_80 : RESPOSTAS_30;
-      const agrIdxRef = amount >= 150 ? agradecimento150IdxRef : amount >= 80 ? agradecimento80IdxRef : agradecimento30IdxRef;
-      fraseAgradecimento = poolAgradecimento[agrIdxRef.current];
-      agrIdxRef.current = (agrIdxRef.current + 1) % poolAgradecimento.length;
+      fraseAgradecimento = RESPOSTAS_MESES[agradecimentoIdxRef.current];
+      agradecimentoIdxRef.current = (agradecimentoIdxRef.current + 1) % RESPOSTAS_MESES.length;
     }
 
     const newNotif: Notification = {
@@ -139,13 +136,13 @@ export const useNotificationSystem = () => {
       followingCount: user.followingCount,
       followerCount: user.followerCount,
       pixKey: `${Math.floor(Math.random() * 899) + 100}.***.***-${Math.floor(Math.random() * 89) + 10}`,
-      months: amount,
-      participationCount: amount,
-      value: alerta ? 0 : amount === 30 ? 150 : amount === 80 ? 500 : amount === 150 ? 1000 : amount,
+      months: months,
+      participationCount: months,
+      value: 0,
       timestamp: new Date(),
       gender: genero,
       alerta,
-      contributionAmount: amount,
+      contributionAmount: months,
       initialMessage,
       fraseEspera,
       fraseAgradecimento,
