@@ -195,7 +195,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
           <button
             type="button"
             onClick={() => {
-              if (agradecimentoEnviado && !nubankCompleted && notification && onOpenNubank) {
+              if (!nubankCompleted && notification && onOpenNubank) {
                 onOpenNubank(notification);
               }
             }}
