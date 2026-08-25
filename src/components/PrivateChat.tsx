@@ -163,7 +163,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
         {followingCount !== undefined && followerCount !== undefined && (
           <span className="text-[14px] text-zinc-500 mb-2">{followingCount.toLocaleString('pt-BR')} seguindo · {followerCount.toLocaleString('pt-BR')} seguidores</span>
         )}
-        <button className="bg-[#ed4956] text-white text-[18px] font-bold px-12 py-[0.35rem] rounded-full">Seguir</button>
+
       </div>
 
       <div className="flex-1 bg-[#0a0a0a] overflow-y-auto px-4 py-2 flex flex-col gap-2">
