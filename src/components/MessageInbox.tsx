@@ -40,7 +40,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
       {/* ===== HEADER ===== */}
       <div className="px-4 pt-1 pb-2 flex items-center justify-between shrink-0">
         <button className="p-1">
-          <img src="/chat (1).png" alt="" className="w-[25px] h-[25px]" />
+          <img src="/chat (1).png" alt="" className="w-[22px] h-[22px]" />
         </button>
         <div className="flex items-center gap-1.5">
           <h1 className="text-[17px] font-bold text-white">Mensagens</h1>
