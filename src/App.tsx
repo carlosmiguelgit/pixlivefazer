@@ -129,7 +129,6 @@ function ChatApp() {
   const handleChatBack = () => {
     setChatNotification(null);
     setNubankCompleted(false);
-    scheduleNextNotifications();
   };
 
   const notificationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
