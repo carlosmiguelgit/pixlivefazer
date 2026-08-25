@@ -123,12 +123,15 @@ function ChatApp() {
     }
     setChatNotification(null);
     setNubankCompleted(false);
-    scheduleNextNotifications();
   };
 
   const handleChatBack = () => {
     setChatNotification(null);
     setNubankCompleted(false);
+  };
+
+  const handleFlowEnd = () => {
+    scheduleNextNotifications();
   };
 
   const notificationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -248,6 +251,7 @@ function ChatApp() {
             historyMessages={chatHistories[chatNotification.id]}
             onHistoryUpdate={(messages) => handleHistoryUpdate(chatNotification.id, messages)}
             nubankCompleted={nubankCompleted}
+            onFlowEnd={handleFlowEnd}
           />
         )}
 

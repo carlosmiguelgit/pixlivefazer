@@ -20,9 +20,10 @@ interface PrivateChatProps {
   historyMessages?: { text: string; sender: 'me' | 'them'; timestamp?: number }[];
   onHistoryUpdate?: (messages: { text: string; sender: 'me' | 'them'; timestamp?: number }[]) => void;
   nubankCompleted?: boolean;
+  onFlowEnd?: () => void;
 }
 
-export default function PrivateChat({ username, nickname, fullName, avatar, followingCount, followerCount, pixKey, initialMessage, onComplete, onBack, onBotMessage, fraseEspera, fraseAgradecimento, notification, onOpenNubank, historyMessages, onHistoryUpdate, nubankCompleted }: PrivateChatProps) {
+export default function PrivateChat({ username, nickname, fullName, avatar, followingCount, followerCount, pixKey, initialMessage, onComplete, onBack, onBotMessage, fraseEspera, fraseAgradecimento, notification, onOpenNubank, historyMessages, onHistoryUpdate, nubankCompleted, onFlowEnd }: PrivateChatProps) {
   const [messages, setMessages] = useState<{ text: string; sender: 'me' | 'them'; timestamp: number }[]>(
     historyMessages && historyMessages.length > 0
       ? historyMessages.map((m, i) => ({ ...m, timestamp: m.timestamp || Date.now() - (historyMessages.length - i) * 60000 }))
@@ -66,6 +67,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
       setAgradecimentoEnviado(true);
       onBotMessage?.(texto);
+      onFlowEnd?.();
     }, delayResponse);
   }
 
@@ -84,6 +86,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       setShowVisto(false);
       setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
       onBotMessage?.(texto);
+      onFlowEnd?.();
       setTimeout(() => {
         if (notification) {
           onComplete(notification.name, notification.pixKey);
