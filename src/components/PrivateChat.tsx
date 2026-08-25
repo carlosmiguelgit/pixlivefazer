@@ -216,7 +216,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
             }}
             className="cursor-pointer"
           >
-            <img src="/d.svg" alt="" className="w-[22px] h-[22px] shrink-0" />
+            <img src="/d.png" alt="" className="w-[22px] h-[22px] shrink-0" />
           </button>
         </div>
       </div>
