@@ -88,7 +88,7 @@ function ChatApp() {
     setChatNotification(nubankNotification);
   };
 
-  const handleHistoryUpdate = (notifId: string, messages: { text: string; sender: 'me' | 'them' }[]) => {
+  const handleHistoryUpdate = (notifId: string, messages: { text: string; sender: 'me' | 'them'; timestamp?: number }[]) => {
     setChatHistories(prev => ({
       ...prev,
       [notifId]: messages
