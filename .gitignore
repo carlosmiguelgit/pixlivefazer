@@ -1,0 +1,16 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+.dyad/
+
+.vercel
+.env*
+
+nubank.db
+nubank.db-shm
+nubank.db-wal

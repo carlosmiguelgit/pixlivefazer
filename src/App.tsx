@@ -1,0 +1,265 @@
+import { useState, useEffect, useRef, type MouseEvent as ReactMouseEvent } from 'react';
+import { StatusBar } from './components/StatusBar';
+import { MessageInbox } from './components/MessageInbox';
+import { Dashboard } from './components/Dashboard';
+import { Extrato } from './components/Extrato';
+import { Ranking } from './components/Ranking';
+import { BottomNav } from './components/BottomNav';
+import PrivateChat from './components/PrivateChat';
+import NubankSheet from './components/NubankSheet';
+import { Notification } from './types';
+import { useNotificationSystem } from './hooks/useNotificationSystem';
+
+function loadHistories(): Record<string, { text: string; sender: 'me' | 'them' }[]> {
+  try {
+    const raw = localStorage.getItem('chatHistories');
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function ChatApp() {
+  const [activeTab, setActiveTab] = useState<'inbox' | 'dash' | 'extrato' | 'ranking'>('inbox');
+  const [confirmedNotifications, setConfirmedNotifications] = useState<Notification[]>([]);
+  const [activeNotification, setActiveNotification] = useState<Notification | null>(null);
+  const [isAnonymousMode, setIsAnonymousMode] = useState(false);
+  const [chatNotification, setChatNotification] = useState<Notification | null>(null);
+  const [batteryClickCount, setBatteryClickCount] = useState(0);
+  const [fraseEspera, setFraseEspera] = useState('');
+  const [fraseAgradecimento, setFraseAgradecimento] = useState('');
+  const [nubankSheetOpen, setNubankSheetOpen] = useState(false);
+  const [nubankNotification, setNubankNotification] = useState<Notification | null>(null);
+  const [chatHistories, setChatHistories] = useState<Record<string, { text: string; sender: 'me' | 'them' }[]>>(loadHistories);
+  const [nubankCompleted, setNubankCompleted] = useState(false);
+
+  const {
+    notifications,
+    setNotifications,
+    dynamicTestimonials,
+    setPendingTestimonials,
+    addToBlacklist,
+    generateNotification
+  } = useNotificationSystem();
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.add('theme-dark');
+    root.classList.remove('theme-light');
+    root.style.backgroundColor = '#000000';
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('chatHistories', JSON.stringify(chatHistories));
+  }, [chatHistories]);
+
+  const handleBatteryClick = () => {
+    setBatteryClickCount(prev => {
+      const next = prev + 1;
+      if (next === 3) {
+        setIsAnonymousMode(!isAnonymousMode);
+        return 0;
+      }
+      return next;
+    });
+    setTimeout(() => setBatteryClickCount(0), 3000);
+  };
+
+  const handleStartChat = (notif: Notification) => {
+    setChatNotification(notif);
+    setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, read: true } : n));
+    setFraseEspera(notif.fraseEspera || "ok, to esperando");
+    setFraseAgradecimento(notif.fraseAgradecimento || "obrigado");
+    setNubankCompleted(false);
+  };
+
+  const handleOpenNubank = (notif: Notification) => {
+    setNubankNotification(notif);
+    setNubankSheetOpen(true);
+  };
+
+  const handleCloseNubank = () => {
+    setNubankSheetOpen(false);
+  };
+
+  const handleNubankComplete = () => {
+    setNubankSheetOpen(false);
+    setNubankCompleted(true);
+    setChatNotification(nubankNotification);
+  };
+
+  const handleHistoryUpdate = (notifId: string, messages: { text: string; sender: 'me' | 'them' }[]) => {
+    setChatHistories(prev => ({
+      ...prev,
+      [notifId]: messages
+    }));
+  };
+
+  const handleChatComplete = (name: string, pixKey: string) => {
+    if (!chatNotification) return;
+    const notif = { ...chatNotification, name, pixKey };
+    setConfirmedNotifications(prev => [notif, ...prev]);
+    setNotifications(prev => prev.filter(n => n.id !== chatNotification.id));
+    addToBlacklist(chatNotification.name);
+    setChatHistories(prev => {
+      const next = { ...prev };
+      delete next[chatNotification.id];
+      return next;
+    });
+    if (Math.random() < 0.85) {
+      const delaySeconds = Math.floor(Math.random() * 180) + 300;
+      const visibleAt = Date.now() + (delaySeconds * 1000);
+      setPendingTestimonials(prev => [...prev, {
+        id: `dyn-${chatNotification.id}`,
+        name: chatNotification.name,
+        text: "só gratidão guilherme, de verdade",
+        rating: 5,
+        gender: chatNotification.gender,
+        photo: "",
+        months: chatNotification.months,
+        timestamp: new Date(Date.now() - 3600000),
+        visibleAt
+      }]);
+    }
+    setChatNotification(null);
+    setNubankCompleted(false);
+  };
+
+  const handleChatBack = () => {
+    setChatNotification(null);
+    setNubankCompleted(false);
+  };
+
+  const notificationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleScreenClick = (e: ReactMouseEvent) => {
+    if (activeTab !== 'inbox' || chatNotification) return;
+    if ((e.target as HTMLElement).closest('[data-chat-card]')) return;
+    if ((e.target as HTMLElement).closest('[data-nav]')) return;
+    if (notificationTimer.current !== null) return;
+    const delay = Math.floor(Math.random() * 3000) + 5000;
+    notificationTimer.current = setTimeout(() => {
+      notificationTimer.current = null;
+      generateNotification();
+    }, delay);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (notificationTimer.current) clearTimeout(notificationTimer.current);
+    };
+  }, []);
+
+  return (
+    <div className="flex justify-center items-center h-screen overflow-hidden bg-black">
+      <div className="relative w-full max-w-[430px] h-full max-h-[932px] overflow-hidden flex flex-col bg-[#000000] text-white" onClick={handleScreenClick}>
+        <StatusBar
+          onBatteryClick={handleBatteryClick}
+          isDarkMode={true}
+        />
+
+        <main className="relative z-10 flex-1 flex flex-col overflow-y-auto overflow-x-hidden">
+          {activeTab === 'inbox' && (
+            <MessageInbox
+              notifications={notifications}
+              isDarkMode={true}
+              isAnonymousMode={isAnonymousMode}
+              onOpenChat={handleStartChat}
+            />
+          )}
+          {activeTab === 'dash' && (
+            <Dashboard
+              notifications={notifications}
+              activeNotification={activeNotification}
+              setActiveNotification={setActiveNotification}
+              isAnonymousMode={isAnonymousMode}
+              isDarkMode={true}
+              onStartChat={handleStartChat}
+              onRessarcir={(n) => {
+                setNotifications(prev => prev.filter(x => x.id !== n.id));
+                setActiveNotification(null);
+              }}
+            />
+          )}
+          {activeTab === 'extrato' && (
+            <Extrato
+              confirmedNotifications={confirmedNotifications}
+              dynamicTestimonials={dynamicTestimonials}
+              isAnonymousMode={isAnonymousMode}
+              isDarkMode={true}
+            />
+          )}
+          {activeTab === 'ranking' && (
+            <Ranking
+              confirmedNotifications={confirmedNotifications}
+              isAnonymousMode={isAnonymousMode}
+              isDarkMode={true}
+            />
+          )}
+        </main>
+
+        <div className="shrink-0">
+          <BottomNav
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            isDarkMode={true}
+            unreadCount={notifications.filter(n => !n.read).length}
+          />
+        </div>
+
+        {chatNotification && (
+          <PrivateChat
+            username={chatNotification.username}
+            nickname={chatNotification.name}
+            fullName={chatNotification.fullName}
+            avatar={chatNotification.photo}
+            followingCount={chatNotification.followingCount}
+            followerCount={chatNotification.followerCount}
+            pixKey={chatNotification.pixKey}
+            initialMessage={chatNotification.initialMessage}
+            onComplete={handleChatComplete}
+            onBack={handleChatBack}
+            onBotMessage={(text) => {
+              setNotifications(prev => prev.map(n => n.id === chatNotification.id ? { ...n, lastMessage: text } : n));
+            }}
+            fraseEspera={fraseEspera}
+            fraseAgradecimento={fraseAgradecimento}
+            notification={chatNotification}
+            onOpenNubank={handleOpenNubank}
+            historyMessages={chatHistories[chatNotification.id]}
+            onHistoryUpdate={(messages) => handleHistoryUpdate(chatNotification.id, messages)}
+            nubankCompleted={nubankCompleted}
+          />
+        )}
+
+        {nubankSheetOpen && nubankNotification && (
+          <NubankSheet
+            isOpen={nubankSheetOpen}
+            onClose={handleCloseNubank}
+            notification={nubankNotification}
+            nubankBalance={348742.18}
+            onConfirm={handleNubankComplete}
+            isAnonymousMode={isAnonymousMode}
+            isDarkMode={true}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default function App() {
+  const [hash, setHash] = useState(window.location.hash);
+
+  useEffect(() => {
+    const onHashChange = () => setHash(window.location.hash);
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  if (hash.startsWith('#/nubank')) {
+    return <ChatApp />;
+  }
+
+  return <ChatApp />;
+}
