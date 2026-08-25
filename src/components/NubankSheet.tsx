@@ -100,7 +100,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
       setSelectedInstallment(1);
       setIsReceiptOpen(false);
       setIsReviewReplay(false);
-      if (notification) setDigitStr(String(notification.value));
+      setDigitStr("0");
       
       const timer = setTimeout(() => {
         setStep('select');
