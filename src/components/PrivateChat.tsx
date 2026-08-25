@@ -145,7 +145,10 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
         <div className="w-[30px] h-[30px] rounded-full bg-zinc-700 overflow-hidden shrink-0 border border-zinc-600">
           <img src={avatar} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
         </div>
-        <span className="text-[18px] font-semibold text-white truncate leading-tight">{nickname}</span>
+        <div className="flex flex-col -mt-[10px]">
+          <span className="text-[18px] font-semibold text-white truncate leading-tight">{nickname}</span>
+          <span className="text-[14px] text-zinc-400 leading-tight">Ativo agora</span>
+        </div>
         <div className="flex-1" />
         <button className="flex items-center gap-[3px] shrink-0 pr-1">
           <span className="w-[4px] h-[4px] rounded-full bg-zinc-400" />
