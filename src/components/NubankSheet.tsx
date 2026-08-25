@@ -204,7 +204,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
           animate={{ y: 0 }}
           exit={{ y: "100%" }}
           transition={{ type: "spring", damping: 30, stiffness: 250 }}
-          className={`absolute inset-0 ${bgColor} z-[200] overflow-hidden flex flex-col`}
+          className={`fixed inset-0 ${bgColor} z-[200] overflow-hidden flex flex-col`}
         >
           <AnimatePresence mode="wait">
             {step === 'splash' && (

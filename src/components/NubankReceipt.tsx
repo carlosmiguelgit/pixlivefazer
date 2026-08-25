@@ -68,7 +68,7 @@ export const NubankReceipt: FC<NubankReceiptProps> = ({
       animate={{ x: 0 }}
       exit={{ x: "100%" }}
       transition={{ type: "spring", damping: 30, stiffness: 250 }}
-      className="absolute inset-0 bg-white z-[300] overflow-y-auto flex flex-col text-slate-900"
+      className="fixed inset-0 bg-white z-[300] overflow-y-auto flex flex-col text-slate-900"
     >
       {/* Header */}
       <div className="sticky top-0 bg-white z-10 px-6 py-4 flex items-center justify-between border-b border-slate-100">
