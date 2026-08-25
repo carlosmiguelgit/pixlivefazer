@@ -192,12 +192,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       <div className="shrink-0 px-3 pb-3 pt-1.5">
         <div className="bg-[#1a1a1a] rounded-full flex items-center gap-2 px-3.5 py-2.5">
           <button className="shrink-0 w-[17px] h-[15px]">
-            <svg viewBox="0 0 38 30" className="w-full h-full">
-              <rect x="2" y="6" width="34" height="22" rx="4" fill="white" />
-              <rect x="27" y="4" width="6" height="4" rx="1" fill="white" />
-              <circle cx="19" cy="16" r="6" fill="#0a0a0a" />
-              <circle cx="19" cy="16" r="3.5" fill="white" />
-            </svg>
+            <img src="/camera.png" alt="" className="w-full h-full object-contain" />
           </button>
           <input
             type="text"
