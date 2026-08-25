@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type MouseEvent as ReactMouseEvent } from 'react';
+import { useState, useEffect, useRef, useCallback, type MouseEvent as ReactMouseEvent } from 'react';
 import { StatusBar } from './components/StatusBar';
 import { MessageInbox } from './components/MessageInbox';
 import { Dashboard } from './components/Dashboard';
@@ -123,14 +123,33 @@ function ChatApp() {
     }
     setChatNotification(null);
     setNubankCompleted(false);
+    scheduleNextNotifications();
   };
 
   const handleChatBack = () => {
     setChatNotification(null);
     setNubankCompleted(false);
+    scheduleNextNotifications();
   };
 
   const notificationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const autoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const scheduleNextNotifications = useCallback(() => {
+    autoTimersRef.current.forEach(t => clearTimeout(t));
+    autoTimersRef.current = [];
+
+    const shouldSpawnTwo = Math.random() < 0.35;
+    const count = shouldSpawnTwo ? 2 : 1;
+
+    for (let i = 0; i < count; i++) {
+      const delay = 3000 + Math.random() * 5000;
+      const timer = setTimeout(() => {
+        generateNotification();
+      }, delay + (i === 1 ? 500 : 0));
+      autoTimersRef.current.push(timer);
+    }
+  }, [generateNotification]);
 
   const handleScreenClick = (e: ReactMouseEvent) => {
     if (activeTab !== 'inbox' || chatNotification) return;
@@ -147,6 +166,7 @@ function ChatApp() {
   useEffect(() => {
     return () => {
       if (notificationTimer.current) clearTimeout(notificationTimer.current);
+      autoTimersRef.current.forEach(t => clearTimeout(t));
     };
   }, []);
 
