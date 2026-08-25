@@ -42,7 +42,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
 }) => {
   const [step, setStep] = useState<FlowStep>('splash');
   const [processingText, setProcessingText] = useState("Transferindo...");
-  const [selectedMethod, setSelectedMethod] = useState<'conta' | 'credito'>('conta');
+  const [selectedMethod, setSelectedMethod] = useState<'conta' | 'credito' | null>(null);
   const [selectedInstallment, setSelectedInstallment] = useState(1);
   const [isReceiptOpen, setIsReceiptOpen] = useState(false);
   const [isReviewReplay, setIsReviewReplay] = useState(false);
@@ -97,6 +97,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
     if (isOpen) {
       setStep('splash');
       setProcessingText("Transferindo...");
+      setSelectedMethod(null);
       setSelectedInstallment(1);
       setIsReceiptOpen(false);
       setIsReviewReplay(false);
@@ -152,7 +153,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
   };
 
   const handleFinalize = () => {
-    onConfirm(selectedMethod, editedValue);
+    onConfirm(selectedMethod || 'conta', editedValue);
   };
 
   const handleReceiptClick = () => {
@@ -309,7 +310,10 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                 <div className="pt-8">
                   <button
                     onClick={handleConfirmMethod}
-                    className="w-full h-[38px] bg-[#820AD1] text-white font-bold rounded-full active:scale-95 transition-transform text-[15px] leading-none flex items-center justify-center shadow-xl shadow-[#820AD1]/20"
+                    disabled={!selectedMethod}
+                    className={`w-full h-[38px] font-bold rounded-full active:scale-95 transition-transform text-[15px] leading-none flex items-center justify-center shadow-xl shadow-[#820AD1]/20 ${
+                      selectedMethod ? 'bg-[#820AD1] text-white' : 'bg-white/10 text-white/30'
+                    }`}
                   >
                     Continuar
                   </button>
@@ -400,7 +404,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                     R$ {editedValue.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                   <div className="flex items-center justify-between mt-2">
-                    <p className="text-[16px] text-[#820AD1] font-medium">Conta Nubank</p>
+                    <p className="text-[16px] text-[#820AD1] font-medium">{selectedMethod === 'credito' ? 'Crédito Nubank' : 'Conta Nubank'}</p>
                     <Pencil size={21} className="text-[#820AD1]" />
                   </div>
                 </div>
