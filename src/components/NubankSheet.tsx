@@ -52,6 +52,8 @@ export const NubankSheet: FC<NubankSheetProps> = ({
   const editedValue = useMemo(() => parseInt(digitStr, 10) || 0, [digitStr]);
   const receiptClickCountRef = useRef(0);
   const receiptClickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const successClickCountRef = useRef(0);
+  const successClickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const destBankData = useMemo(() => {
     const isNubank = Math.random() < 0.7;
@@ -166,6 +168,21 @@ export const NubankSheet: FC<NubankSheetProps> = ({
       }
       receiptClickCountRef.current = 0;
       setIsReceiptOpen(false);
+      handleFinalize();
+    }
+  };
+
+  const handleSuccessDoubleClick = () => {
+    successClickCountRef.current++;
+    if (successClickCountRef.current === 1) {
+      successClickTimerRef.current = setTimeout(() => {
+        successClickCountRef.current = 0;
+      }, 400);
+    } else if (successClickCountRef.current >= 2) {
+      if (successClickTimerRef.current) {
+        clearTimeout(successClickTimerRef.current);
+      }
+      successClickCountRef.current = 0;
       handleFinalize();
     }
   };
@@ -486,7 +503,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                 key="success"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                onClick={isReceiptOpen ? handleReceiptClick : undefined}
+                onClick={isReceiptOpen ? handleReceiptClick : handleSuccessDoubleClick}
                 className={`flex-1 flex flex-col px-8 pt-12 pb-10 ${isReceiptOpen ? 'cursor-pointer' : ''}`}
               >
                 <div className="mb-10">
