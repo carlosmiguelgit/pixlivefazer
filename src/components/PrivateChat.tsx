@@ -192,23 +192,17 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
             placeholder="Mensagem..."
             className="text-[16px] text-black flex-1 bg-transparent outline-none placeholder-zinc-500 pl-2"
           />
-          {agradecimentoEnviado && nubankCompleted ? (
-            <button type="button" className="cursor-default">
-              <img src="/d.png" alt="" className="w-[22px] h-[22px] shrink-0" />
-            </button>
-          ) : agradecimentoEnviado && notification && onOpenNubank ? (
-            <button
-              type="button"
-              onClick={() => onOpenNubank(notification)}
-              className="cursor-pointer hover:opacity-80 transition-opacity"
-            >
-              <img src="/d.png" alt="" className="w-[22px] h-[22px] shrink-0" />
-            </button>
-          ) : (
-            <button type="button" className="cursor-default">
-              <img src="/d.png" alt="" className="w-[22px] h-[22px] shrink-0 opacity-30" />
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => {
+              if (agradecimentoEnviado && !nubankCompleted && notification && onOpenNubank) {
+                onOpenNubank(notification);
+              }
+            }}
+            className="cursor-pointer"
+          >
+            <img src="/d.png" alt="" className="w-[22px] h-[22px] shrink-0" />
+          </button>
         </div>
       </div>
     </div>
