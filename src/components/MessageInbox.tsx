@@ -109,7 +109,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
         </div>
 
         {/* ===== ATIVIDADE ===== */}
-        <div className="pl-[4px] pr-4 py-2 flex items-center gap-3">
+        <div className="pl-[7px] pr-4 py-2 flex items-center gap-3">
           <div className="w-[54px] h-[54px] shrink-0">
             <img src="/raio@2x.png" alt="" className="w-[54px] h-[54px] object-cover rounded-full" />
           </div>
