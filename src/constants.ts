@@ -229,7 +229,7 @@ export const RESPOSTAS_REPETIDO_ESPERA: { texto: string; genero: 'female' | 'mal
   { texto: "tranquilo to esperando", genero: 'male' },
 ];
 
-// Agradecimentos do repetido (5 por gênero) - implorando
+// Agradecimentos do repetido (5 por gênero) - implorando, cada um diferente
 export const RESPOSTAS_REPETIDO_AGRADECIMENTO: { texto: string; genero: 'female' | 'male' }[] = [
   // Feminino
   { texto: "poxa que pena quebra essa pra mim eu imploro", genero: 'female' },
@@ -238,9 +238,9 @@ export const RESPOSTAS_REPETIDO_AGRADECIMENTO: { texto: string; genero: 'female'
   { texto: "to desesperada aqui se puder fazer uma exceção eu agradeço", genero: 'female' },
   { texto: "moço eu imploro to sem opção nenhuma", genero: 'female' },
   // Masculino
-  { texto: "poxa que pena quebra essa pra mim eu imploro", genero: 'male' },
-  { texto: "cara to passando por um momento muito difícil se puder me ajudar", genero: 'male' },
-  { texto: "por favor eu sei que ja participei mas preciso muito dessa ajuda", genero: 'male' },
-  { texto: "to desesperado aqui se puder fazer uma exceção eu agradeço", genero: 'male' },
-  { texto: "cara eu imploro to sem opção nenhuma", genero: 'male' },
+  { texto: "cara quebra essa pra mim eu to desesperado", genero: 'male' },
+  { texto: "por favor to passando por um momento muito difícil se puder me ajudar", genero: 'male' },
+  { texto: "eu sei que ja participei mas preciso muito dessa ajuda", genero: 'male' },
+  { texto: "to sem saída aqui se puder fazer uma exceção eu fico grato", genero: 'male' },
+  { texto: "cara eu to sem opção me ajuda por favor", genero: 'male' },
 ];
