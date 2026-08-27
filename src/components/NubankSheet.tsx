@@ -510,7 +510,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                 onClick={isReceiptOpen ? handleReceiptClick : handleSuccessDoubleClick}
                 className={`flex-1 flex flex-col px-8 pt-12 pb-10 ${isReceiptOpen ? 'cursor-pointer' : ''}`}
               >
-                <div className="mb-10 relative mt-[10px]">
+                <div className="mb-10 relative mt-[20px]">
                   <button 
                     onClick={(e) => { e.stopPropagation(); onClose(); }}
                     className="absolute top-0 left-0 p-2 -ml-2 -mt-2"
@@ -520,7 +520,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                   <img 
                     src="/simbolo.jpeg" 
                     alt="Sucesso" 
-                    className="w-[173px] object-contain" 
+                    className="w-[156px] object-contain" 
                   />
                 </div>
 
@@ -543,7 +543,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                     <span className={`text-[15px] text-white`}>Instituição</span>
                     <span className={`text-[15px] font-semibold ${subTextColor} uppercase`}>{destBankData.bank.toUpperCase()}</span>
                   </div>
-                  <div className={`flex justify-between py-3 border-b ${borderColor}`}>
+                  <div className={`flex justify-between py-3`}>
                     <span className={`text-[15px] text-white`}>Quando</span>
                     <span className={`text-[15px] font-semibold ${subTextColor}`}>Agora</span>
                   </div>
