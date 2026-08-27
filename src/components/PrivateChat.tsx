@@ -40,15 +40,28 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     return true;
   });
 
+  const [timeAgo, setTimeAgo] = useState('');
+
   useEffect(() => {
     if (!notification?.timestamp) return;
-    const elapsed = Date.now() - new Date(notification.timestamp).getTime();
-    if (elapsed >= 120000) {
-      setIsOnline(false);
-      return;
-    }
-    const timeout = setTimeout(() => setIsOnline(false), 120000 - elapsed);
-    return () => clearTimeout(timeout);
+    const update = () => {
+      const elapsed = Date.now() - new Date(notification.timestamp).getTime();
+      if (elapsed < 120000) {
+        setIsOnline(true);
+        setTimeAgo('');
+      } else {
+        setIsOnline(false);
+        const mins = Math.floor(elapsed / 60000);
+        if (mins < 60) setTimeAgo(`Ativo há ${mins} min`);
+        else {
+          const hours = Math.floor(mins / 60);
+          setTimeAgo(`Ativo há ${hours}h`);
+        }
+      }
+    };
+    update();
+    const interval = setInterval(update, 30000);
+    return () => clearInterval(interval);
   }, [notification?.timestamp]);
 
   const respondeuRef = useRef(historyMessages ? historyMessages.filter(m => m.sender === 'me').length > 0 : false);
@@ -79,7 +92,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     }
     texto = texto || "obrigado";
     setShowVisto(true);
-    const delayResponse = texto.length > 80 ? 18000 + Math.random() * 5000 : 8000 + Math.random() * 2000;
+    const delayResponse = texto.length > 80 ? 15000 + Math.random() * 5000 : 12000 + Math.random() * 4000;
     timerRef.current = setTimeout(() => {
       setShowVisto(false);
       setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
@@ -129,7 +142,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
         </div>
         <div className="flex flex-col -mt-[10px]">
           <span className="text-[18px] font-semibold text-white truncate leading-tight">{nickname}</span>
-          {isOnline && <span className="text-[14px] text-zinc-400 leading-tight">Ativo agora</span>}
+          <span className="text-[14px] text-zinc-400 leading-tight">{isOnline ? 'Ativo agora' : timeAgo}</span>
         </div>
         <div className="flex-1" />
         <button className="flex items-center gap-[3px] shrink-0 pr-1">
