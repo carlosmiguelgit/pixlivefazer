@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { motion } from "motion/react";
 import { Notification } from "../types";
 import { RESPOSTAS_AGENUARDAR, RESPOSTAS_REPETIDO_AGRADECIMENTO } from "../constants";
 
@@ -33,6 +34,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [showVisto, setShowVisto] = useState(false);
   const [agradecimentoEnviado, setAgradecimentoEnviado] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [isOnline, setIsOnline] = useState(() => {
     if (notification?.timestamp) {
       return Date.now() - new Date(notification.timestamp).getTime() < 120000;
@@ -92,11 +94,13 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     }
     texto = texto || "obrigado";
     setShowVisto(true);
+    setIsTyping(true);
     const baseDelay = isRepetido ? 5000 : 12000;
     const randomDelay = isRepetido ? 3000 : 4000;
     const delayResponse = baseDelay + Math.random() * randomDelay;
     timerRef.current = setTimeout(() => {
       setShowVisto(false);
+      setIsTyping(false);
       setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
       setAgradecimentoEnviado(true);
       onBotMessage?.(texto);
@@ -187,6 +191,30 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
             )}
           </div>
         ))}
+        {isTyping && (
+          <div className="flex items-end gap-2 select-none">
+            <div className="w-[28px] h-[28px] rounded-full bg-zinc-700 overflow-hidden shrink-0 border border-zinc-600">
+              <img src={avatar} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            </div>
+            <div className="bg-[#2a2a2a] px-4 py-3 rounded-[18px] flex items-center gap-1.5">
+              <motion.span
+                animate={{ y: [0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
+                className="w-[6px] h-[6px] bg-zinc-400 rounded-full"
+              />
+              <motion.span
+                animate={{ y: [0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: 0.6, delay: 0.15 }}
+                className="w-[6px] h-[6px] bg-zinc-400 rounded-full"
+              />
+              <motion.span
+                animate={{ y: [0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: 0.6, delay: 0.3 }}
+                className="w-[6px] h-[6px] bg-zinc-400 rounded-full"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="shrink-0 px-3 pb-3 pt-1.5">
