@@ -10,11 +10,20 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 - **Backend**: Express + SQLite (`server.js`)
 - **Build**: `pnpm build` → `dist/` servido estaticamente
 
-## Fluxo de Conversa (Simplificado)
+## Fluxos de Conversa
 
+### Fluxo Normal (valores 50, 90, 150)
 1. Bot envia mensagem inicial ("fiz o de [VALOR] ta no nome de [NOME]")
 2. Usuário responde qualquer coisa
-3. Bot agradece (resposta final)
+3. Bot responde "ok to esperando"
+4. Usuário responde de novo
+5. Bot agradece
+
+### Fluxo Repetido (valor 300)
+1. Bot envia mensagem dizendo que já participou ("mandei novamente [VALOR]")
+2. Usuário responde qualquer coisa
+3. Bot implora ("quebra essa pra mim eu imploro")
+4. FIM
 
 ## Sistema de Valores
 
@@ -25,21 +34,35 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 
 ## Mensagens por Gênero
 
-### Mensagens Iniciais (15 por gênero)
+### Fluxo Normal
+
+#### Mensagens Iniciais (15 por gênero)
 - **Masculino**: "fiz o de [VALOR] ta no nome de [NOME]", etc.
 - **Feminino**: "moço fiz o de [VALOR] ta no nome de [NOME]", etc.
 - Seleção sequencial (1→15→1), sem repetição até completar
 
-### Respostas de Espera (20 por gênero)
+#### Respostas de Espera (20 por gênero)
 - Usadas quando usuário responde pela primeira vez
 - Diferenciadas por gênero
 
-### Agradecimentos (15 por gênero por faixa)
+#### Agradecimentos (15 por gênero por faixa)
 - **Faixa Baixa Feminino**: "obrigada to precisando muito disso", etc.
 - **Faixa Baixa Masculino**: "vlw ja tava desesperado aqui", etc.
 - **Faixa Alta Feminino**: "caramba eu tava desconfiada mas chegou mesmo", etc.
 - **Faixa Alta Masculino**: "caramba eu tava desconfiado mas chegou mesmo", etc.
 - Seleção sequencial sem repetição
+
+### Fluxo Repetido (separado)
+
+#### Mensagens Iniciais (5 por gênero)
+- **Feminino**: "moço eu ja participei antes mas mandei novamente [VALOR]..."
+- **Masculino**: "cara eu ja participei antes mas mandei novamente [VALOR]..."
+- Palavras-chave: novamente, de novo, mais uma vez, outra vez
+
+#### Agradecimentos/Imploração (5 por gênero)
+- **Feminino**: "poxa que pena quebra essa pra mim eu imploro", etc.
+- **Masculino**: "cara quebra essa pra mim eu to desesperado", etc.
+- Cada mensagem é única, sem repetição entre gêneros
 
 ## Estrutura de Arquivos
 
@@ -47,6 +70,9 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 - `MENSAGENS_INICIAIS`: 30 mensagens (15 masculino + 15 feminino)
 - `RESPOSTAS_ESPERA`: 40 respostas (20 masculino + 20 feminino)
 - `RESPOSTAS_AGENUARDAR`: 60 agradecimentos (15 × 2 gêneros × 2 faixas)
+- `MENSAGENS_REPETIDO_INICIAIS`: 10 mensagens (5 masculino + 5 feminino)
+- `RESPOSTAS_REPETIDO_ESPERA`: 10 respostas (5 masculino + 5 feminino) - não utilizada
+- `RESPOSTAS_REPETIDO_AGRADECIMENTO`: 10 agradecimentos (5 masculino + 5 feminino)
 - `CONFIRMACOES`: respostas de confirmação
 - `BRAZILIAN_BANKS`: lista de bancos
 
@@ -55,11 +81,13 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 - `getNextUser()`: seleciona usuário do pool
 - `inferirGenero()`: determina gênero pelo nome
 - `generateNotification()`: gera notificação completa
-- Contadores sequenciais por gênero para mensagens
+- Contadores sequenciais separados por gênero e fluxo (normal/repetido)
 
 ### `src/components/PrivateChat.tsx`
-- Fluxo: inicial → espera → agradecimento
+- **Fluxo Normal**: inicial → espera → agradecimento
+- **Fluxo Repetido**: inicial → agradecimento (implorando)
 - Filtra respostas por gênero e faixa de valor
+- Usa `RESPOSTAS_REPETIDO_AGRADECIMENTO` para repetidos
 
 ### `src/components/Dashboard.tsx`
 - Exibe `R$ [VALOR]` na contribuição
@@ -77,7 +105,7 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 
 ### `src/tiktok-users.json`
 - Pool de usuários com `initialMessage` e `justificativa`
-- Usuários `repetido: true` para alertas
+- Usuários `repetido: true` para alertas (valor 300)
 
 ### `server.js`
 - Express + SQLite
@@ -97,3 +125,4 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 - Duplo clique no cabeçalho gera novo card
 - Timer aleatório de 5-10 segundos entre cards
 - Cards são sequenciais sem repetição
+- Fluxo repetido é completamente separado do normal

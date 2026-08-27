@@ -128,10 +128,11 @@ function ChatApp() {
   const handleChatBack = () => {
     setChatNotification(null);
     setNubankCompleted(false);
+    scheduleNextNotifications();
   };
 
   const handleFlowEnd = () => {
-    scheduleNextNotifications();
+    // Timer será iniciado quando voltar pra tela inicial
   };
 
   const notificationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
