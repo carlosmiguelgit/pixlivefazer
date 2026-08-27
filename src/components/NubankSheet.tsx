@@ -113,16 +113,6 @@ export const NubankSheet: FC<NubankSheetProps> = ({
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    if (step === 'loading1') {
-      const timer = setTimeout(() => {
-        setPin([]);
-        setStep('pin');
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [step]);
-
   const installmentsData = useMemo(() => {
     if (!notification) return [];
     const baseValue = editedValue;
