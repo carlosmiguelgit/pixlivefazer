@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Notification } from "../types";
-import { RESPOSTAS_AGENUARDAR, RESPOSTAS_RECEBIMENTO } from "../constants";
+import { RESPOSTAS_AGENUARDAR, RESPOSTAS_REPETIDO_AGRADECIMENTO } from "../constants";
 
 interface PrivateChatProps {
   username: string;
@@ -62,11 +62,17 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   function gerarAgradecimento() {
     let texto = fraseAgradecimento;
     if (!texto && notification) {
-      const valor = notification.contributionAmount;
-      const faixa = valor <= 90 ? 'baixa' : 'alta';
+      const isRepetido = !!notification.alerta;
       const genero = notification.gender;
-      const poolAgrad = RESPOSTAS_AGENUARDAR.filter(r => r.faixa === faixa && r.genero === genero);
-      texto = poolAgrad[Math.floor(Math.random() * poolAgrad.length)].texto || "obrigado";
+      if (isRepetido) {
+        const poolAgradRep = RESPOSTAS_REPETIDO_AGRADECIMENTO.filter(r => r.genero === genero);
+        texto = poolAgradRep[Math.floor(Math.random() * poolAgradRep.length)].texto || "obrigado";
+      } else {
+        const valor = notification.contributionAmount;
+        const faixa = valor <= 90 ? 'baixa' : 'alta';
+        const poolAgrad = RESPOSTAS_AGENUARDAR.filter(r => r.faixa === faixa && r.genero === genero);
+        texto = poolAgrad[Math.floor(Math.random() * poolAgrad.length)].texto || "obrigado";
+      }
     }
     texto = texto || "obrigado";
     setShowVisto(true);
