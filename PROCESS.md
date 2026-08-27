@@ -56,25 +56,67 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 #### Agradecimentos/Imploração (5 por gênero)
 - Cada mensagem é única, sem repetição entre gêneros
 
-## Delays
+## Delays e Timing
 
+### Respostas do Bot
 - **Normal**: Bot responde em 12-16 segundos
 - **Repetido**: Bot responde em 5-8 segundos
-- **Geração de novos cards**: 3-8 segundos após voltar pra tela inicial com fluxo completado
 
-## Comportamento de Cards
+### Indicador de Digitando (Typing Indicator)
+1. Usuário manda mensagem → "Visto" aparece
+2. Pausa de 2-4 segundos (bot "lendo")
+3. Bolinhas de typing aparecem (efeito onda/cobra com fade)
+4. 1 segundo com bolinhas → timer da mensagem começa
+5. 12-16s (normal) ou 5-8s (repetido) → mensagem aparece
 
-- Novos cards só são gerados quando o fluxo é completado (bot agradece/implora) e o usuário volta pra tela inicial
-- Clicar no card e voltar sem interagir não gera novo card
-- Ver conversas antigas não gera novo cards
+### Animação das Bolinhas
+- Efeito onda/cobra: 1ª sobe, 150ms depois 2ª sobe, 150ms depois 3ª sobe
+- Pausa de 0.6s entre ciclos
+- Fade de opacidade: 1ª 100%, 2ª 75%, 3ª 55%
+- Cor: cinza (bg-zinc-400)
+
+### Geração de Cards
 - Timer de 3-8 segundos entre cards
+- Cards só são gerados quando fluxo é completado e usuário volta pra tela inicial
 
-## Bolinhas nos Cards
+## Bolinhas nos Cards (MessageInbox)
 
-- **Vermelha**: some ao clicar no card (usando `notif.read`)
-- **Verde (online)**: some após 2 minutos em tempo real
-- **Header do chat**: "Ativo agora" até 2 minutos, depois "Ativo há X min"
-- **Header "Mensagens"**: bolinha verde sempre visível
+- **Vermelha**: some ao clicar no card (usa `notif.read`)
+- **Verde (online)**: some após 2 minutos em tempo real (atualiza a cada 10s)
+
+## Header do Chat (PrivateChat)
+
+- "Ativo agora": enquanto bolinha verde estiver acesa (até 2 min)
+- "Ativo há X min": após 2 minutos, atualiza a cada 30 segundos
+- Horário: aparece somente na primeira mensagem
+
+## Fluxo Nubank
+
+1. Splash screen (logo Nu, 2.5s)
+2. Tela de seleção (transferir para, valor editável)
+3. Tela "Você vai enviar" → botão Enviar
+4. **Loading no botão**: círculo branco gira dentro do botão por 2s
+5. Tela da senha (4 dígitos)
+6. Volta pro review → botão gira de novo por 2s
+7. **Processing**: "Transferindo..." → barra de progresso → "Gerando comprovante..." → "Pronto!"
+8. **Tela de sucesso**:
+   - Símbolo.jpeg (156px, mt-[40px])
+   - "Sua transferência foi concluída" (22px)
+   - Valor em R$ (32px)
+   - "Para [Nome]" (15px)
+   - "Instituição" (branco) / nome do banco (cinza, caixa alta)
+   - "Quando" (branco) / "Agora" (cinza)
+   - X de fechar no canto superior esquerdo
+   - Botão "Abrir comprovante" roxo com ícone FileText
+
+## Comprovante (NubankReceipt)
+
+- Fundo branco
+- Header com X (fechar) e Share2
+- Logo Nu
+- "Comprovante de transferência" + data/hora
+- Seções: Valor, Tipo, Destino (nome, CPF, instituição, agência, conta), Origem
+- Footer cinza com CNPJ, ID da transação, Ouvidoria
 
 ## Estrutura de Arquivos
 
@@ -95,42 +137,29 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 ### `src/components/PrivateChat.tsx`
 - **Fluxo Normal**: inicial → agradecimento
 - **Fluxo Repetido**: inicial → agradecimento (implorando)
-- Delay: normal 12-16s, repetido 5-8s
-- Header: "Ativo agora" ou "Ativo há X min" baseado no timestamp
+- Typing indicator: 3 bolinhas com efeito onda/fade
+- Header: "Ativo agora" ou "Ativo há X min"
 
 ### `src/components/Dashboard.tsx`
 - Exibe `R$ [VALOR]` na contribuição
 
 ### `src/components/NubankSheet.tsx`
 - Fluxo de pagamento Nubank
-- Tela de sucesso: "Sua transferência foi concluída", valor, Para [Nome], Instituição, Quando
-- Botão "Abrir comprovante" roxo com ícone FileText
-- Loading: círculo girando dentro do botão Enviar (2s) → PIN → girando de novo (2s) → Processando... → sucesso
+- Loading no botão Enviar (círculo girando)
+- Tela de sucesso com símbolo, valor, detalhes
+- Botão "Abrir comprovante" com ícone FileText
 
 ### `src/components/NubankReceipt.tsx`
-- Comprovante de transferência branco com detalhes completos
-- Logo Nu, dados de origem/destino, ID da transação
-
-### `src/pages/NubankPage.tsx`
-- Página acessada pelo celular
-- Polling de notificações pendentes
+- Comprovante branco com detalhes completos
 
 ### `src/components/MessageInbox.tsx`
 - Bolinha vermelha: some ao clicar (usa `notif.read`)
 - Bolinha verde: some após 2 minutos (atualiza a cada 10s)
 
+### `src/pages/NubankPage.tsx`
+- Página acessada pelo celular
+- Polling de notificações pendentes
+
 ### `src/tiktok-users.json`
 - Pool de usuários com `initialMessage` e `justificativa`
 - Usuários `repetido: true` para alertas (valor 300)
-
-### `server.js`
-- Express + SQLite
-- Rotas: `/api/pending`, `/api/notify`, `/api/process/:dbId`, `/api/status`
-
-## Como Usar
-
-1. Execute `npm run dev:server` (backend na porta 3001)
-2. Execute `npm run dev` (frontend na porta 3000)
-3. No PC: abra `http://localhost:3000`
-4. No celular: abra `http://localhost:3000/#/nubank`
-5. Duplo clique no cabeçalho para gerar novos cards
