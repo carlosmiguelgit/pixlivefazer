@@ -197,20 +197,20 @@ export const RESPOSTAS_RECEBIMENTO: { texto: string; faixa: 'baixa' | 'alta' }[]
 
 // ============ REPETIDO - FLUXO SEPARADO ============
 
-// Mensagens iniciais do repetido (5 por gênero) - avisando que já participou
+// Mensagens iniciais do repetido (5 por gênero) - avisando que já participou e enviou novamente
 export const MENSAGENS_REPETIDO_INICIAIS: { texto: string; genero: 'female' | 'male' }[] = [
   // Feminino
-  { texto: "moço eu ja participei antes mas mandei [VALOR] no nome de [NOME]", genero: 'female' },
-  { texto: "sei que não era pra participar de novo mas fiz o de [VALOR] no nome de [NOME]", genero: 'female' },
-  { texto: "oi eu ja fui contemplada mas mandei [VALOR] no nome de [NOME]", genero: 'female' },
-  { texto: "moço desculpa mas fiz o pix de [VALOR] no nome de [NOME]", genero: 'female' },
-  { texto: "eu sei que ja participei mas mandei [VALOR] no nome de [NOME]", genero: 'female' },
+  { texto: "moço eu ja participei antes mas mandei novamente [VALOR] no nome de [NOME]", genero: 'female' },
+  { texto: "sei que não era pra participar de novo mas fiz o pix de [VALOR] no nome de [NOME] mais uma vez", genero: 'female' },
+  { texto: "oi eu ja fui contemplada antes mas mandei [VALOR] de novo no nome de [NOME]", genero: 'female' },
+  { texto: "moço desculpa mas fiz o pix de [VALOR] no nome de [NOME] outra vez", genero: 'female' },
+  { texto: "eu sei que ja participei mas mandei [VALOR] novamente no nome de [NOME]", genero: 'female' },
   // Masculino
-  { texto: "cara eu ja participei antes mas mandei [VALOR] no nome de [NOME]", genero: 'male' },
-  { texto: "sei que não era pra participar de novo mas fiz o de [VALOR] no nome de [NOME]", genero: 'male' },
-  { texto: "eu ja fui contemplado mas mandei [VALOR] no nome de [NOME]", genero: 'male' },
-  { texto: "cara desculpa mas fiz o pix de [VALOR] no nome de [NOME]", genero: 'male' },
-  { texto: "eu sei que ja participei mas mandei [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "cara eu ja participei antes mas mandei novamente [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "sei que não era pra participar de novo mas fiz o de [VALOR] no nome de [NOME] mais uma vez", genero: 'male' },
+  { texto: "eu ja fui contemplado antes mas mandei [VALOR] de novo no nome de [NOME]", genero: 'male' },
+  { texto: "cara desculpa mas fiz o pix de [VALOR] no nome de [NOME] outra vez", genero: 'male' },
+  { texto: "eu sei que ja participei mas mandei [VALOR] novamente no nome de [NOME]", genero: 'male' },
 ];
 
 // Respostas de espera do repetido (5 por gênero)
