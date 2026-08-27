@@ -518,31 +518,40 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                   />
                 </div>
 
-                <h2 className={`text-[19px] font-bold ${textColor} mb-2 leading-tight`}>
-                  Transferência concluída
+                <h2 className={`text-[19px] font-bold ${textColor} mb-4 leading-tight`}>
+                  Sua transferência foi concluída
                 </h2>
+
+                <div className={`text-center mb-2`}>
+                  <span className={`text-[32px] font-bold ${textColor}`}>
+                    R$ {editedValue.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </span>
+                </div>
+
+                <p className={`text-[15px] ${subTextColor} text-center mb-8`}>
+                  Para {isAnonymousMode ? 'Alguém' : capitalizeEachWord(notification.fullName || notification.name)}
+                </p>
 
                 <div className={`space-y-0`}>
                   <div className={`flex justify-between py-3 border-b ${borderColor}`}>
-                    <span className={`text-base font-bold ${textColor}`}>Para</span>
-                    <span className={`text-base ${subTextColor}`}>{isAnonymousMode ? 'Alguém' : capitalizeEachWord(notification.fullName || notification.name)}</span>
+                    <span className={`text-[15px] ${subTextColor}`}>Instituição</span>
+                    <span className={`text-[15px] font-semibold ${textColor} uppercase`}>{destBankData.bank.toUpperCase()}</span>
                   </div>
                   <div className={`flex justify-between py-3 border-b ${borderColor}`}>
-                    <span className={`text-base font-bold ${textColor}`}>Valor enviado</span>
-                    <span className={`text-base ${subTextColor}`}>R$ {editedValue.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <span className={`text-[15px] ${subTextColor}`}>Quando</span>
+                    <span className={`text-[15px] font-semibold ${textColor}`}>Agora</span>
                   </div>
-                  <div className={`flex justify-between py-2 border-b ${borderColor}`}>
-                    <span className={`text-base font-bold ${textColor}`}>Quando</span>
-                    <span className={`text-base ${subTextColor}`}>Agora</span>
-                  </div>
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); setIsReceiptOpen(true); }}
-                    className="w-full flex items-center justify-center gap-3 text-[#820AD1] font-bold py-4 text-sm active:scale-95 transition-transform"
-                  >
-                    <FileText className="w-5 h-5" />
-                    <span>Abrir comprovante</span>
-                  </button>
                 </div>
+
+                <div className="flex-1" />
+
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setIsReceiptOpen(true); }}
+                  className="w-full bg-[#820AD1] text-white font-bold text-[16px] py-4 rounded-full flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg shadow-[#820AD1]/30"
+                >
+                  Abrir comprovante
+                  <ChevronRight className="w-5 h-5" />
+                </button>
               </motion.div>
             )}
           </AnimatePresence>
