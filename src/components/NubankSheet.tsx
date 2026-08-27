@@ -524,7 +524,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                   />
                 </div>
 
-                <h2 className={`text-[18px] font-bold ${textColor} mb-8 leading-tight text-left`}>
+                <h2 className={`text-[19px] font-bold ${textColor} mb-8 leading-tight text-left`}>
                   Sua transferência foi concluída
                 </h2>
 
@@ -540,12 +540,12 @@ export const NubankSheet: FC<NubankSheetProps> = ({
 
                 <div className={`space-y-0`}>
                   <div className={`flex justify-between py-3 border-b ${borderColor}`}>
-                    <span className={`text-[15px] ${subTextColor}`}>Instituição</span>
-                    <span className={`text-[15px] font-semibold ${textColor} uppercase`}>{destBankData.bank.toUpperCase()}</span>
+                    <span className={`text-[15px] text-white`}>Instituição</span>
+                    <span className={`text-[15px] font-semibold ${subTextColor} uppercase`}>{destBankData.bank.toUpperCase()}</span>
                   </div>
                   <div className={`flex justify-between py-3 border-b ${borderColor}`}>
-                    <span className={`text-[15px] ${subTextColor}`}>Quando</span>
-                    <span className={`text-[15px] font-semibold ${textColor}`}>Agora</span>
+                    <span className={`text-[15px] text-white`}>Quando</span>
+                    <span className={`text-[15px] font-semibold ${subTextColor}`}>Agora</span>
                   </div>
                 </div>
 
