@@ -151,8 +151,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
     setStep('review');
     setTimeout(() => {
       setSending(false);
-      setIsReviewReplay(false);
-      setStep('success');
+      startProcessing();
     }, 2000);
   };
 
