@@ -96,7 +96,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                         <Calendar className="w-5 h-5 text-brand-red" />
                         <span className={`text-sm font-medium ${isDarkMode ? 'text-white/80' : 'text-slate-600'}`}>Contribuição</span>
                       </div>
-                      <span className="font-bold text-brand-red text-xl tracking-tighter">{activeNotification.contributionAmount}</span>
+                      <span className="font-bold text-brand-red text-xl tracking-tighter">R$ {activeNotification.contributionAmount}</span>
                     </div>
 
                     <div className={`rounded-2xl p-4 flex items-center justify-between border ${isDarkMode ? 'bg-black/40 border-white/10' : 'bg-white/60 border-black/5'}`}>
@@ -187,7 +187,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     </div>
                     <div className="text-right flex flex-col items-center justify-center min-w-[60px]">
                       <span className="text-xl font-black text-brand-red leading-none">
-                        {notif.contributionAmount}
+                        R$ {notif.contributionAmount}
                       </span>
                       <span className="text-[9px] font-black text-brand-red uppercase leading-none mt-1">
                         ENVIOU

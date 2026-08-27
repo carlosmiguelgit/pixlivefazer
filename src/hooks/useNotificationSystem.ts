@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Notification, Testimonial } from '../types';
-import { MENSAGENS_INICIAIS, RESPOSTAS_ESPERA, RESPOSTAS_MESES } from '../constants';
+import { MENSAGENS_INICIAIS, RESPOSTAS_ESPERA, RESPOSTAS_AGENUARDAR, RESPOSTAS_RECEBIMENTO } from '../constants';
 import tiktokUsers from '../tiktok-users.json';
 
 interface TikTokUser {
@@ -40,13 +40,12 @@ function inferirGenero(nome: string): 'male' | 'female' {
   return primeiro.endsWith('a') ? 'female' : 'male';
 }
 
-function montarMensagemInicial(genero: 'male' | 'female', nome: string, idx: number, meses: number): string {
+function montarMensagemInicial(genero: 'male' | 'female', nome: string, idx: number, valor: number): string {
   const pool = MENSAGENS_INICIAIS.filter(m => m.genero === genero);
-  const mesesTexto = meses === 1 ? 'mês' : 'meses';
   return pool[idx % pool.length].texto
-    .replace('[MESES]', String(meses))
-    .replace('[MESES_TEXTO]', mesesTexto)
-    .replace('do [NOME]', (genero === 'female' ? 'da ' : 'do ') + nome);
+    .replace('[VALOR]', String(valor))
+    .replace('do [NOME]', (genero === 'female' ? 'da ' : 'do ') + nome)
+    .replace('[NOME]', nome);
 }
 
 export const useNotificationSystem = () => {
@@ -59,29 +58,32 @@ export const useNotificationSystem = () => {
   const repetidoOrderRef = useRef<TikTokUser[]>([]);
   const messageCountRef = useRef(0);
   const confirmedBlacklistRef = useRef<string[]>([]);
-  const monthsCycleRef = useRef<number[]>([]);
-  const monthsIndexRef = useRef(0);
+  const valuesCycleRef = useRef<number[]>([]);
+  const valuesIndexRef = useRef(0);
   const inicialMaleIdxRef = useRef(0);
   const inicialFemaleIdxRef = useRef(0);
   const esperaMaleIdxRef = useRef(0);
   const esperaFemaleIdxRef = useRef(0);
-  const agradecimentoIdxRef = useRef(0);
+  const aguardarIdxRef = useRef(0);
+  const recebimentoIdxRef = useRef(0);
 
   const getNextEntry = useCallback((): number => {
-    if (monthsIndexRef.current >= monthsCycleRef.current.length) {
-      const pool = [1,1,1,1, 2,2,2, 3,3,3, 4,4, 5,5, 6,6, 7, 8, 9, 10, 11, 12];
+    if (valuesIndexRef.current >= valuesCycleRef.current.length) {
+      // Pool de valores: 50 e 90 mais frequentes (pessoas desesperadas), 150 e 300 menos (gananciosos)
+      const pool = [50,50,50,50, 90,90,90, 150,150, 300];
       for (let i = pool.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [pool[i], pool[j]] = [pool[j], pool[i]];
       }
-      monthsCycleRef.current = pool;
-      monthsIndexRef.current = 0;
+      valuesCycleRef.current = pool;
+      valuesIndexRef.current = 0;
     }
-    return monthsCycleRef.current[monthsIndexRef.current++];
+    return valuesCycleRef.current[valuesIndexRef.current++];
   }, []);
 
-  const getNextUser = useCallback((months: number): TikTokUser | null => {
-    const isRepetido = months === 12;
+  const getNextUser = useCallback((valor: number): TikTokUser | null => {
+    // 300 = repetido (alerta), valor baixo = normal
+    const isRepetido = valor === 300;
     const pool = isRepetido ? repetidoPool : normalPool;
     const orderRef = isRepetido ? repetidoOrderRef : normalOrderRef;
     if (pool.length === 0) return null;
@@ -95,8 +97,8 @@ export const useNotificationSystem = () => {
   }, []);
 
   const generateNotification = useCallback(() => {
-    const months = getNextEntry();
-    const user = getNextUser(months);
+    const valor = getNextEntry();
+    const user = getNextUser(valor);
     if (!user) return;
 
     const alerta = !!user.repetido;
@@ -104,15 +106,14 @@ export const useNotificationSystem = () => {
     const nomeCompleto = user.fullName || user.nickname;
 
     let initialMessage: string;
-    const mesesTexto = months === 1 ? 'mês' : 'meses';
     if (user.initialMessage) {
-      initialMessage = user.initialMessage.replace('[NOME]', nomeCompleto).replace('[MESES]', String(months)).replace('[MESES_TEXTO]', mesesTexto);
+      initialMessage = user.initialMessage.replace('[NOME]', nomeCompleto).replace('[VALOR]', String(valor));
     } else {
       const poolInicial = MENSAGENS_INICIAIS.filter(m => m.genero === genero);
       const inicialIdxRef = genero === 'female' ? inicialFemaleIdxRef : inicialMaleIdxRef;
       const idxInicial = inicialIdxRef.current;
       inicialIdxRef.current = (idxInicial + 1) % poolInicial.length;
-      initialMessage = montarMensagemInicial(genero, nomeCompleto, idxInicial, months);
+      initialMessage = montarMensagemInicial(genero, nomeCompleto, idxInicial, valor);
     }
 
     const poolEspera = RESPOSTAS_ESPERA.filter(r => r.genero === genero);
@@ -126,8 +127,12 @@ export const useNotificationSystem = () => {
     if (user.justificativa) {
       fraseAgradecimento = user.justificativa;
     } else {
-      fraseAgradecimento = RESPOSTAS_MESES[agradecimentoIdxRef.current];
-      agradecimentoIdxRef.current = (agradecimentoIdxRef.current + 1) % RESPOSTAS_MESES.length;
+      // Escolher entre RESPOSTAS_AGENUARDAR ou RESPOSTAS_RECEBIMENTO baseado no valor
+      const faixa = valor <= 90 ? 'baixa' : 'alta';
+      const poolAgradecimento = RESPOSTAS_AGENUARDAR.filter(r => r.faixa === faixa);
+      const idxAgrad = aguardarIdxRef.current % poolAgradecimento.length;
+      fraseAgradecimento = poolAgradecimento[idxAgrad].texto;
+      aguardarIdxRef.current++;
     }
 
     const newNotif: Notification = {
@@ -139,13 +144,13 @@ export const useNotificationSystem = () => {
       followingCount: user.followingCount,
       followerCount: user.followerCount,
       pixKey: `${Math.floor(Math.random() * 899) + 100}.***.***-${Math.floor(Math.random() * 89) + 10}`,
-      months: months,
-      participationCount: months,
+      months: valor,
+      participationCount: valor,
       value: 0,
       timestamp: new Date(),
       gender: genero,
       alerta,
-      contributionAmount: months,
+      contributionAmount: valor,
       initialMessage,
       fraseEspera,
       fraseAgradecimento,

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Notification } from "../types";
+import { RESPOSTAS_AGENUARDAR, RESPOSTAS_RECEBIMENTO } from "../constants";
 
 interface PrivateChatProps {
   username: string;
@@ -59,7 +60,15 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   }
 
   function gerarAgradecimento() {
-    const texto = fraseAgradecimento || "obrigado";
+    // Usar fraseAgradecimento do usuário ou buscar na lista baseado no valor
+    let texto = fraseAgradecimento;
+    if (!texto && notification) {
+      const valor = notification.contributionAmount;
+      const faixa = valor <= 90 ? 'baixa' : 'alta';
+        const poolAgrad = RESPOSTAS_AGENUARDAR.filter(r => r.faixa === faixa);
+        texto = poolAgrad[Math.floor(Math.random() * poolAgrad.length)].texto || "obrigado";
+    }
+    texto = texto || "obrigado";
     setShowVisto(true);
     const delayResponse = texto.length > 80 ? 18000 + Math.random() * 5000 : 8000 + Math.random() * 2000;
     timerRef.current = setTimeout(() => {
@@ -72,13 +81,27 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   }
 
   function gerarRespostaFinal() {
-    const frases = [
-      "beleza, valeu demais guilherme",
-      "muito obrigado guilherme, de coração",
-      "isso, tmj guilherme",
-      "show, obrigado pela ajuda",
-      "perfeito, valeu guilherme"
-    ];
+    // Resposta final baseada no valor - mais desesperada ou mais confiante
+    let frases: string[];
+    if (notification && notification.contributionAmount <= 90) {
+      // Faixa baixa - mais emotiva
+      frases = [
+        "obg de coracao, vai ajudar muito",
+        "obrigadao, Deus te pague",
+        "vlw msm, salvou minha semana",
+        "obg, to sem palavras",
+        "chegou certinho, muito obg"
+      ];
+    } else {
+      // Faixa alta - mais objetiva
+      frases = [
+        "show, to dentro de novo",
+        "perfeito, quando tem outro ciclo?",
+        "beleza, ja quero participar mais",
+        "certo, to no aguardo do proximo",
+        "otimo, valeu a pena"
+      ];
+    }
     const texto = frases[Math.floor(Math.random() * frases.length)];
     setShowVisto(true);
     const delayResponse = 6000 + Math.random() * 2000;
