@@ -518,17 +518,17 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                   />
                 </div>
 
-                <h2 className={`text-[19px] font-bold ${textColor} mb-4 leading-tight`}>
+                <h2 className={`text-[22px] font-bold ${textColor} mb-1 leading-tight text-left`}>
                   Sua transferência foi concluída
                 </h2>
 
-                <div className={`text-center mb-2`}>
+                <div className={`mb-1 text-left`}>
                   <span className={`text-[32px] font-bold ${textColor}`}>
                     R$ {editedValue.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
 
-                <p className={`text-[15px] ${subTextColor} text-center mb-8`}>
+                <p className={`text-[15px] ${subTextColor} text-left mb-8`}>
                   Para {isAnonymousMode ? 'Alguém' : capitalizeEachWord(notification.fullName || notification.name)}
                 </p>
 
@@ -547,10 +547,10 @@ export const NubankSheet: FC<NubankSheetProps> = ({
 
                 <button 
                   onClick={(e) => { e.stopPropagation(); setIsReceiptOpen(true); }}
-                  className="w-full bg-[#820AD1] text-white font-bold text-[16px] py-4 rounded-full flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg shadow-[#820AD1]/30"
+                  className="w-full bg-[#820AD1] text-white font-bold text-[16px] py-4 rounded-full flex items-center justify-center gap-3 active:scale-95 transition-transform shadow-lg shadow-[#820AD1]/30"
                 >
-                  Abrir comprovante
-                  <ChevronRight className="w-5 h-5" />
+                  <FileText className="w-5 h-5" />
+                  <span>Abrir comprovante</span>
                 </button>
               </motion.div>
             )}
