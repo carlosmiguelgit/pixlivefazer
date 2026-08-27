@@ -200,18 +200,18 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
             </div>
             <div className="bg-[#2a2a2a] px-4 py-3 rounded-[18px] flex items-center gap-1.5">
               <motion.span
-                animate={{ y: [0, -4, 0, 0, -4, 0, 0, -4, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5, times: [0, 0.1, 0.2, 0.35, 0.45, 0.55, 0.7, 0.8, 0.9] }}
+                animate={{ y: [0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: 0.9, ease: "easeInOut", delay: 0 }}
                 className="w-[6px] h-[6px] bg-zinc-400 rounded-full"
               />
               <motion.span
-                animate={{ y: [0, 0, 0, 0, -4, 0, 0, -4, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5, times: [0, 0.1, 0.2, 0.35, 0.45, 0.55, 0.7, 0.8, 0.9] }}
+                animate={{ y: [0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: 0.9, ease: "easeInOut", delay: 0.15 }}
                 className="w-[6px] h-[6px] bg-zinc-400 rounded-full"
               />
               <motion.span
-                animate={{ y: [0, 0, 0, 0, 0, 0, 0, -4, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5, times: [0, 0.1, 0.2, 0.35, 0.45, 0.55, 0.7, 0.8, 0.9] }}
+                animate={{ y: [0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: 0.9, ease: "easeInOut", delay: 0.3 }}
                 className="w-[6px] h-[6px] bg-zinc-400 rounded-full"
               />
             </div>
