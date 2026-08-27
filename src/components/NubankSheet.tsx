@@ -510,7 +510,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                 onClick={isReceiptOpen ? handleReceiptClick : handleSuccessDoubleClick}
                 className={`flex-1 flex flex-col px-8 pt-12 pb-10 ${isReceiptOpen ? 'cursor-pointer' : ''}`}
               >
-                <div className="mb-10 relative">
+                <div className="mb-10 relative mt-2">
                   <button 
                     onClick={(e) => { e.stopPropagation(); onClose(); }}
                     className="absolute top-0 left-0 p-2 -ml-2 -mt-2"
@@ -520,7 +520,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                   <img 
                     src="/simbolo.jpeg" 
                     alt="Sucesso" 
-                    className="w-48 object-contain" 
+                    className="w-[43px] object-contain" 
                   />
                 </div>
 
