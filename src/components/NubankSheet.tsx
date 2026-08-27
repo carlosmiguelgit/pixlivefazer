@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, type FC, type ChangeEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { FileText, ChevronRight, Pencil, Calendar, Plus } from 'lucide-react';
+import { FileText, ChevronRight, Pencil, Calendar, Plus, X } from 'lucide-react';
 import { Notification } from '../types';
 import { NubankReceipt } from './NubankReceipt';
 import { BRAZILIAN_BANKS } from '../constants';
@@ -510,7 +510,13 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                 onClick={isReceiptOpen ? handleReceiptClick : handleSuccessDoubleClick}
                 className={`flex-1 flex flex-col px-8 pt-12 pb-10 ${isReceiptOpen ? 'cursor-pointer' : ''}`}
               >
-                <div className="mb-10">
+                <div className="mb-10 relative">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); onClose(); }}
+                    className="absolute top-0 left-0 p-2 -ml-2 -mt-2"
+                  >
+                    <X className="w-6 h-6 text-slate-400" />
+                  </button>
                   <img 
                     src="/simbolo.png" 
                     alt="Sucesso" 
@@ -518,11 +524,11 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                   />
                 </div>
 
-                <h2 className={`text-[22px] font-bold ${textColor} mb-1 leading-tight text-left`}>
+                <h2 className={`text-[18px] font-bold ${textColor} mb-8 leading-tight text-left`}>
                   Sua transferência foi concluída
                 </h2>
 
-                <div className={`mb-1 text-left`}>
+                <div className={`mb-0 text-left`}>
                   <span className={`text-[32px] font-bold ${textColor}`}>
                     R$ {editedValue.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
