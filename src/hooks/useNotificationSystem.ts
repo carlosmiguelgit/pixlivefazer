@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Notification, Testimonial } from '../types';
-import { MENSAGENS_INICIAIS, RESPOSTAS_ESPERA, RESPOSTAS_AGENUARDAR, RESPOSTAS_RECEBIMENTO } from '../constants';
+import { MENSAGENS_INICIAIS, RESPOSTAS_ESPERA, RESPOSTAS_AGENUARDAR, MENSAGENS_REPETIDO_INICIAIS, RESPOSTAS_REPETIDO_ESPERA, RESPOSTAS_REPETIDO_AGRADECIMENTO } from '../constants';
 import tiktokUsers from '../tiktok-users.json';
 
 interface TikTokUser {
@@ -66,6 +66,12 @@ export const useNotificationSystem = () => {
   const esperaFemaleIdxRef = useRef(0);
   const aguardarIdxRef = useRef(0);
   const recebimentoIdxRef = useRef(0);
+  const repetidoMaleIdxRef = useRef(0);
+  const repetidoFemaleIdxRef = useRef(0);
+  const repetidoEsperaMaleIdxRef = useRef(0);
+  const repetidoEsperaFemaleIdxRef = useRef(0);
+  const repetidoAgradMaleIdxRef = useRef(0);
+  const repetidoAgradFemaleIdxRef = useRef(0);
 
   const getNextEntry = useCallback((): number => {
     if (valuesIndexRef.current >= valuesCycleRef.current.length) {
@@ -106,32 +112,65 @@ export const useNotificationSystem = () => {
     const nomeCompleto = user.fullName || user.nickname;
 
     let initialMessage: string;
-    if (user.initialMessage) {
-      initialMessage = user.initialMessage.replace('[NOME]', nomeCompleto).replace('[VALOR]', String(valor));
-    } else {
-      const poolInicial = MENSAGENS_INICIAIS.filter(m => m.genero === genero);
-      const inicialIdxRef = genero === 'female' ? inicialFemaleIdxRef : inicialMaleIdxRef;
-      const idxInicial = inicialIdxRef.current;
-      inicialIdxRef.current = (idxInicial + 1) % poolInicial.length;
-      initialMessage = montarMensagemInicial(genero, nomeCompleto, idxInicial, valor);
-    }
-
-    const poolEspera = RESPOSTAS_ESPERA.filter(r => r.genero === genero);
-    const esperaIdxRef = genero === 'female' ? esperaFemaleIdxRef : esperaMaleIdxRef;
-    const idxEspera = esperaIdxRef.current;
-    esperaIdxRef.current = (idxEspera + 1) % poolEspera.length;
-
-    const fraseEspera = poolEspera[idxEspera].texto;
-
+    let fraseEspera: string;
     let fraseAgradecimento: string;
-    if (user.justificativa) {
-      fraseAgradecimento = user.justificativa;
+
+    if (alerta) {
+      // FLUXO REPETIDO - separado do normal
+      const poolInicialRep = MENSAGENS_REPETIDO_INICIAIS.filter(m => m.genero === genero);
+      const idxRep = genero === 'female' ? repetidoFemaleIdxRef.current : repetidoMaleIdxRef.current;
+      const msgRep = poolInicialRep[idxRep % poolInicialRep.length];
+      initialMessage = msgRep.texto.replace('[NOME]', nomeCompleto).replace('[VALOR]', String(valor));
+      if (genero === 'female') {
+        repetidoFemaleIdxRef.current = (repetidoFemaleIdxRef.current + 1) % poolInicialRep.length;
+      } else {
+        repetidoMaleIdxRef.current = (repetidoMaleIdxRef.current + 1) % poolInicialRep.length;
+      }
+
+      const poolEsperaRep = RESPOSTAS_REPETIDO_ESPERA.filter(r => r.genero === genero);
+      const idxEsperaRep = genero === 'female' ? repetidoEsperaFemaleIdxRef.current : repetidoEsperaMaleIdxRef.current;
+      fraseEspera = poolEsperaRep[idxEsperaRep % poolEsperaRep.length].texto;
+      if (genero === 'female') {
+        repetidoEsperaFemaleIdxRef.current = (repetidoEsperaFemaleIdxRef.current + 1) % poolEsperaRep.length;
+      } else {
+        repetidoEsperaMaleIdxRef.current = (repetidoEsperaMaleIdxRef.current + 1) % poolEsperaRep.length;
+      }
+
+      const poolAgradRep = RESPOSTAS_REPETIDO_AGRADECIMENTO.filter(r => r.genero === genero);
+      const idxAgradRep = genero === 'female' ? repetidoAgradFemaleIdxRef.current : repetidoAgradMaleIdxRef.current;
+      fraseAgradecimento = poolAgradRep[idxAgradRep % poolAgradRep.length].texto;
+      if (genero === 'female') {
+        repetidoAgradFemaleIdxRef.current = (repetidoAgradFemaleIdxRef.current + 1) % poolAgradRep.length;
+      } else {
+        repetidoAgradMaleIdxRef.current = (repetidoAgradMaleIdxRef.current + 1) % poolAgradRep.length;
+      }
     } else {
-      const faixa = valor <= 90 ? 'baixa' : 'alta';
-      const poolAgradecimento = RESPOSTAS_AGENUARDAR.filter(r => r.faixa === faixa && r.genero === genero);
-      const idxAgrad = aguardarIdxRef.current % poolAgradecimento.length;
-      fraseAgradecimento = poolAgradecimento[idxAgrad].texto;
-      aguardarIdxRef.current++;
+      // FLUXO NORMAL
+      if (user.initialMessage) {
+        initialMessage = user.initialMessage.replace('[NOME]', nomeCompleto).replace('[VALOR]', String(valor));
+      } else {
+        const poolInicial = MENSAGENS_INICIAIS.filter(m => m.genero === genero);
+        const inicialIdxRef = genero === 'female' ? inicialFemaleIdxRef : inicialMaleIdxRef;
+        const idxInicial = inicialIdxRef.current;
+        inicialIdxRef.current = (idxInicial + 1) % poolInicial.length;
+        initialMessage = montarMensagemInicial(genero, nomeCompleto, idxInicial, valor);
+      }
+
+      const poolEspera = RESPOSTAS_ESPERA.filter(r => r.genero === genero);
+      const esperaIdxRef = genero === 'female' ? esperaFemaleIdxRef : esperaMaleIdxRef;
+      const idxEspera = esperaIdxRef.current;
+      fraseEspera = poolEspera[idxEspera].texto;
+      esperaIdxRef.current = (idxEspera + 1) % poolEspera.length;
+
+      if (user.justificativa) {
+        fraseAgradecimento = user.justificativa;
+      } else {
+        const faixa = valor <= 90 ? 'baixa' : 'alta';
+        const poolAgradecimento = RESPOSTAS_AGENUARDAR.filter(r => r.faixa === faixa && r.genero === genero);
+        const idxAgrad = aguardarIdxRef.current % poolAgradecimento.length;
+        fraseAgradecimento = poolAgradecimento[idxAgrad].texto;
+        aguardarIdxRef.current++;
+      }
     }
 
     const newNotif: Notification = {

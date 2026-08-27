@@ -194,3 +194,53 @@ export const RESPOSTAS_RECEBIMENTO: { texto: string; faixa: 'baixa' | 'alta' }[]
   { texto: "beleza, caiu certinho", faixa: 'alta' },
   { texto: "perfeito,to dentro de novo", faixa: 'alta' },
 ];
+
+// ============ REPETIDO - FLUXO SEPARADO ============
+
+// Mensagens iniciais do repetido (5 por gênero) - avisando que já participou
+export const MENSAGENS_REPETIDO_INICIAIS: { texto: string; genero: 'female' | 'male' }[] = [
+  // Feminino
+  { texto: "moço eu ja participei antes mas mandei [VALOR] no nome de [NOME]", genero: 'female' },
+  { texto: "sei que não era pra participar de novo mas fiz o de [VALOR] no nome de [NOME]", genero: 'female' },
+  { texto: "oi eu ja fui contemplada mas mandei [VALOR] no nome de [NOME]", genero: 'female' },
+  { texto: "moço desculpa mas fiz o pix de [VALOR] no nome de [NOME]", genero: 'female' },
+  { texto: "eu sei que ja participei mas mandei [VALOR] no nome de [NOME]", genero: 'female' },
+  // Masculino
+  { texto: "cara eu ja participei antes mas mandei [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "sei que não era pra participar de novo mas fiz o de [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "eu ja fui contemplado mas mandei [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "cara desculpa mas fiz o pix de [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "eu sei que ja participei mas mandei [VALOR] no nome de [NOME]", genero: 'male' },
+];
+
+// Respostas de espera do repetido (5 por gênero)
+export const RESPOSTAS_REPETIDO_ESPERA: { texto: string; genero: 'female' | 'male' }[] = [
+  // Feminino
+  { texto: "obg to no aguardo", genero: 'female' },
+  { texto: "certinho me avisa quando chegar", genero: 'female' },
+  { texto: "beleza to esperando", genero: 'female' },
+  { texto: "ok combinado", genero: 'female' },
+  { texto: "ta certo to de olho", genero: 'female' },
+  // Masculino
+  { texto: "obg vou ficar de olho", genero: 'male' },
+  { texto: "certo me avisa quando tiver", genero: 'male' },
+  { texto: "beleza to aguardando", genero: 'male' },
+  { texto: "ok ta certo", genero: 'male' },
+  { texto: "tranquilo to esperando", genero: 'male' },
+];
+
+// Agradecimentos do repetido (5 por gênero) - implorando
+export const RESPOSTAS_REPETIDO_AGRADECIMENTO: { texto: string; genero: 'female' | 'male' }[] = [
+  // Feminino
+  { texto: "poxa que pena quebra essa pra mim eu imploro", genero: 'female' },
+  { texto: "moço to passando por um momento muito difícil se puder me ajudar", genero: 'female' },
+  { texto: "por favor eu sei que ja participei mas preciso muito dessa ajuda", genero: 'female' },
+  { texto: "to desesperada aqui se puder fazer uma exceção eu agradeço", genero: 'female' },
+  { texto: "moço eu imploro to sem opção nenhuma", genero: 'female' },
+  // Masculino
+  { texto: "poxa que pena quebra essa pra mim eu imploro", genero: 'male' },
+  { texto: "cara to passando por um momento muito difícil se puder me ajudar", genero: 'male' },
+  { texto: "por favor eu sei que ja participei mas preciso muito dessa ajuda", genero: 'male' },
+  { texto: "to desesperado aqui se puder fazer uma exceção eu agradeço", genero: 'male' },
+  { texto: "cara eu imploro to sem opção nenhuma", genero: 'male' },
+];
