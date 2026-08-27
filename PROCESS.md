@@ -15,9 +15,8 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 ### Fluxo Normal (valores 50, 90, 150)
 1. Bot envia mensagem inicial ("fiz o de [VALOR] ta no nome de [NOME]")
 2. Usuário responde qualquer coisa
-3. Bot responde "ok to esperando"
-4. Usuário responde de novo
-5. Bot agradece
+3. Bot agradece
+4. FIM
 
 ### Fluxo Repetido (valor 300)
 1. Bot envia mensagem dizendo que já participou ("mandei novamente [VALOR]")
@@ -40,10 +39,6 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 - **Masculino**: "fiz o de [VALOR] ta no nome de [NOME]", etc.
 - **Feminino**: "moço fiz o de [VALOR] ta no nome de [NOME]", etc.
 - Seleção sequencial (1→15→1), sem repetição até completar
-
-#### Respostas de Espera (20 por gênero)
-- Usadas quando usuário responde pela primeira vez
-- Diferenciadas por gênero
 
 #### Agradecimentos (15 por gênero por faixa)
 - **Faixa Baixa Feminino**: "obrigada to precisando muito disso", etc.
@@ -68,12 +63,9 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 
 ### `src/constants.ts`
 - `MENSAGENS_INICIAIS`: 30 mensagens (15 masculino + 15 feminino)
-- `RESPOSTAS_ESPERA`: 40 respostas (20 masculino + 20 feminino)
 - `RESPOSTAS_AGENUARDAR`: 60 agradecimentos (15 × 2 gêneros × 2 faixas)
 - `MENSAGENS_REPETIDO_INICIAIS`: 10 mensagens (5 masculino + 5 feminino)
-- `RESPOSTAS_REPETIDO_ESPERA`: 10 respostas (5 masculino + 5 feminino) - não utilizada
 - `RESPOSTAS_REPETIDO_AGRADECIMENTO`: 10 agradecimentos (5 masculino + 5 feminino)
-- `CONFIRMACOES`: respostas de confirmação
 - `BRAZILIAN_BANKS`: lista de bancos
 
 ### `src/hooks/useNotificationSystem.ts`
@@ -84,7 +76,7 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 - Contadores sequenciais separados por gênero e fluxo (normal/repetido)
 
 ### `src/components/PrivateChat.tsx`
-- **Fluxo Normal**: inicial → espera → agradecimento
+- **Fluxo Normal**: inicial → agradecimento
 - **Fluxo Repetido**: inicial → agradecimento (implorando)
 - Filtra respostas por gênero e faixa de valor
 - Usa `RESPOSTAS_REPETIDO_AGRADECIMENTO` para repetidos
@@ -126,3 +118,4 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 - Timer aleatório de 5-10 segundos entre cards
 - Cards são sequenciais sem repetição
 - Fluxo repetido é completamente separado do normal
+- Novos cards são gerados quando usuário volta pra tela inicial
