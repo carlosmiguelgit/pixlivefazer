@@ -60,13 +60,13 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   }
 
   function gerarAgradecimento() {
-    // Usar fraseAgradecimento do usuário ou buscar na lista baseado no valor
     let texto = fraseAgradecimento;
     if (!texto && notification) {
       const valor = notification.contributionAmount;
       const faixa = valor <= 90 ? 'baixa' : 'alta';
-        const poolAgrad = RESPOSTAS_AGENUARDAR.filter(r => r.faixa === faixa);
-        texto = poolAgrad[Math.floor(Math.random() * poolAgrad.length)].texto || "obrigado";
+      const genero = notification.gender;
+      const poolAgrad = RESPOSTAS_AGENUARDAR.filter(r => r.faixa === faixa && r.genero === genero);
+      texto = poolAgrad[Math.floor(Math.random() * poolAgrad.length)].texto || "obrigado";
     }
     texto = texto || "obrigado";
     setShowVisto(true);

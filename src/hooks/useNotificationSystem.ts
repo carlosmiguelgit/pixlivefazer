@@ -127,9 +127,8 @@ export const useNotificationSystem = () => {
     if (user.justificativa) {
       fraseAgradecimento = user.justificativa;
     } else {
-      // Escolher entre RESPOSTAS_AGENUARDAR ou RESPOSTAS_RECEBIMENTO baseado no valor
       const faixa = valor <= 90 ? 'baixa' : 'alta';
-      const poolAgradecimento = RESPOSTAS_AGENUARDAR.filter(r => r.faixa === faixa);
+      const poolAgradecimento = RESPOSTAS_AGENUARDAR.filter(r => r.faixa === faixa && r.genero === genero);
       const idxAgrad = aguardarIdxRef.current % poolAgradecimento.length;
       fraseAgradecimento = poolAgradecimento[idxAgrad].texto;
       aguardarIdxRef.current++;
