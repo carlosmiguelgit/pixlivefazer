@@ -550,9 +550,9 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                 </p>
 
                 <div className={`space-y-0`}>
-                  <div className={`flex justify-between py-3 border-b ${borderColor}`}>
-                    <span className={`text-[15px] text-white`}>Instituição</span>
-                    <span className={`text-[15px] font-semibold ${subTextColor} uppercase`}>{destBankData.bank.toUpperCase()}</span>
+                  <div className={`flex justify-between items-start py-3 border-b ${borderColor}`}>
+                    <span className={`text-[15px] text-white shrink-0`}>Instituição</span>
+                    <span className={`text-[15px] font-semibold ${subTextColor} uppercase text-right min-w-0 ml-4`}>{destBankData.bank.toUpperCase()}</span>
                   </div>
                   <div className={`flex justify-between py-3`}>
                     <span className={`text-[15px] text-white`}>Quando</span>
