@@ -94,18 +94,20 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     }
     texto = texto || "obrigado";
     setShowVisto(true);
-    setIsTyping(true);
     const baseDelay = isRepetido ? 5000 : 12000;
     const randomDelay = isRepetido ? 3000 : 4000;
-    const delayResponse = baseDelay + Math.random() * randomDelay;
+    const typingStart = 2000 + Math.random() * 2000;
     timerRef.current = setTimeout(() => {
-      setShowVisto(false);
-      setIsTyping(false);
-      setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
-      setAgradecimentoEnviado(true);
-      onBotMessage?.(texto);
-      onFlowEnd?.();
-    }, delayResponse);
+      setIsTyping(true);
+      timerRef.current = setTimeout(() => {
+        setShowVisto(false);
+        setIsTyping(false);
+        setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
+        setAgradecimentoEnviado(true);
+        onBotMessage?.(texto);
+        onFlowEnd?.();
+      }, baseDelay + Math.random() * randomDelay);
+    }, typingStart);
   }
 
   function formatTime(ts: number) {
@@ -198,18 +200,18 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
             </div>
             <div className="bg-[#2a2a2a] px-4 py-3 rounded-[18px] flex items-center gap-1.5">
               <motion.span
-                animate={{ y: [0, -4, 0] }}
-                transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
+                animate={{ y: [0, -4, 0, 0, -4, 0, 0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5, times: [0, 0.1, 0.2, 0.35, 0.45, 0.55, 0.7, 0.8, 0.9] }}
                 className="w-[6px] h-[6px] bg-zinc-400 rounded-full"
               />
               <motion.span
-                animate={{ y: [0, -4, 0] }}
-                transition={{ repeat: Infinity, duration: 0.6, delay: 0.15 }}
+                animate={{ y: [0, 0, 0, 0, -4, 0, 0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5, times: [0, 0.1, 0.2, 0.35, 0.45, 0.55, 0.7, 0.8, 0.9] }}
                 className="w-[6px] h-[6px] bg-zinc-400 rounded-full"
               />
               <motion.span
-                animate={{ y: [0, -4, 0] }}
-                transition={{ repeat: Infinity, duration: 0.6, delay: 0.3 }}
+                animate={{ y: [0, 0, 0, 0, 0, 0, 0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5, times: [0, 0.1, 0.2, 0.35, 0.45, 0.55, 0.7, 0.8, 0.9] }}
                 className="w-[6px] h-[6px] bg-zinc-400 rounded-full"
               />
             </div>
