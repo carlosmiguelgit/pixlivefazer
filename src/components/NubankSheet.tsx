@@ -15,7 +15,7 @@ interface NubankSheetProps {
   isDarkMode: boolean;
 }
 
-type FlowStep = 'splash' | 'select' | 'installments' | 'review' | 'loading1' | 'pin' | 'loading2' | 'processing' | 'success';
+type FlowStep = 'splash' | 'select' | 'installments' | 'review' | 'pin' | 'processing' | 'success';
 
 const ContaIcon = ({ color }: { color: string }) => (
   <svg width="22" height="12" viewBox="0 0 24 13" fill="none" xmlns="http://www.w3.org/2000/svg">
