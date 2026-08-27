@@ -9,30 +9,38 @@ export const BRAZILIAN_BANKS = [
 ];
 
 export const MENSAGENS_INICIAIS: { texto: string; genero: 'female' | 'male' }[] = [
-  // Faixa 50/90 - tom mais informal, desesperado
-  { texto: "moço fiz o de [VALOR] ta no nome de [NOME]", genero: 'male' },
-  { texto: "oi, mandei [VALOR] no nome de [NOME] pode olhar", genero: 'female' },
-  { texto: "fiz o pix de [VALOR] ta no nome de [NOME] 🙏", genero: 'female' },
-  { texto: "mandei [VALOR] agora, ta no nome de [NOME]", genero: 'male' },
-  { texto: "pronto, fiz [VALOR] no nome de [NOME]", genero: 'male' },
+  // Masculino - padrão equalizado para todos os valores
+  { texto: "fiz o de [VALOR] ta no nome de [NOME]", genero: 'male' },
+  { texto: "mandei [VALOR] agora ta no nome de [NOME]", genero: 'male' },
+  { texto: "pronto fiz [VALOR] no nome de [NOME]", genero: 'male' },
   { texto: "ja mandei [VALOR] ta no nome do [NOME]", genero: 'male' },
   { texto: "fiz o de [VALOR] confere no nome de [NOME]", genero: 'male' },
-  { texto: "acabei de mandar [VALOR] no nome de [NOME]", genero: 'female' },
-  { texto: "ta feito, [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "ta feito [VALOR] no nome de [NOME]", genero: 'male' },
   { texto: "mandei [VALOR] pode ver no nome de [NOME]", genero: 'male' },
   { texto: "opa fiz [VALOR] ta no nome de [NOME]", genero: 'male' },
+  { texto: "ja ta la [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "transferi [VALOR] ta no nome de [NOME]", genero: 'male' },
+  { texto: "mandei [VALOR] no pix confere la", genero: 'male' },
+  { texto: "feito [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "ja ta la o [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "enviei [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "fiz o pix de [VALOR] ta no nome de [NOME]", genero: 'male' },
+  // Feminino - padrão equalizado para todos os valores
+  { texto: "moço fiz o de [VALOR] ta no nome de [NOME]", genero: 'female' },
+  { texto: "oi mandei [VALOR] no nome de [NOME] pode olhar", genero: 'female' },
+  { texto: "fiz o pix de [VALOR] ta no nome de [NOME] 🙏", genero: 'female' },
+  { texto: "acabei de mandar [VALOR] no nome de [NOME]", genero: 'female' },
   { texto: "enviei [VALOR] agora no nome de [NOME]", genero: 'female' },
-  // Faixa 150/300 - tom mais confiante, investidor
-  { texto: "investi [VALOR] ta no nome de [NOME]", genero: 'male' },
-  { texto: "coloquei [VALOR] no nome de [NOME], pode conferir", genero: 'male' },
-  { texto: "fiz o aporte de [VALOR] no nome de [NOME]", genero: 'male' },
-  { texto: "mandei [VALOR] pra participar, ta no nome de [NOME]", genero: 'male' },
-  { texto: "ja transferi [VALOR] no nome de [NOME]", genero: 'male' },
-  { texto: "contribui com [VALOR] no nome de [NOME] ✅", genero: 'male' },
-  { texto: "fiz o depósito de [VALOR] no nome de [NOME]", genero: 'female' },
-  { texto: "enviei [VALOR] e ta no nome de [NOME]", genero: 'male' },
-  { texto: "pronto, [VALOR] investidos no nome de [NOME]", genero: 'male' },
-  { texto: "manda ver, ja fiz [VALOR] no nome de [NOME]", genero: 'male' },
+  { texto: "moço mandei [VALOR] no nome de [NOME]", genero: 'female' },
+  { texto: "ta feito [VALOR] no nome de [NOME] 😊", genero: 'female' },
+  { texto: "ja foi [VALOR] no nome de [NOME]", genero: 'female' },
+  { texto: "prontinho fiz [VALOR] no nome de [NOME]", genero: 'female' },
+  { texto: "mandei [VALOR] rapidinho ta no nome de [NOME]", genero: 'female' },
+  { texto: "moço ja ta la [VALOR] no nome de [NOME]", genero: 'female' },
+  { texto: "mandei [VALOR] no pix pode conferir", genero: 'female' },
+  { texto: "feito [VALOR] no nome de [NOME] 😊", genero: 'female' },
+  { texto: "enviei [VALOR] ta no nome de [NOME]", genero: 'female' },
+  { texto: "fiz o [VALOR] e ta no nome de [NOME]", genero: 'female' },
 ];
 
 export const RESPOSTAS_ESPERA: { texto: string; genero: 'female' | 'male' }[] = [
