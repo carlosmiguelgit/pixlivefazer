@@ -518,7 +518,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                     <X className="w-6 h-6 text-slate-400" />
                   </button>
                   <img 
-                    src="/simbolo.png" 
+                    src="/simbolo.jpeg" 
                     alt="Sucesso" 
                     className="w-48 object-contain" 
                   />
