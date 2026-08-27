@@ -520,7 +520,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                   <img 
                     src="/simbolo.jpeg" 
                     alt="Sucesso" 
-                    className="w-[43px] object-contain" 
+                    className="w-[173px] object-contain" 
                   />
                 </div>
 
