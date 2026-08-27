@@ -491,23 +491,6 @@ export const NubankSheet: FC<NubankSheetProps> = ({
 
             {step === 'pin' && <PinScreen isDarkMode={isDarkMode} textColor={textColor} subTextColor={subTextColor} onBack={() => setStep('review')} onComplete={handlePinComplete} />}
 
-            {(step === 'loading1' || step === 'loading2') && (
-              <motion.div 
-                key="loading-circle"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex-1 flex flex-col items-center justify-center"
-              >
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                  className="w-12 h-12 border-4 border-white/20 border-t-[#820AD1] rounded-full"
-                />
-                <p className={`text-[14px] ${subTextColor} mt-4`}>Processando...</p>
-              </motion.div>
-            )}
-
             {step === 'processing' && (
               <motion.div 
                 key="processing"
