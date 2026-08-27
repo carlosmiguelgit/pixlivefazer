@@ -19,7 +19,7 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 4. FIM
 
 ### Fluxo Repetido (valor 300)
-1. Bot envia mensagem dizendo que já participou ("mandei novamente [VALOR]")
+1. Bot envia mensagem dizendo que já participou e enviou novamente ("mandei novamente [VALOR]")
 2. Usuário responde qualquer coisa
 3. Bot implora ("quebra essa pra mim eu imploro")
 4. FIM
@@ -31,7 +31,7 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 - Pool: `[50,50,50,50, 90,90,90, 150,150, 300]`
 - Valor 300 = alerta (repetido)
 
-## Mensagens por Gênero
+## Mensagens
 
 ### Fluxo Normal
 
@@ -50,14 +50,31 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 ### Fluxo Repetido (separado)
 
 #### Mensagens Iniciais (5 por gênero)
-- **Feminino**: "moço eu ja participei antes mas mandei novamente [VALOR]..."
-- **Masculino**: "cara eu ja participei antes mas mandei novamente [VALOR]..."
 - Palavras-chave: novamente, de novo, mais uma vez, outra vez
+- Seleção sequencial sem repetição
 
 #### Agradecimentos/Imploração (5 por gênero)
-- **Feminino**: "poxa que pena quebra essa pra mim eu imploro", etc.
-- **Masculino**: "cara quebra essa pra mim eu to desesperado", etc.
 - Cada mensagem é única, sem repetição entre gêneros
+
+## Delays
+
+- **Normal**: Bot responde em 12-16 segundos
+- **Repetido**: Bot responde em 5-8 segundos
+- **Geração de novos cards**: 3-8 segundos após voltar pra tela inicial com fluxo completado
+
+## Comportamento de Cards
+
+- Novos cards só são gerados quando o fluxo é completado (bot agradece/implora) e o usuário volta pra tela inicial
+- Clicar no card e voltar sem interagir não gera novo card
+- Ver conversas antigas não gera novo cards
+- Timer de 3-8 segundos entre cards
+
+## Bolinhas nos Cards
+
+- **Vermelha**: some ao clicar no card (usando `notif.read`)
+- **Verde (online)**: some após 2 minutos em tempo real
+- **Header do chat**: "Ativo agora" até 2 minutos, depois "Ativo há X min"
+- **Header "Mensagens"**: bolinha verde sempre visível
 
 ## Estrutura de Arquivos
 
@@ -78,22 +95,29 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 ### `src/components/PrivateChat.tsx`
 - **Fluxo Normal**: inicial → agradecimento
 - **Fluxo Repetido**: inicial → agradecimento (implorando)
-- Filtra respostas por gênero e faixa de valor
-- Usa `RESPOSTAS_REPETIDO_AGRADECIMENTO` para repetidos
+- Delay: normal 12-16s, repetido 5-8s
+- Header: "Ativo agora" ou "Ativo há X min" baseado no timestamp
 
 ### `src/components/Dashboard.tsx`
 - Exibe `R$ [VALOR]` na contribuição
 
 ### `src/components/NubankSheet.tsx`
 - Fluxo de pagamento Nubank
-- Edição de valor
+- Tela de sucesso: "Sua transferência foi concluída", valor, Para [Nome], Instituição, Quando
+- Botão "Abrir comprovante" roxo com ícone FileText
+- Loading: círculo girando dentro do botão Enviar (2s) → PIN → girando de novo (2s) → Processando... → sucesso
 
 ### `src/components/NubankReceipt.tsx`
-- Comprovante de transferência
+- Comprovante de transferência branco com detalhes completos
+- Logo Nu, dados de origem/destino, ID da transação
 
 ### `src/pages/NubankPage.tsx`
 - Página acessada pelo celular
 - Polling de notificações pendentes
+
+### `src/components/MessageInbox.tsx`
+- Bolinha vermelha: some ao clicar (usa `notif.read`)
+- Bolinha verde: some após 2 minutos (atualiza a cada 10s)
 
 ### `src/tiktok-users.json`
 - Pool de usuários com `initialMessage` e `justificativa`
@@ -110,12 +134,3 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 3. No PC: abra `http://localhost:3000`
 4. No celular: abra `http://localhost:3000/#/nubank`
 5. Duplo clique no cabeçalho para gerar novos cards
-
-## Comportamento
-
-- Notificações não aparecem automaticamente
-- Duplo clique no cabeçalho gera novo card
-- Timer aleatório de 5-10 segundos entre cards
-- Cards são sequenciais sem repetição
-- Fluxo repetido é completamente separado do normal
-- Novos cards são gerados quando usuário volta pra tela inicial

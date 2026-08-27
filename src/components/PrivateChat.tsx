@@ -169,7 +169,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       <div className="flex-1 bg-[#0a0a0a] overflow-y-auto px-4 py-2 flex flex-col gap-2">
         {messages.map((msg, i) => (
           <div key={i} className="flex flex-col gap-1">
-            <span className="text-center text-[11px] text-zinc-500 leading-none mt-1">{formatTime(msg.timestamp)}</span>
+            {i === 0 && <span className="text-center text-[11px] text-zinc-500 leading-none mt-1">{formatTime(msg.timestamp)}</span>}
             {msg.sender === 'me' ? (
               <div className="flex flex-col items-end gap-1">
                 <div className="bg-[#7c3aed] text-white text-[14px] px-3 py-2 rounded-[18px] max-w-[280px] leading-snug break-words">{msg.text}</div>
