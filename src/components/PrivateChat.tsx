@@ -106,7 +106,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
         setAgradecimentoEnviado(true);
         onBotMessage?.(texto);
         onFlowEnd?.();
-      }, baseDelay + Math.random() * randomDelay);
+      }, 1000 + baseDelay + Math.random() * randomDelay);
     }, typingStart);
   }
 
