@@ -15,7 +15,7 @@ interface NubankSheetProps {
   isDarkMode: boolean;
 }
 
-type FlowStep = 'splash' | 'select' | 'installments' | 'review' | 'pin' | 'processing' | 'success';
+type FlowStep = 'splash' | 'select' | 'installments' | 'review' | 'loading1' | 'pin' | 'loading2' | 'processing' | 'success';
 
 const ContaIcon = ({ color }: { color: string }) => (
   <svg width="22" height="12" viewBox="0 0 24 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -111,6 +111,16 @@ export const NubankSheet: FC<NubankSheetProps> = ({
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    if (step === 'loading1') {
+      const timer = setTimeout(() => {
+        setPin([]);
+        setStep('pin');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [step]);
+
   const installmentsData = useMemo(() => {
     if (!notification) return [];
     const baseValue = editedValue;
@@ -144,12 +154,8 @@ export const NubankSheet: FC<NubankSheetProps> = ({
   };
 
   const handlePinComplete = () => {
-    setIsReviewReplay(true);
-    setStep('review');
-    setTimeout(() => {
-      setIsReviewReplay(false);
-      startProcessing();
-    }, 2000);
+    setStep('loading2');
+    setTimeout(() => setStep('success'), 2000);
   };
 
   const handleFinalize = () => {
@@ -457,7 +463,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                   </div>
                   {!isReviewReplay && (
                     <button
-                      onClick={() => { setPin([]); setStep('pin'); }}
+                      onClick={() => { setStep('loading1'); }}
                       className="h-[52px] px-8 bg-[#820AD1] text-white font-bold text-[16px] rounded-full active:scale-95 transition-transform shadow-lg shadow-[#820AD1]/20"
                     >
                       Enviar
@@ -467,7 +473,24 @@ export const NubankSheet: FC<NubankSheetProps> = ({
               </motion.div>
             )}
 
-            {step === 'pin' && <PinScreen isDarkMode={isDarkMode} textColor={textColor} subTextColor={subTextColor} onBack={() => setStep('select')} onComplete={handlePinComplete} />}
+            {step === 'pin' && <PinScreen isDarkMode={isDarkMode} textColor={textColor} subTextColor={subTextColor} onBack={() => setStep('review')} onComplete={handlePinComplete} />}
+
+            {(step === 'loading1' || step === 'loading2') && (
+              <motion.div 
+                key="loading-circle"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex-1 flex flex-col items-center justify-center"
+              >
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                  className="w-12 h-12 border-4 border-white/20 border-t-[#820AD1] rounded-full"
+                />
+                <p className={`text-[14px] ${subTextColor} mt-4`}>Processando...</p>
+              </motion.div>
+            )}
 
             {step === 'processing' && (
               <motion.div 
