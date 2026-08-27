@@ -76,9 +76,9 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   }, [historyMessages, fraseAgradecimento]);
 
   function gerarAgradecimento() {
+    const isRepetido = !!notification?.alerta;
     let texto = fraseAgradecimento;
     if (!texto && notification) {
-      const isRepetido = !!notification.alerta;
       const genero = notification.gender;
       if (isRepetido) {
         const poolAgradRep = RESPOSTAS_REPETIDO_AGRADECIMENTO.filter(r => r.genero === genero);
@@ -92,7 +92,9 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     }
     texto = texto || "obrigado";
     setShowVisto(true);
-    const delayResponse = texto.length > 80 ? 15000 + Math.random() * 5000 : 12000 + Math.random() * 4000;
+    const baseDelay = isRepetido ? 5000 : 12000;
+    const randomDelay = isRepetido ? 3000 : 4000;
+    const delayResponse = baseDelay + Math.random() * randomDelay;
     timerRef.current = setTimeout(() => {
       setShowVisto(false);
       setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
