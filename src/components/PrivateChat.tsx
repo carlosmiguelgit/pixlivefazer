@@ -94,9 +94,9 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     }
     texto = texto || "obrigado";
     setShowVisto(true);
-    const baseDelay = isRepetido ? 5000 : 12000;
-    const randomDelay = isRepetido ? 3000 : 4000;
-    const typingStart = 2000 + Math.random() * 2000;
+    const baseDelay = isRepetido ? 9000 : 5000;
+    const randomDelay = 3000;
+    const typingStart = isRepetido ? 2000 + Math.random() * 1000 : 1500 + Math.random() * 1000;
     timerRef.current = setTimeout(() => {
       setIsTyping(true);
       timerRef.current = setTimeout(() => {
