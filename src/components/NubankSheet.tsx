@@ -156,8 +156,14 @@ export const NubankSheet: FC<NubankSheetProps> = ({
   };
 
   const handlePinComplete = () => {
-    setStep('loading2');
-    setTimeout(() => setStep('success'), 2000);
+    setIsReviewReplay(true);
+    setSending(true);
+    setStep('review');
+    setTimeout(() => {
+      setSending(false);
+      setIsReviewReplay(false);
+      setStep('success');
+    }, 2000);
   };
 
   const handleFinalize = () => {
