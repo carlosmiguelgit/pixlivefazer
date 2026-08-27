@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search } from 'lucide-react';
 import { Notification } from '../types';
@@ -21,6 +21,16 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
   isAnonymousMode,
   onOpenChat,
 }) => {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const isOnline = (notif: Notification) => {
+    return now - new Date(notif.timestamp).getTime() < 120000;
+  };
   const formatTimeAgo = (timestamp: Date): string => {
     const now = new Date();
     const diff = Math.floor((now.getTime() - timestamp.getTime()) / 1000);
@@ -158,7 +168,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
                     />
                   )}
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-[2px] border-black" />
+                {isOnline(notif) && <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-[2px] border-black" />}
               </div>
 
               <div className="flex-1 min-w-0">
@@ -174,7 +184,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
                 <span className="text-[12px] text-white/40">
                   {formatTimeAgo(notif.timestamp)}
                 </span>
-                {!notif.lastMessage && <div className="w-2.5 h-2.5 rounded-full bg-[#fe2c55]" />}
+                {!notif.read && <div className="w-2.5 h-2.5 rounded-full bg-[#fe2c55]" />}
               </div>
             </motion.div>
           ))}

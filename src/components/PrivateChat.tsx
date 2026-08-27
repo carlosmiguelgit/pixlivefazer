@@ -33,6 +33,23 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [showVisto, setShowVisto] = useState(false);
   const [agradecimentoEnviado, setAgradecimentoEnviado] = useState(false);
+  const [isOnline, setIsOnline] = useState(() => {
+    if (notification?.timestamp) {
+      return Date.now() - new Date(notification.timestamp).getTime() < 120000;
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    if (!notification?.timestamp) return;
+    const elapsed = Date.now() - new Date(notification.timestamp).getTime();
+    if (elapsed >= 120000) {
+      setIsOnline(false);
+      return;
+    }
+    const timeout = setTimeout(() => setIsOnline(false), 120000 - elapsed);
+    return () => clearTimeout(timeout);
+  }, [notification?.timestamp]);
 
   const respondeuRef = useRef(historyMessages ? historyMessages.filter(m => m.sender === 'me').length > 0 : false);
 
@@ -112,7 +129,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
         </div>
         <div className="flex flex-col -mt-[10px]">
           <span className="text-[18px] font-semibold text-white truncate leading-tight">{nickname}</span>
-          <span className="text-[14px] text-zinc-400 leading-tight">Ativo agora</span>
+          {isOnline && <span className="text-[14px] text-zinc-400 leading-tight">Ativo agora</span>}
         </div>
         <div className="flex-1" />
         <button className="flex items-center gap-[3px] shrink-0 pr-1">
