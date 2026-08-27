@@ -458,22 +458,22 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                     </p>
                     <p className={`text-[13px] ${subTextColor}`}>Valor Total</p>
                   </div>
-                  {!isReviewReplay && (
+                  {sending ? (
+                    <div className="h-[52px] px-8 bg-[#820AD1] rounded-full flex items-center justify-center min-w-[130px] shadow-lg shadow-[#820AD1]/20">
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                        className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                      />
+                    </div>
+                  ) : !isReviewReplay ? (
                     <button
                       onClick={() => { setSending(true); setTimeout(() => { setPin([]); setStep('pin'); setSending(false); }, 2000); }}
                       className="h-[52px] px-8 bg-[#820AD1] text-white font-bold text-[16px] rounded-full active:scale-95 transition-transform shadow-lg shadow-[#820AD1]/20 flex items-center justify-center min-w-[130px]"
                     >
-                      {sending ? (
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
-                          className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
-                        />
-                      ) : (
-                        'Enviar'
-                      )}
+                      Enviar
                     </button>
-                  )}
+                  ) : null}
                 </div>
               </motion.div>
             )}
@@ -521,7 +521,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                 onClick={isReceiptOpen ? handleReceiptClick : handleSuccessDoubleClick}
                 className={`flex-1 flex flex-col px-8 pt-12 pb-10 ${isReceiptOpen ? 'cursor-pointer' : ''}`}
               >
-                <div className="mb-10 relative mt-[20px]">
+                <div className="mb-10 relative mt-[40px]">
                   <button 
                     onClick={(e) => { e.stopPropagation(); onClose(); }}
                     className="absolute top-0 left-0 p-2 -ml-2 -mt-2"
@@ -535,7 +535,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                   />
                 </div>
 
-                <h2 className={`text-[19px] font-bold ${textColor} mb-8 leading-tight text-left`}>
+                <h2 className={`text-[22px] font-bold ${textColor} mb-8 leading-tight text-left`}>
                   Sua transferência foi concluída
                 </h2>
 
