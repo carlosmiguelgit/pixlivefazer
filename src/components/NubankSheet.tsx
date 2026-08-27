@@ -48,6 +48,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
   const [isReviewReplay, setIsReviewReplay] = useState(false);
   const [digitStr, setDigitStr] = useState("0");
   const [pin, setPin] = useState<number[]>([]);
+  const [sending, setSending] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const editedValue = useMemo(() => parseInt(digitStr, 10) || 0, [digitStr]);
   const receiptClickCountRef = useRef(0);
@@ -102,6 +103,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
       setIsReceiptOpen(false);
       setIsReviewReplay(false);
       setDigitStr("0");
+      setSending(false);
       
       const timer = setTimeout(() => {
         setStep('select');
@@ -463,10 +465,18 @@ export const NubankSheet: FC<NubankSheetProps> = ({
                   </div>
                   {!isReviewReplay && (
                     <button
-                      onClick={() => { setStep('loading1'); }}
-                      className="h-[52px] px-8 bg-[#820AD1] text-white font-bold text-[16px] rounded-full active:scale-95 transition-transform shadow-lg shadow-[#820AD1]/20"
+                      onClick={() => { setSending(true); setTimeout(() => { setPin([]); setStep('pin'); setSending(false); }, 2000); }}
+                      className="h-[52px] px-8 bg-[#820AD1] text-white font-bold text-[16px] rounded-full active:scale-95 transition-transform shadow-lg shadow-[#820AD1]/20 flex items-center justify-center min-w-[130px]"
                     >
-                      Enviar
+                      {sending ? (
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                          className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                        />
+                      ) : (
+                        'Enviar'
+                      )}
                     </button>
                   )}
                 </div>
