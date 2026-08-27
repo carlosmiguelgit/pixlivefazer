@@ -17,7 +17,6 @@ export interface Notification {
   contributionAmount: number;
   initialMessage?: string;
   lastMessage?: string;
-  fraseEspera?: string;
   fraseAgradecimento?: string;
   read?: boolean;
 }

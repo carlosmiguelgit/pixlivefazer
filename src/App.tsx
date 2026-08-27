@@ -26,7 +26,6 @@ function ChatApp() {
   const [isAnonymousMode, setIsAnonymousMode] = useState(false);
   const [chatNotification, setChatNotification] = useState<Notification | null>(null);
   const [batteryClickCount, setBatteryClickCount] = useState(0);
-  const [fraseEspera, setFraseEspera] = useState('');
   const [fraseAgradecimento, setFraseAgradecimento] = useState('');
   const [nubankSheetOpen, setNubankSheetOpen] = useState(false);
   const [nubankNotification, setNubankNotification] = useState<Notification | null>(null);
@@ -68,7 +67,6 @@ function ChatApp() {
   const handleStartChat = (notif: Notification) => {
     setChatNotification(notif);
     setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, read: true } : n));
-    setFraseEspera(notif.fraseEspera || "ok, to esperando");
     setFraseAgradecimento(notif.fraseAgradecimento || "obrigado");
     setNubankCompleted(false);
   };
@@ -245,7 +243,6 @@ function ChatApp() {
             onBotMessage={(text) => {
               setNotifications(prev => prev.map(n => n.id === chatNotification.id ? { ...n, lastMessage: text } : n));
             }}
-            fraseEspera={fraseEspera}
             fraseAgradecimento={fraseAgradecimento}
             notification={chatNotification}
             onOpenNubank={handleOpenNubank}

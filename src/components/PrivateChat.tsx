@@ -14,7 +14,6 @@ interface PrivateChatProps {
   onComplete: (name: string, pixKey: string) => void;
   onBack: () => void;
   onBotMessage?: (text: string) => void;
-  fraseEspera?: string;
   fraseAgradecimento?: string;
   notification?: Notification | null;
   onOpenNubank?: (notification: Notification) => void;
@@ -24,7 +23,7 @@ interface PrivateChatProps {
   onFlowEnd?: () => void;
 }
 
-export default function PrivateChat({ username, nickname, fullName, avatar, followingCount, followerCount, pixKey, initialMessage, onComplete, onBack, onBotMessage, fraseEspera, fraseAgradecimento, notification, onOpenNubank, historyMessages, onHistoryUpdate, nubankCompleted, onFlowEnd }: PrivateChatProps) {
+export default function PrivateChat({ username, nickname, fullName, avatar, followingCount, followerCount, pixKey, initialMessage, onComplete, onBack, onBotMessage, fraseAgradecimento, notification, onOpenNubank, historyMessages, onHistoryUpdate, nubankCompleted, onFlowEnd }: PrivateChatProps) {
   const [messages, setMessages] = useState<{ text: string; sender: 'me' | 'them'; timestamp: number }[]>(
     historyMessages && historyMessages.length > 0
       ? historyMessages.map((m, i) => ({ ...m, timestamp: m.timestamp || Date.now() - (historyMessages.length - i) * 60000 }))
@@ -36,8 +35,6 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   const [agradecimentoEnviado, setAgradecimentoEnviado] = useState(false);
 
   const respondeuRef = useRef(historyMessages ? historyMessages.filter(m => m.sender === 'me').length > 0 : false);
-  const agradeceuRef = useRef(historyMessages ? historyMessages.filter(m => m.sender === 'me').length > 1 : false);
-  const finalizouRef = useRef(false);
 
   useEffect(() => {
     if (historyMessages && historyMessages.length > 0) {
@@ -47,17 +44,6 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       }
     }
   }, [historyMessages, fraseAgradecimento]);
-
-  function agendarRespostaEspera() {
-    const texto = fraseEspera || "ok, to esperando";
-    setShowVisto(true);
-    const delayResponse = texto.length > 80 ? 18000 + Math.random() * 5000 : 8000 + Math.random() * 2000;
-    timerRef.current = setTimeout(() => {
-      setShowVisto(false);
-      setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
-      onBotMessage?.(texto);
-    }, delayResponse);
-  }
 
   function gerarAgradecimento() {
     let texto = fraseAgradecimento;
@@ -86,44 +72,6 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     }, delayResponse);
   }
 
-  function gerarRespostaFinal() {
-    // Resposta final baseada no valor - mais desesperada ou mais confiante
-    let frases: string[];
-    if (notification && notification.contributionAmount <= 90) {
-      // Faixa baixa - mais emotiva
-      frases = [
-        "obg de coracao, vai ajudar muito",
-        "obrigadao, Deus te pague",
-        "vlw msm, salvou minha semana",
-        "obg, to sem palavras",
-        "chegou certinho, muito obg"
-      ];
-    } else {
-      // Faixa alta - mais objetiva
-      frases = [
-        "show, to dentro de novo",
-        "perfeito, quando tem outro ciclo?",
-        "beleza, ja quero participar mais",
-        "certo, to no aguardo do proximo",
-        "otimo, valeu a pena"
-      ];
-    }
-    const texto = frases[Math.floor(Math.random() * frases.length)];
-    setShowVisto(true);
-    const delayResponse = 6000 + Math.random() * 2000;
-    timerRef.current = setTimeout(() => {
-      setShowVisto(false);
-      setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
-      onBotMessage?.(texto);
-      onFlowEnd?.();
-      setTimeout(() => {
-        if (notification) {
-          onComplete(notification.name, notification.pixKey);
-        }
-      }, 1000);
-    }, delayResponse);
-  }
-
   function formatTime(ts: number) {
     const d = new Date(ts);
     return `Hoje ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
@@ -139,24 +87,9 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       onHistoryUpdate(newMessages);
     }
 
-    const isRepetido = !!notification?.alerta;
-
-    if (isRepetido) {
-      if (!respondeuRef.current) {
-        respondeuRef.current = true;
-        gerarAgradecimento();
-      }
-    } else {
-      if (!respondeuRef.current) {
-        respondeuRef.current = true;
-        agendarRespostaEspera();
-      } else if (!agradeceuRef.current) {
-        agradeceuRef.current = true;
-        gerarAgradecimento();
-      } else if (!finalizouRef.current) {
-        finalizouRef.current = true;
-        gerarRespostaFinal();
-      }
+    if (!respondeuRef.current) {
+      respondeuRef.current = true;
+      gerarAgradecimento();
     }
   }
 

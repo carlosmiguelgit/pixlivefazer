@@ -43,62 +43,6 @@ export const MENSAGENS_INICIAIS: { texto: string; genero: 'female' | 'male' }[] 
   { texto: "fiz o [VALOR] e ta no nome de [NOME]", genero: 'female' },
 ];
 
-export const RESPOSTAS_ESPERA: { texto: string; genero: 'female' | 'male' }[] = [
-  { texto: "ok, to esperando 😊", genero: 'female' },
-  { texto: "certinho!", genero: 'male' },
-  { texto: "blz, obg!", genero: 'male' },
-  { texto: "to no aguardo", genero: 'male' },
-  { texto: "ta certo, to esperando", genero: 'male' },
-  { texto: "pode mandar!", genero: 'male' },
-  { texto: "manda ai q eu vejo!", genero: 'male' },
-  { texto: "to precisando, se puder ir rapido 🙏", genero: 'female' },
-  { texto: "se puder mandar rapido, agradeco!", genero: 'male' },
-  { texto: "perfeito, to aguardando", genero: 'male' },
-  { texto: "show, pode mandar!", genero: 'male' },
-  { texto: "me avisa qdo chegar!", genero: 'male' },
-  { texto: "obg, to esperando", genero: 'male' },
-  { texto: "ta bom, manda", genero: 'male' },
-  { texto: "pode enviar, to de olho", genero: 'male' },
-  { texto: "beleza, esperando aqui", genero: 'male' },
-  { texto: "to precisando pra ja, se puder agilizar!", genero: 'male' },
-  { texto: "vou mandar agora, ok", genero: 'male' },
-  { texto: "certo, me chama qdo tiver", genero: 'male' },
-  { texto: "combinado, to aqui!", genero: 'male' },
-];
-
-export const CONFIRMACOES = [
-  "sim, sou eu!",
-  "isso simm!!",
-  "simmmmm",
-  "opaaa sou eu sim",
-  "sim, participei sim!",
-  "sim, eu mesmo!",
-  "simm, fui eu",
-  "sim sim, sou eu",
-  "issoo, eu!!",
-  "sim, claro!!",
-  "siim, eu tava la",
-  "com certeza",
-  "sou eu sim!",
-  "sim, pode crer",
-  "simmmm, eu!",
-  "isso, sou eu",
-  "sim, tava na live",
-  "simm!",
-  "sim, opa sou eu",
-  "sim sim sim!",
-  "claro, sou eu",
-  "simm, isso ai",
-  "sim, participei",
-  "isso memo sou eu",
-  "opa, sim sou eu",
-  "isso ai, eu!",
-  "com certeza sou eu",
-  "sim, tava sim",
-  "sim, valeu",
-  "sim, eu mesmo!",
-];
-
 export const RESPOSTAS_AGENUARDAR: { texto: string; faixa: 'baixa' | 'alta'; genero: 'female' | 'male' }[] = [
   // Faixa baixa (50/90) Feminino
   { texto: "obrigada to precisando muito disso", faixa: 'baixa', genero: 'female' },
@@ -166,35 +110,6 @@ export const RESPOSTAS_AGENUARDAR: { texto: string; faixa: 'baixa' | 'alta'; gen
   { texto: "isso e um milagre obrigado", faixa: 'alta', genero: 'male' },
 ];
 
-export const RESPOSTAS_RECEBIMENTO: { texto: string; faixa: 'baixa' | 'alta' }[] = [
-  // Faixa baixa (50/90) - gratidão extrema, alívio
-  { texto: "chegou!! mt obg, chorei aqui", faixa: 'baixa' },
-  { texto: "caiu certinho, obg demais", faixa: 'baixa' },
-  { texto: "meu deus chegou, vlw msm", faixa: 'baixa' },
-  { texto: "obrigada, ta la sim", faixa: 'baixa' },
-  { texto: "chegou, to sem palavras", faixa: 'baixa' },
-  { texto: "vlw, salvou minha vida", faixa: 'baixa' },
-  { texto: "obg, ia passar fome sem isso", faixa: 'baixa' },
-  { texto: "chegou sim, Deus te abençoe", faixa: 'baixa' },
-  { texto: "ta la, muito obrigada", faixa: 'baixa' },
-  { texto: "recebi, obg de coracao", faixa: 'baixa' },
-  { texto: "caramba chegou mesmo, obg", faixa: 'baixa' },
-  { texto: "obrigado, vai pagar minhas contas", faixa: 'baixa' },
-  // Faixa alta (150/300) - satisfação, quer mais
-  { texto: "chegou, show de bola", faixa: 'alta' },
-  { texto: "recebi, otimo", faixa: 'alta' },
-  { texto: "ta la, certinho", faixa: 'alta' },
-  { texto: "chegou, vou investir mais", faixa: 'alta' },
-  { texto: "perfeito, caiu rapido", faixa: 'alta' },
-  { texto: "obg, cuando tem mais?", faixa: 'alta' },
-  { texto: "show, funcionou mesmo", faixa: 'alta' },
-  { texto: "chegou, ja quero participar de novo", faixa: 'alta' },
-  { texto: "top, valeu a pena", faixa: 'alta' },
-  { texto: "otimo, quando tem outro ciclo?", faixa: 'alta' },
-  { texto: "beleza, caiu certinho", faixa: 'alta' },
-  { texto: "perfeito,to dentro de novo", faixa: 'alta' },
-];
-
 // ============ REPETIDO - FLUXO SEPARADO ============
 
 // Mensagens iniciais do repetido (5 por gênero) - avisando que já participou e enviou novamente
@@ -211,22 +126,6 @@ export const MENSAGENS_REPETIDO_INICIAIS: { texto: string; genero: 'female' | 'm
   { texto: "eu ja fui contemplado antes mas mandei [VALOR] de novo no nome de [NOME]", genero: 'male' },
   { texto: "cara desculpa mas fiz o pix de [VALOR] no nome de [NOME] outra vez", genero: 'male' },
   { texto: "eu sei que ja participei mas mandei [VALOR] novamente no nome de [NOME]", genero: 'male' },
-];
-
-// Respostas de espera do repetido (5 por gênero)
-export const RESPOSTAS_REPETIDO_ESPERA: { texto: string; genero: 'female' | 'male' }[] = [
-  // Feminino
-  { texto: "obg to no aguardo", genero: 'female' },
-  { texto: "certinho me avisa quando chegar", genero: 'female' },
-  { texto: "beleza to esperando", genero: 'female' },
-  { texto: "ok combinado", genero: 'female' },
-  { texto: "ta certo to de olho", genero: 'female' },
-  // Masculino
-  { texto: "obg vou ficar de olho", genero: 'male' },
-  { texto: "certo me avisa quando tiver", genero: 'male' },
-  { texto: "beleza to aguardando", genero: 'male' },
-  { texto: "ok ta certo", genero: 'male' },
-  { texto: "tranquilo to esperando", genero: 'male' },
 ];
 
 // Agradecimentos do repetido (5 por gênero) - implorando, cada um diferente

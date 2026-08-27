@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Notification, Testimonial } from '../types';
-import { MENSAGENS_INICIAIS, RESPOSTAS_ESPERA, RESPOSTAS_AGENUARDAR, MENSAGENS_REPETIDO_INICIAIS, RESPOSTAS_REPETIDO_ESPERA, RESPOSTAS_REPETIDO_AGRADECIMENTO } from '../constants';
+import { MENSAGENS_INICIAIS, RESPOSTAS_AGENUARDAR, MENSAGENS_REPETIDO_INICIAIS, RESPOSTAS_REPETIDO_AGRADECIMENTO } from '../constants';
 import tiktokUsers from '../tiktok-users.json';
 
 interface TikTokUser {
@@ -62,14 +62,10 @@ export const useNotificationSystem = () => {
   const valuesIndexRef = useRef(0);
   const inicialMaleIdxRef = useRef(0);
   const inicialFemaleIdxRef = useRef(0);
-  const esperaMaleIdxRef = useRef(0);
-  const esperaFemaleIdxRef = useRef(0);
   const aguardarIdxRef = useRef(0);
   const recebimentoIdxRef = useRef(0);
   const repetidoMaleIdxRef = useRef(0);
   const repetidoFemaleIdxRef = useRef(0);
-  const repetidoEsperaMaleIdxRef = useRef(0);
-  const repetidoEsperaFemaleIdxRef = useRef(0);
   const repetidoAgradMaleIdxRef = useRef(0);
   const repetidoAgradFemaleIdxRef = useRef(0);
 
@@ -112,7 +108,6 @@ export const useNotificationSystem = () => {
     const nomeCompleto = user.fullName || user.nickname;
 
     let initialMessage: string;
-    let fraseEspera: string;
     let fraseAgradecimento: string;
 
     if (alerta) {
@@ -125,15 +120,6 @@ export const useNotificationSystem = () => {
         repetidoFemaleIdxRef.current = (repetidoFemaleIdxRef.current + 1) % poolInicialRep.length;
       } else {
         repetidoMaleIdxRef.current = (repetidoMaleIdxRef.current + 1) % poolInicialRep.length;
-      }
-
-      const poolEsperaRep = RESPOSTAS_REPETIDO_ESPERA.filter(r => r.genero === genero);
-      const idxEsperaRep = genero === 'female' ? repetidoEsperaFemaleIdxRef.current : repetidoEsperaMaleIdxRef.current;
-      fraseEspera = poolEsperaRep[idxEsperaRep % poolEsperaRep.length].texto;
-      if (genero === 'female') {
-        repetidoEsperaFemaleIdxRef.current = (repetidoEsperaFemaleIdxRef.current + 1) % poolEsperaRep.length;
-      } else {
-        repetidoEsperaMaleIdxRef.current = (repetidoEsperaMaleIdxRef.current + 1) % poolEsperaRep.length;
       }
 
       const poolAgradRep = RESPOSTAS_REPETIDO_AGRADECIMENTO.filter(r => r.genero === genero);
@@ -155,12 +141,6 @@ export const useNotificationSystem = () => {
         inicialIdxRef.current = (idxInicial + 1) % poolInicial.length;
         initialMessage = montarMensagemInicial(genero, nomeCompleto, idxInicial, valor);
       }
-
-      const poolEspera = RESPOSTAS_ESPERA.filter(r => r.genero === genero);
-      const esperaIdxRef = genero === 'female' ? esperaFemaleIdxRef : esperaMaleIdxRef;
-      const idxEspera = esperaIdxRef.current;
-      fraseEspera = poolEspera[idxEspera].texto;
-      esperaIdxRef.current = (idxEspera + 1) % poolEspera.length;
 
       if (user.justificativa) {
         fraseAgradecimento = user.justificativa;
@@ -190,7 +170,6 @@ export const useNotificationSystem = () => {
       alerta,
       contributionAmount: valor,
       initialMessage,
-      fraseEspera,
       fraseAgradecimento,
       read: false
     };
