@@ -71,7 +71,7 @@ export const RESPOSTAS_AGENUARDAR: { texto: string; faixa: 'baixa' | 'alta'; gen
   { texto: "obrigado pela confiança", faixa: 'baixa', genero: 'male' },
   { texto: "isso vai pagar minhas contas", faixa: 'baixa', genero: 'male' },
   { texto: "obrigado msm tava fudido", faixa: 'baixa', genero: 'male' },
-  // Faixa alta (150/300) Feminino
+  // Faixa alta (130/180/230/345) Feminino
   { texto: "caramba eu tava desconfiada mas chegou mesmo", faixa: 'alta', genero: 'female' },
   { texto: "n acreditei quando vi na tela obrigada de verdade", faixa: 'alta', genero: 'female' },
   { texto: "ja tinha caido em golpe antes achei que era mais um", faixa: 'alta', genero: 'female' },
@@ -87,7 +87,7 @@ export const RESPOSTAS_AGENUARDAR: { texto: string; faixa: 'baixa' | 'alta'; gen
   { texto: "obrigada demais ja tinha perdido a esperança", faixa: 'alta', genero: 'female' },
   { texto: "chegou certinho obrigada", faixa: 'alta', genero: 'female' },
   { texto: "isso e um milagre obrigada", faixa: 'alta', genero: 'female' },
-  // Faixa alta (150/300) Masculino
+  // Faixa alta (130/180/230/345) Masculino
   { texto: "caramba eu tava desconfiado mas chegou mesmo", faixa: 'alta', genero: 'male' },
   { texto: "n acreditei quando vi na tela obrigado de verdade", faixa: 'alta', genero: 'male' },
   { texto: "ja levei golpe antes achei que era mais um", faixa: 'alta', genero: 'male' },

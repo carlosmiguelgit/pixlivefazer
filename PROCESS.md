@@ -27,9 +27,9 @@ App de simulação de live no TikTok onde participantes enviam contribuições v
 ## Sistema de Valores
 
 - **Faixa Baixa**: R$ 50, R$ 90 (pessoas em dificuldade)
-- **Faixa Alta**: R$ 150, R$ 300 (pessoas mais confiantes)
-- Pool: `[50,50,50,50, 90,90,90, 150,150, 300]`
-- Valor 300 = alerta (repetido)
+- **Faixa Alta**: R$ 130, R$ 180, R$ 230, R$ 345 (pessoas mais confiantes)
+- Pool: `[50,50,50, 90,90,90, 130,130, 180, 230, 345]`
+- Valor 345 = alerta (repetido)
 
 ## Mensagens
 

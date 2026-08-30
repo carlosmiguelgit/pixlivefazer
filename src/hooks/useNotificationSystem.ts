@@ -71,8 +71,8 @@ export const useNotificationSystem = () => {
 
   const getNextEntry = useCallback((): number => {
     if (valuesIndexRef.current >= valuesCycleRef.current.length) {
-      // Pool de valores: 50 e 90 mais frequentes (pessoas desesperadas), 150 e 300 menos (gananciosos)
-      const pool = [50,50,50,50, 90,90,90, 150,150, 300];
+      // Pool de valores: 50 e 90 mais frequentes (pessoas desesperadas), valores altos menos (gananciosos)
+      const pool = [50,50,50, 90,90,90, 130,130, 180, 230, 345];
       for (let i = pool.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -84,8 +84,8 @@ export const useNotificationSystem = () => {
   }, []);
 
   const getNextUser = useCallback((valor: number): TikTokUser | null => {
-    // 300 = repetido (alerta), valor baixo = normal
-    const isRepetido = valor === 300;
+    // 345 = repetido (alerta), valor baixo = normal
+    const isRepetido = valor === 345;
     const pool = isRepetido ? repetidoPool : normalPool;
     const orderRef = isRepetido ? repetidoOrderRef : normalOrderRef;
     if (pool.length === 0) return null;
