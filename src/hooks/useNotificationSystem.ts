@@ -126,7 +126,9 @@ export const useNotificationSystem = (modoMeses: boolean = false) => {
     let initialMessage: string;
     let fraseAgradecimento: string;
     const mesesEnviados = modoMesesRef.current ? valorParaMeses(valor) : undefined;
-    const valorOuMeses = modoMesesRef.current ? String(mesesEnviados) : String(valor);
+    const valorOuMeses = modoMesesRef.current
+      ? `${mesesEnviados} ${mesesEnviados === 1 ? 'mês' : 'meses'}`
+      : String(valor);
 
     if (alerta) {
       // FLUXO REPETIDO - separado do normal
