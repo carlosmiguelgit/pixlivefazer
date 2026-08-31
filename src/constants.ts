@@ -138,3 +138,40 @@ export const RESPOSTAS_REPETIDO_AGRADECIMENTO: { texto: string; genero: 'female'
   { texto: "to sem saída aqui se puder fazer uma exceção eu fico grato", genero: 'male' },
   { texto: "cara eu to sem opção me ajuda por favor", genero: 'male' },
 ];
+
+// ============ CONFIRMAÇÃO - FLUXO MESES (1ª resposta do bot) ============
+
+export const RESPOSTAS_MESES_CONFIRMACAO: { texto: string; genero: 'female' | 'male' }[] = [
+  // Feminino
+  { texto: "sim mto, to precisando d msm", genero: 'female' },
+  { texto: "ai obg, vc n sabe oq isso significa p mim", genero: 'female' },
+  { texto: "c ta me ajudando mto nesse momento", genero: 'female' },
+  { texto: "obg de vdd, to passando por um momento dificil", genero: 'female' },
+  { texto: "com certeza sim, vlw", genero: 'female' },
+  { texto: "isso vai me ajudar bastante agora", genero: 'female' },
+  { texto: "nem acredito q vc vai fz isso por mim", genero: 'female' },
+  { texto: "mto obg de coraçao, era oq eu precisava", genero: 'female' },
+  { texto: "ta me ajudando d+, obg", genero: 'female' },
+  { texto: "sim p crtza, vlw moço", genero: 'female' },
+  { texto: "obg por ta me ajudando agora", genero: 'female' },
+  { texto: "isso vai fazer mta diferença pra mim", genero: 'female' },
+  { texto: "vlw obg, n tenho como te agradecer", genero: 'female' },
+  { texto: "ai sim, mto obg mesmo", genero: 'female' },
+  { texto: "cara to mto grata, obg", genero: 'female' },
+  // Masculino
+  { texto: "porra sim mano, mto bom", genero: 'male' },
+  { texto: "vlw cara, isso vai me ajudar mto", genero: 'male' },
+  { texto: "cara vlw dms, to precisando", genero: 'male' },
+  { texto: "isso vai me tira do aperto obg", genero: 'male' },
+  { texto: "sim irmao, vlw de vdd", genero: 'male' },
+  { texto: "c ta me ajudando mto nessa", genero: 'male' },
+  { texto: "mano obg, era oq eu precisava", genero: 'male' },
+  { texto: "porra vlw, isso muda tudo pra mim", genero: 'male' },
+  { texto: "cara eu n tenho oq falar vlw", genero: 'male' },
+  { texto: "blz obg, to mto grato", genero: 'male' },
+  { texto: "isso vai me ajudar d+ agora", genero: 'male' },
+  { texto: "vlw mano, c ta me salvando", genero: 'male' },
+  { texto: "mano eu to c mta gratidao vlw", genero: 'male' },
+  { texto: "cara sim, mto obg disso", genero: 'male' },
+  { texto: "porra c é brabo vlw", genero: 'male' },
+];

@@ -18,6 +18,7 @@ export interface Notification {
   initialMessage?: string;
   lastMessage?: string;
   fraseAgradecimento?: string;
+  fraseConfirmacao?: string;
   read?: boolean;
   mesesEnviados?: number;
 }

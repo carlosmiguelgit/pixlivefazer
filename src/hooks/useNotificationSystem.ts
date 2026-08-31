@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Notification, Testimonial } from '../types';
-import { MENSAGENS_INICIAIS, RESPOSTAS_AGENUARDAR, MENSAGENS_REPETIDO_INICIAIS, RESPOSTAS_REPETIDO_AGRADECIMENTO } from '../constants';
+import { MENSAGENS_INICIAIS, RESPOSTAS_AGENUARDAR, MENSAGENS_REPETIDO_INICIAIS, RESPOSTAS_REPETIDO_AGRADECIMENTO, RESPOSTAS_MESES_CONFIRMACAO } from '../constants';
 import tiktokUsers from '../tiktok-users.json';
 
 interface TikTokUser {
@@ -125,6 +125,7 @@ export const useNotificationSystem = (modoMeses: boolean = false) => {
 
     let initialMessage: string;
     let fraseAgradecimento: string;
+    let fraseConfirmacao: string | undefined;
     const mesesEnviados = modoMesesRef.current ? valorParaMeses(valor) : undefined;
     const valorOuMeses = modoMesesRef.current
       ? `${mesesEnviados} ${mesesEnviados === 1 ? 'mês' : 'meses'}`
@@ -171,6 +172,11 @@ export const useNotificationSystem = (modoMeses: boolean = false) => {
         fraseAgradecimento = poolAgradecimento[idxAgrad].texto;
         aguardarIdxRef.current++;
       }
+
+      if (modoMesesRef.current) {
+        const poolConfirmacao = RESPOSTAS_MESES_CONFIRMACAO.filter(m => m.genero === genero);
+        fraseConfirmacao = poolConfirmacao[Math.floor(Math.random() * poolConfirmacao.length)].texto;
+      }
     }
 
     const newNotif: Notification = {
@@ -191,6 +197,7 @@ export const useNotificationSystem = (modoMeses: boolean = false) => {
       contributionAmount: valor,
       initialMessage,
       fraseAgradecimento,
+      fraseConfirmacao,
       read: false,
       mesesEnviados,
     };

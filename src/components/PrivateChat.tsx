@@ -16,6 +16,8 @@ interface PrivateChatProps {
   onBack: () => void;
   onBotMessage?: (text: string) => void;
   fraseAgradecimento?: string;
+  fraseConfirmacao?: string;
+  modoMeses?: boolean;
   notification?: Notification | null;
   onOpenNubank?: (notification: Notification) => void;
   historyMessages?: { text: string; sender: 'me' | 'them'; timestamp?: number }[];
@@ -24,7 +26,7 @@ interface PrivateChatProps {
   onFlowEnd?: () => void;
 }
 
-export default function PrivateChat({ username, nickname, fullName, avatar, followingCount, followerCount, pixKey, initialMessage, onComplete, onBack, onBotMessage, fraseAgradecimento, notification, onOpenNubank, historyMessages, onHistoryUpdate, nubankCompleted, onFlowEnd }: PrivateChatProps) {
+export default function PrivateChat({ username, nickname, fullName, avatar, followingCount, followerCount, pixKey, initialMessage, onComplete, onBack, onBotMessage, fraseAgradecimento, fraseConfirmacao, modoMeses, notification, onOpenNubank, historyMessages, onHistoryUpdate, nubankCompleted, onFlowEnd }: PrivateChatProps) {
   const [messages, setMessages] = useState<{ text: string; sender: 'me' | 'them'; timestamp: number }[]>(
     historyMessages && historyMessages.length > 0
       ? historyMessages.map((m, i) => ({ ...m, timestamp: m.timestamp || Date.now() - (historyMessages.length - i) * 60000 }))
