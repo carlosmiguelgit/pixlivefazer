@@ -66,7 +66,8 @@ function ChatApp() {
     setTimeout(() => setBatteryClickCount(0), 3000);
   };
 
-  const handleSearchClick = () => {
+  const handleSearchClick = (e: ReactMouseEvent) => {
+    e.stopPropagation();
     setSearchClickCount(prev => {
       const next = prev + 1;
       if (next === 3) {
@@ -204,6 +205,7 @@ function ChatApp() {
               notifications={notifications}
               isDarkMode={true}
               isAnonymousMode={isAnonymousMode}
+              modoMeses={modoMeses}
               onOpenChat={handleStartChat}
               onSearchClick={handleSearchClick}
             />

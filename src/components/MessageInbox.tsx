@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search } from 'lucide-react';
 import { Notification } from '../types';
@@ -7,8 +7,9 @@ interface MessageInboxProps {
   notifications: Notification[];
   isDarkMode: boolean;
   isAnonymousMode: boolean;
+  modoMeses: boolean;
   onOpenChat: (notif: Notification) => void;
-  onSearchClick: () => void;
+  onSearchClick: (e: React.MouseEvent) => void;
 }
 
 const SUGGESTED_ACCOUNTS = [
@@ -20,15 +21,27 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
   notifications,
   isDarkMode,
   isAnonymousMode,
+  modoMeses,
   onOpenChat,
   onSearchClick,
 }) => {
   const [now, setNow] = useState(Date.now());
+  const [flash, setFlash] = useState(false);
+  const prevModoRef = useRef(modoMeses);
 
   useEffect(() => {
     const interval = setInterval(() => setNow(Date.now()), 10000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (prevModoRef.current !== modoMeses) {
+      prevModoRef.current = modoMeses;
+      setFlash(true);
+      const t = setTimeout(() => setFlash(false), 1500);
+      return () => clearTimeout(t);
+    }
+  }, [modoMeses]);
 
   const isOnline = (notif: Notification) => {
     return now - new Date(notif.timestamp).getTime() < 120000;
@@ -56,7 +69,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
         </button>
         <div className="flex items-center gap-1.5">
           <h1 className="text-[17px] font-bold text-white">Mensagens</h1>
-          <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
+          <div className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${flash ? 'bg-yellow-400' : modoMeses ? 'bg-yellow-500' : 'bg-green-500'}`} />
         </div>
         <button onClick={onSearchClick} className="p-1">
           <Search className="w-5 h-5 text-white" />
