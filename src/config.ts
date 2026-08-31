@@ -1,1 +1,1 @@
-export const MODO_MESES = false; // true = bots falam em meses, false = bots falam em reais
+export const MODO_MESES = true; // true = bots falam em meses, false = bots falam em reais
