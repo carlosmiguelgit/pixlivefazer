@@ -69,15 +69,22 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   }, [notification?.timestamp]);
 
   const respondeuRef = useRef(historyMessages ? historyMessages.filter(m => m.sender === 'me').length > 0 : false);
+  const confirmacaoEnviadaRef = useRef(false);
+  const faseRef = useRef<'idle' | 'confirmacao' | 'agradecimento'>('idle');
 
   useEffect(() => {
     if (historyMessages && historyMessages.length > 0) {
       const lastBotMsg = [...historyMessages].reverse().find(m => m.sender === 'them');
       if (lastBotMsg && fraseAgradecimento && lastBotMsg.text === fraseAgradecimento) {
         setAgradecimentoEnviado(true);
+        faseRef.current = 'agradecimento';
+      }
+      const temMsgUsuario = historyMessages.filter(m => m.sender === 'me').length > 0;
+      if (temMsgUsuario && modoMeses && !notification?.alerta && !confirmacaoEnviadaRef.current) {
+        confirmacaoEnviadaRef.current = true;
       }
     }
-  }, [historyMessages, fraseAgradecimento]);
+  }, [historyMessages, fraseAgradecimento, modoMeses, notification?.alerta]);
 
   function gerarAgradecimento() {
     const isRepetido = !!notification?.alerta;
