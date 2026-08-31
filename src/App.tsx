@@ -266,6 +266,8 @@ function ChatApp() {
               setNotifications(prev => prev.map(n => n.id === chatNotification.id ? { ...n, lastMessage: text } : n));
             }}
             fraseAgradecimento={fraseAgradecimento}
+            fraseConfirmacao={chatNotification.fraseConfirmacao}
+            modoMeses={modoMeses}
             notification={chatNotification}
             onOpenNubank={handleOpenNubank}
             historyMessages={chatHistories[chatNotification.id]}

@@ -86,6 +86,24 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     }
   }, [historyMessages, fraseAgradecimento, modoMeses, notification?.alerta]);
 
+  function enviarRespostaBot(texto: string, onComplete?: () => void) {
+    setShowVisto(true);
+    const isRepetido = !!notification?.alerta;
+    const baseDelay = isRepetido ? 9000 : 5000;
+    const randomDelay = 3000;
+    const typingStart = isRepetido ? 2000 + Math.random() * 1000 : 1500 + Math.random() * 1000;
+    timerRef.current = setTimeout(() => {
+      setIsTyping(true);
+      timerRef.current = setTimeout(() => {
+        setShowVisto(false);
+        setIsTyping(false);
+        setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
+        onBotMessage?.(texto);
+        onComplete?.();
+      }, 1000 + baseDelay + Math.random() * randomDelay);
+    }, typingStart);
+  }
+
   function gerarAgradecimento() {
     const isRepetido = !!notification?.alerta;
     let texto = fraseAgradecimento;
@@ -102,21 +120,18 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       }
     }
     texto = texto || "obrigado";
-    setShowVisto(true);
-    const baseDelay = isRepetido ? 9000 : 5000;
-    const randomDelay = 3000;
-    const typingStart = isRepetido ? 2000 + Math.random() * 1000 : 1500 + Math.random() * 1000;
-    timerRef.current = setTimeout(() => {
-      setIsTyping(true);
-      timerRef.current = setTimeout(() => {
-        setShowVisto(false);
-        setIsTyping(false);
-        setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
-        setAgradecimentoEnviado(true);
-        onBotMessage?.(texto);
-        onFlowEnd?.();
-      }, 1000 + baseDelay + Math.random() * randomDelay);
-    }, typingStart);
+    enviarRespostaBot(texto, () => {
+      setAgradecimentoEnviado(true);
+      onFlowEnd?.();
+    });
+  }
+
+  function gerarConfirmacao() {
+    const texto = fraseConfirmacao || "obrigado";
+    enviarRespostaBot(texto, () => {
+      confirmacaoEnviadaRef.current = true;
+      faseRef.current = 'agradecimento';
+    });
   }
 
   function formatTime(ts: number) {
@@ -134,8 +149,18 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       onHistoryUpdate(newMessages);
     }
 
+    const isRepetido = !!notification?.alerta;
+    const isModoMeses = !!modoMeses && !isRepetido;
+
     if (!respondeuRef.current) {
       respondeuRef.current = true;
+      if (isModoMeses && fraseConfirmacao) {
+        faseRef.current = 'confirmacao';
+        gerarConfirmacao();
+      } else {
+        gerarAgradecimento();
+      }
+    } else if (isModoMeses && confirmacaoEnviadaRef.current && !agradecimentoEnviado) {
       gerarAgradecimento();
     }
   }
