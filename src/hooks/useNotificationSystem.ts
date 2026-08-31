@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Notification, Testimonial } from '../types';
 import { MENSAGENS_INICIAIS, RESPOSTAS_AGENUARDAR, MENSAGENS_REPETIDO_INICIAIS, RESPOSTAS_REPETIDO_AGRADECIMENTO } from '../constants';
+import { MODO_MESES } from '../config';
 import tiktokUsers from '../tiktok-users.json';
 
 interface TikTokUser {
@@ -33,6 +34,19 @@ const normalPool = shuffle(allUsers.filter(u => !u.repetido));
 const repetidoPool = shuffle(allUsers.filter(u => u.repetido));
 
 const NOMES_FEMININOS_ATIPICOS = ['jeneffer', 'dayane'];
+
+function valorParaMeses(valor: number): number {
+  const faixas: [number, number][] = [
+    [50, 1], [50, 2], [50, 3],
+    [90, 3], [90, 4], [90, 5],
+    [130, 5], [130, 6], [130, 7],
+    [180, 7], [180, 8], [180, 9],
+    [230, 9], [230, 10], [230, 11],
+    [345, 12],
+  ];
+  const opcoes = faixas.filter(f => f[0] === valor);
+  return opcoes[Math.floor(Math.random() * opcoes.length)][1];
+}
 
 function inferirGenero(nome: string): 'male' | 'female' {
   const primeiro = (nome || '').trim().split(/\s+/)[0]?.toLowerCase() || '';
@@ -109,13 +123,15 @@ export const useNotificationSystem = () => {
 
     let initialMessage: string;
     let fraseAgradecimento: string;
+    const mesesEnviados = MODO_MESES ? valorParaMeses(valor) : undefined;
+    const valorOuMeses = MODO_MESES ? String(mesesEnviados) : String(valor);
 
     if (alerta) {
       // FLUXO REPETIDO - separado do normal
       const poolInicialRep = MENSAGENS_REPETIDO_INICIAIS.filter(m => m.genero === genero);
       const idxRep = genero === 'female' ? repetidoFemaleIdxRef.current : repetidoMaleIdxRef.current;
       const msgRep = poolInicialRep[idxRep % poolInicialRep.length];
-      initialMessage = msgRep.texto.replace('[NOME]', nomeCompleto).replace('[VALOR]', String(valor));
+      initialMessage = msgRep.texto.replace('[NOME]', nomeCompleto).replace('[VALOR]', valorOuMeses);
       if (genero === 'female') {
         repetidoFemaleIdxRef.current = (repetidoFemaleIdxRef.current + 1) % poolInicialRep.length;
       } else {
@@ -133,7 +149,7 @@ export const useNotificationSystem = () => {
     } else {
       // FLUXO NORMAL
       if (user.initialMessage) {
-        initialMessage = user.initialMessage.replace('[NOME]', nomeCompleto).replace('[VALOR]', String(valor));
+        initialMessage = user.initialMessage.replace('[NOME]', nomeCompleto).replace('[VALOR]', valorOuMeses);
       } else {
         const poolInicial = MENSAGENS_INICIAIS.filter(m => m.genero === genero);
         const inicialIdxRef = genero === 'female' ? inicialFemaleIdxRef : inicialMaleIdxRef;
@@ -171,7 +187,8 @@ export const useNotificationSystem = () => {
       contributionAmount: valor,
       initialMessage,
       fraseAgradecimento,
-      read: false
+      read: false,
+      mesesEnviados,
     };
 
     setNotifications(prev => [newNotif, ...prev.slice(0, 11)]);

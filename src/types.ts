@@ -19,6 +19,7 @@ export interface Notification {
   lastMessage?: string;
   fraseAgradecimento?: string;
   read?: boolean;
+  mesesEnviados?: number;
 }
 
 export interface Testimonial {
