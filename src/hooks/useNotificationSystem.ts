@@ -67,6 +67,9 @@ export const useNotificationSystem = (modoMeses: boolean = false) => {
   const [pendingTestimonials, setPendingTestimonials] = useState<PendingTestimonial[]>([]);
   const [unreadDepoimentos, setUnreadDepoimentos] = useState(0);
 
+  const modoMesesRef = useRef(modoMeses);
+  modoMesesRef.current = modoMeses;
+
   const normalOrderRef = useRef<TikTokUser[]>([]);
   const repetidoOrderRef = useRef<TikTokUser[]>([]);
   const messageCountRef = useRef(0);
@@ -122,8 +125,8 @@ export const useNotificationSystem = (modoMeses: boolean = false) => {
 
     let initialMessage: string;
     let fraseAgradecimento: string;
-    const mesesEnviados = modoMeses ? valorParaMeses(valor) : undefined;
-    const valorOuMeses = modoMeses ? String(mesesEnviados) : String(valor);
+    const mesesEnviados = modoMesesRef.current ? valorParaMeses(valor) : undefined;
+    const valorOuMeses = modoMesesRef.current ? String(mesesEnviados) : String(valor);
 
     if (alerta) {
       // FLUXO REPETIDO - separado do normal
