@@ -24,8 +24,10 @@ function ChatApp() {
   const [confirmedNotifications, setConfirmedNotifications] = useState<Notification[]>([]);
   const [activeNotification, setActiveNotification] = useState<Notification | null>(null);
   const [isAnonymousMode, setIsAnonymousMode] = useState(false);
+  const [modoMeses, setModoMeses] = useState(false);
   const [chatNotification, setChatNotification] = useState<Notification | null>(null);
   const [batteryClickCount, setBatteryClickCount] = useState(0);
+  const [searchClickCount, setSearchClickCount] = useState(0);
   const [fraseAgradecimento, setFraseAgradecimento] = useState('');
   const [nubankSheetOpen, setNubankSheetOpen] = useState(false);
   const [nubankNotification, setNubankNotification] = useState<Notification | null>(null);
@@ -39,7 +41,7 @@ function ChatApp() {
     setPendingTestimonials,
     addToBlacklist,
     generateNotification
-  } = useNotificationSystem();
+  } = useNotificationSystem(modoMeses);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -62,6 +64,18 @@ function ChatApp() {
       return next;
     });
     setTimeout(() => setBatteryClickCount(0), 3000);
+  };
+
+  const handleSearchClick = () => {
+    setSearchClickCount(prev => {
+      const next = prev + 1;
+      if (next === 3) {
+        setModoMeses(prev => !prev);
+        return 0;
+      }
+      return next;
+    });
+    setTimeout(() => setSearchClickCount(0), 3000);
   };
 
   const handleStartChat = (notif: Notification) => {
@@ -191,6 +205,7 @@ function ChatApp() {
               isDarkMode={true}
               isAnonymousMode={isAnonymousMode}
               onOpenChat={handleStartChat}
+              onSearchClick={handleSearchClick}
             />
           )}
           {activeTab === 'dash' && (

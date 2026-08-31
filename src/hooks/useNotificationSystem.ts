@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Notification, Testimonial } from '../types';
 import { MENSAGENS_INICIAIS, RESPOSTAS_AGENUARDAR, MENSAGENS_REPETIDO_INICIAIS, RESPOSTAS_REPETIDO_AGRADECIMENTO } from '../constants';
-import { MODO_MESES } from '../config';
 import tiktokUsers from '../tiktok-users.json';
 
 interface TikTokUser {
@@ -54,15 +53,15 @@ function inferirGenero(nome: string): 'male' | 'female' {
   return primeiro.endsWith('a') ? 'female' : 'male';
 }
 
-function montarMensagemInicial(genero: 'male' | 'female', nome: string, idx: number, valor: number): string {
+function montarMensagemInicial(genero: 'male' | 'female', nome: string, idx: number, valorOuMeses: string): string {
   const pool = MENSAGENS_INICIAIS.filter(m => m.genero === genero);
   return pool[idx % pool.length].texto
-    .replace('[VALOR]', String(valor))
+    .replace('[VALOR]', valorOuMeses)
     .replace('do [NOME]', (genero === 'female' ? 'da ' : 'do ') + nome)
     .replace('[NOME]', nome);
 }
 
-export const useNotificationSystem = () => {
+export const useNotificationSystem = (modoMeses: boolean = false) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [dynamicTestimonials, setDynamicTestimonials] = useState<Testimonial[]>([]);
   const [pendingTestimonials, setPendingTestimonials] = useState<PendingTestimonial[]>([]);
@@ -123,8 +122,8 @@ export const useNotificationSystem = () => {
 
     let initialMessage: string;
     let fraseAgradecimento: string;
-    const mesesEnviados = MODO_MESES ? valorParaMeses(valor) : undefined;
-    const valorOuMeses = MODO_MESES ? String(mesesEnviados) : String(valor);
+    const mesesEnviados = modoMeses ? valorParaMeses(valor) : undefined;
+    const valorOuMeses = modoMeses ? String(mesesEnviados) : String(valor);
 
     if (alerta) {
       // FLUXO REPETIDO - separado do normal
@@ -155,7 +154,7 @@ export const useNotificationSystem = () => {
         const inicialIdxRef = genero === 'female' ? inicialFemaleIdxRef : inicialMaleIdxRef;
         const idxInicial = inicialIdxRef.current;
         inicialIdxRef.current = (idxInicial + 1) % poolInicial.length;
-        initialMessage = montarMensagemInicial(genero, nomeCompleto, idxInicial, valor);
+        initialMessage = montarMensagemInicial(genero, nomeCompleto, idxInicial, valorOuMeses);
       }
 
       if (user.justificativa) {

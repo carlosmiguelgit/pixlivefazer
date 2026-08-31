@@ -8,6 +8,7 @@ interface MessageInboxProps {
   isDarkMode: boolean;
   isAnonymousMode: boolean;
   onOpenChat: (notif: Notification) => void;
+  onSearchClick: () => void;
 }
 
 const SUGGESTED_ACCOUNTS = [
@@ -20,6 +21,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
   isDarkMode,
   isAnonymousMode,
   onOpenChat,
+  onSearchClick,
 }) => {
   const [now, setNow] = useState(Date.now());
 
@@ -56,7 +58,9 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
           <h1 className="text-[17px] font-bold text-white">Mensagens</h1>
           <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
         </div>
-        <Search className="w-5 h-5 text-white" />
+        <button onClick={onSearchClick} className="p-1">
+          <Search className="w-5 h-5 text-white" />
+        </button>
       </div>
 
       <div className="flex-1 overflow-y-auto overflow-x-hidden">
