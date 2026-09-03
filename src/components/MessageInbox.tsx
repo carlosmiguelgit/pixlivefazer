@@ -194,17 +194,19 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
                 <p className="text-[15px] font-semibold text-white leading-tight truncate">
                   {isAnonymousMode ? 'Alguém' : notif.name}
                 </p>
-                <p className={`text-[13px] truncate mt-0.5 ${notif.typing ? 'text-white font-bold' : 'text-white/50'}`}>
-                  {getMessagePreview(notif)}
-                </p>
+                <div className="flex items-center gap-1 mt-0.5">
+                  <p className={`text-[13px] truncate ${notif.typing ? 'text-white font-bold' : 'text-white/50'}`}>
+                    {getMessagePreview(notif)}
+                  </p>
+                  {!hideDateTime && !notif.typing && formatTimeAgo(notif.timestamp) && (
+                    <span className="text-[12px] text-white/40 shrink-0">
+                      · {formatTimeAgo(notif.timestamp)}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
-                {!hideDateTime && formatTimeAgo(notif.timestamp) && (
-                  <span className="text-[12px] text-white/40">
-                    {formatTimeAgo(notif.timestamp)}
-                  </span>
-                )}
                 {(notif.unreadCount ?? 0) > 0 && (
                   <div className="min-w-[20px] h-[20px] rounded-full bg-[#fe2c55] flex items-center justify-center px-1">
                     <span className="text-[11px] font-bold text-white leading-none">{notif.unreadCount}</span>
