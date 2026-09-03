@@ -79,6 +79,8 @@ export const useNotificationSystem = (modoMeses: boolean = false) => {
   const inicialMaleIdxRef = useRef(0);
   const inicialFemaleIdxRef = useRef(0);
   const aguardarIdxRef = useRef(0);
+  const confirmacaoMaleIdxRef = useRef(0);
+  const confirmacaoFemaleIdxRef = useRef(0);
   const recebimentoIdxRef = useRef(0);
   const repetidoMaleIdxRef = useRef(0);
   const repetidoFemaleIdxRef = useRef(0);
@@ -174,7 +176,9 @@ export const useNotificationSystem = (modoMeses: boolean = false) => {
       }
 
       const poolConfirmacao = RESPOSTAS_MESES_CONFIRMACAO.filter(m => m.genero === genero);
-      fraseConfirmacao = poolConfirmacao[Math.floor(Math.random() * poolConfirmacao.length)].texto;
+      const confirmacaoIdxRef = genero === 'female' ? confirmacaoFemaleIdxRef : confirmacaoMaleIdxRef;
+      fraseConfirmacao = poolConfirmacao[confirmacaoIdxRef.current % poolConfirmacao.length].texto;
+      confirmacaoIdxRef.current = (confirmacaoIdxRef.current + 1) % poolConfirmacao.length;
     }
 
     const newNotif: Notification = {

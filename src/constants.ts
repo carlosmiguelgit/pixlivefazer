@@ -172,6 +172,6 @@ export const RESPOSTAS_MESES_CONFIRMACAO: { texto: string; genero: 'female' | 'm
   { texto: "isso vai me ajudar d+ agora", genero: 'male' },
   { texto: "vlw mano, c ta me salvando", genero: 'male' },
   { texto: "mano eu to c mta gratidao vlw", genero: 'male' },
-  { texto: "cara sim, mto obg disso", genero: 'male' },
+  { texto: "cara sim, mto obg mano", genero: 'male' },
   { texto: "porra c é brabo vlw", genero: 'male' },
 ];
