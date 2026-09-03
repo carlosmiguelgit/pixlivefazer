@@ -22,6 +22,7 @@ export interface Notification {
   read?: boolean;
   unreadCount?: number;
   typing?: boolean;
+  lastMessageTimestamp?: number;
   mesesEnviados?: number;
 }
 

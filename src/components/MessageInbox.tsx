@@ -198,9 +198,9 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
                   <p className={`text-[13px] truncate ${notif.typing ? 'text-white font-bold' : 'text-white/50'}`}>
                     {getMessagePreview(notif)}
                   </p>
-                  {!hideDateTime && !notif.typing && formatTimeAgo(notif.timestamp) && (
+                  {!hideDateTime && !notif.typing && formatTimeAgo(notif.lastMessageTimestamp || notif.timestamp) && (
                     <span className="text-[12px] text-white/40 shrink-0">
-                      · {formatTimeAgo(notif.timestamp)}
+                      · {formatTimeAgo(notif.lastMessageTimestamp || notif.timestamp)}
                     </span>
                   )}
                 </div>

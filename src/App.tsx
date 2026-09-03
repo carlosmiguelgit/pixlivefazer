@@ -47,7 +47,7 @@ function ChatApp() {
     pendingBotTimersRef.current[notifId] = setTimeout(() => {
       delete pendingBotTimersRef.current[notifId];
       const isChatOpen = chatNotificationRef.current?.id === notifId;
-      setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, typing: false, lastMessage: texto, ...(isChatOpen ? {} : { unreadCount: (n.unreadCount || 0) + 1 }) } : n));
+      setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, typing: false, lastMessage: texto, lastMessageTimestamp: Date.now(), ...(isChatOpen ? {} : { unreadCount: (n.unreadCount || 0) + 1 }) } : n));
       setChatHistories(prev => {
         const existing = prev[notifId] || [];
         const alreadyHas = existing.some(m => m.sender === 'them' && m.text === texto);
