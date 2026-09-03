@@ -168,7 +168,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
         faseRef.current = 'confirmacao';
         gerarConfirmacao();
       }
-    } else if (faseRef.current === 'confirmacao' && !agradecimentoEnviado) {
+    } else if (confirmacaoEnviadaRef.current && !agradecimentoEnviado) {
       gerarAgradecimento();
     }
   }
