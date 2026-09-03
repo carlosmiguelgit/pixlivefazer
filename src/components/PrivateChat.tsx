@@ -69,9 +69,16 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     return () => clearInterval(interval);
   }, [notification?.timestamp]);
 
-  const respondeuRef = useRef(historyMessages ? historyMessages.filter(m => m.sender === 'me').length > 0 : false);
-  const confirmacaoEnviadaRef = useRef(false);
-  const faseRef = useRef<'idle' | 'confirmacao' | 'agradecimento'>('idle');
+  const hasHistory = !!(historyMessages && historyMessages.length > 0);
+  const hasUserMsgInHistory = hasHistory && historyMessages!.some(m => m.sender === 'me');
+  const hasConfirmMsgInHistory = hasHistory && historyMessages!.some(m => m.sender === 'them' && fraseConfirmacao && m.text === fraseConfirmacao);
+  const hasAgradMsgInHistory = hasHistory && historyMessages!.some(m => m.sender === 'them' && fraseAgradecimento && m.text === fraseAgradecimento);
+
+  const respondeuRef = useRef(hasUserMsgInHistory);
+  const confirmacaoEnviadaRef = useRef(hasConfirmMsgInHistory);
+  const faseRef = useRef<'idle' | 'confirmacao' | 'agradecimento'>(
+    hasAgradMsgInHistory ? 'agradecimento' : hasConfirmMsgInHistory ? 'agradecimento' : hasUserMsgInHistory ? 'confirmacao' : 'idle'
+  );
 
   useEffect(() => {
     if (historyMessages && historyMessages.length > 0) {
@@ -80,12 +87,13 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
         setAgradecimentoEnviado(true);
         faseRef.current = 'agradecimento';
       }
-      const temMsgUsuario = historyMessages.filter(m => m.sender === 'me').length > 0;
-      if (temMsgUsuario && modoMeses && !notification?.alerta && !confirmacaoEnviadaRef.current) {
+      const hasBotConfirmacao = historyMessages.some(m => m.sender === 'them' && fraseConfirmacao && m.text === fraseConfirmacao);
+      if (hasBotConfirmacao && !confirmacaoEnviadaRef.current) {
         confirmacaoEnviadaRef.current = true;
+        faseRef.current = 'agradecimento';
       }
     }
-  }, [historyMessages, fraseAgradecimento, modoMeses, notification?.alerta]);
+  }, [historyMessages, fraseAgradecimento, fraseConfirmacao]);
 
   function enviarRespostaBot(texto: string, onComplete?: () => void) {
     setShowVisto(true);
