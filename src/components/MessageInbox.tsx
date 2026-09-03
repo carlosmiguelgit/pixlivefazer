@@ -51,7 +51,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
   const formatTimeAgo = (timestamp: Date): string => {
     const now = new Date();
     const diff = Math.floor((now.getTime() - timestamp.getTime()) / 1000);
-    if (diff < 60) return 'agora';
+    if (diff < 60) return '';
     if (diff < 3600) return `${Math.floor(diff / 60)}m`;
     if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
     return `${Math.floor(diff / 86400)}d`;
