@@ -38,6 +38,10 @@ function ChatApp() {
   const pendingBotTimersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
 
   const handleScheduleBotResponse = useCallback((notifId: string, texto: string, delayMs: number) => {
+    const isChatOpen = chatNotification?.id === notifId;
+    if (!isChatOpen) {
+      setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, unreadCount: (n.unreadCount || 0) + 1 } : n));
+    }
     if (pendingBotTimersRef.current[notifId]) {
       clearTimeout(pendingBotTimersRef.current[notifId]);
     }
@@ -50,7 +54,7 @@ function ChatApp() {
         return { ...prev, [notifId]: [...existing, { text: texto, sender: 'them' as const }] };
       });
     }, delayMs);
-  }, []);
+  }, [chatNotification?.id]);
 
   const {
     notifications,
@@ -111,7 +115,7 @@ function ChatApp() {
 
   const handleStartChat = (notif: Notification) => {
     setChatNotification(notif);
-    setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, read: true } : n));
+    setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, read: true, unreadCount: 0 } : n));
     setFraseAgradecimento(notif.fraseAgradecimento || "obrigado");
     setNubankCompleted(false);
   };

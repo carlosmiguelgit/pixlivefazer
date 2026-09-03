@@ -20,6 +20,7 @@ export interface Notification {
   fraseAgradecimento?: string;
   fraseConfirmacao?: string;
   read?: boolean;
+  unreadCount?: number;
   mesesEnviados?: number;
 }
 
