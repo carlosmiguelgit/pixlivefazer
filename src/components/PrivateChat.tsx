@@ -36,14 +36,14 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   );
   const [inputText, setInputText] = useState("");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [showVisto, setShowVisto] = useState(() => {
-    const lastMsg = historyMessages && historyMessages.length > 0 ? historyMessages[historyMessages.length - 1] : null;
-    return lastMsg?.showVisto ?? false;
-  });
+  const [showVisto, setShowVisto] = useState(false);
   const [agradecimentoEnviado, setAgradecimentoEnviado] = useState(false);
   const [isTyping, setIsTyping] = useState(() => {
-    const lastMsg = historyMessages && historyMessages.length > 0 ? historyMessages[historyMessages.length - 1] : null;
-    return lastMsg?.isTyping ?? false;
+    if (historyMessages && historyMessages.length > 0) {
+      const lastMsg = historyMessages[historyMessages.length - 1];
+      if (lastMsg.sender === 'me') return true;
+    }
+    return false;
   });
   const [isOnline, setIsOnline] = useState(() => {
     if (notification?.timestamp) {
@@ -98,14 +98,23 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
 
   useEffect(() => {
     if (historyMessages && historyMessages.length > 0) {
-      const lastBotMsg = [...historyMessages].reverse().find(m => m.sender === 'them');
-      if (lastBotMsg && fraseAgradecimento && lastBotMsg.text === fraseAgradecimento) {
-        setAgradecimentoEnviado(true);
+      const lastMsg = historyMessages[historyMessages.length - 1];
+      if (lastMsg.sender === 'them') {
+        setIsTyping(false);
+        setShowVisto(false);
+      }
+
+      const hasUserMsg = historyMessages.some(m => m.sender === 'me');
+      const hasBotConfirmacao = historyMessages.some(m => m.sender === 'them' && fraseConfirmacao && m.text === fraseConfirmacao);
+      const hasBotAgradecimento = historyMessages.some(m => m.sender === 'them' && fraseAgradecimento && m.text === fraseAgradecimento);
+
+      respondeuRef.current = hasUserMsg || respondeuRef.current;
+      if (hasBotConfirmacao) {
+        confirmacaoEnviadaRef.current = true;
         faseRef.current = 'agradecimento';
       }
-      const hasBotConfirmacao = historyMessages.some(m => m.sender === 'them' && fraseConfirmacao && m.text === fraseConfirmacao);
-      if (hasBotConfirmacao && !confirmacaoEnviadaRef.current) {
-        confirmacaoEnviadaRef.current = true;
+      if (hasBotAgradecimento) {
+        setAgradecimentoEnviado(true);
         faseRef.current = 'agradecimento';
       }
     }
@@ -173,12 +182,18 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   function handleSend() {
     const text = inputText.trim();
     if (!text) return;
+
+    const lastHistMsg = historyMessages && historyMessages.length > 0 ? historyMessages[historyMessages.length - 1] : null;
+    const waitingForBot = lastHistMsg?.sender === 'me' && !isTyping;
+
     const newMessages = [...messages, { text, sender: 'me' as const, timestamp: Date.now() }];
     setMessages(newMessages);
     setInputText("");
     if (onHistoryUpdate) {
       onHistoryUpdate(newMessages);
     }
+
+    if (waitingForBot) return;
 
     const isRepetido = !!notification?.alerta;
 
