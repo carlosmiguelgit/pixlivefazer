@@ -101,7 +101,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     const isRepetido = !!notification?.alerta;
     const baseDelay = isRepetido ? 9000 : 5000;
     const randomDelay = 3000;
-    const typingStart = isRepetido ? 2000 + Math.random() * 1000 : 1500 + Math.random() * 1000;
+    const typingStart = isRepetido ? 4000 + Math.random() * 2000 : 3000 + Math.random() * 2000;
     const totalDelay = typingStart + 1000 + baseDelay + Math.random() * randomDelay;
 
     if (notification?.id && onScheduleBotResponse) {
