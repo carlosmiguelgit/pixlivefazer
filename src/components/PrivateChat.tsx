@@ -36,6 +36,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   );
   const [inputText, setInputText] = useState("");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const agradFallbackIdxRef = useRef(0);
   const [showVisto, setShowVisto] = useState(false);
   const [agradecimentoEnviado, setAgradecimentoEnviado] = useState(false);
   const [isTyping, setIsTyping] = useState(() => {
