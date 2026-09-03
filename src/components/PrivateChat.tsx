@@ -75,6 +75,15 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
   const hasConfirmMsgInHistory = hasHistory && historyMessages!.some(m => m.sender === 'them' && fraseConfirmacao && m.text === fraseConfirmacao);
   const hasAgradMsgInHistory = hasHistory && historyMessages!.some(m => m.sender === 'them' && fraseAgradecimento && m.text === fraseAgradecimento);
 
+  const formatMsgTimeAgo = (timestamp?: number): string => {
+    if (!timestamp) return '';
+    const diff = Math.floor((Date.now() - timestamp) / 1000);
+    if (diff < 60) return '';
+    if (diff < 3600) return `${Math.floor(diff / 60)} min`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
+    return `${Math.floor(diff / 86400)}d`;
+  };
+
   const respondeuRef = useRef(hasUserMsgInHistory);
   const confirmacaoEnviadaRef = useRef(hasConfirmMsgInHistory);
   const faseRef = useRef<'idle' | 'confirmacao' | 'agradecimento'>(
@@ -235,8 +244,13 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
                 <div className="w-[28px] h-[28px] rounded-full bg-zinc-700 overflow-hidden shrink-0 border border-zinc-600">
                   <img src={avatar} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                 </div>
-                <div className="bg-[#2a2a2a] text-white text-[14px] px-3 py-2 rounded-[18px] max-w-[280px] leading-snug break-words whitespace-pre-wrap">
-                  {msg.text}
+                <div className="flex flex-col gap-0.5">
+                  <div className="bg-[#2a2a2a] text-white text-[14px] px-3 py-2 rounded-[18px] max-w-[280px] leading-snug break-words whitespace-pre-wrap">
+                    {msg.text}
+                  </div>
+                  {!hideDateTime && formatMsgTimeAgo(msg.timestamp) && (
+                    <span className="text-[12px] text-white/40 pl-1">{formatMsgTimeAgo(msg.timestamp)}</span>
+                  )}
                 </div>
               </div>
             )}
