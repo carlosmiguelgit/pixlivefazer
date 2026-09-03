@@ -184,7 +184,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     if (!text) return;
 
     const lastHistMsg = historyMessages && historyMessages.length > 0 ? historyMessages[historyMessages.length - 1] : null;
-    const waitingForBot = lastHistMsg?.sender === 'me' && !isTyping;
+    const botAlreadyScheduled = lastHistMsg?.sender === 'me';
 
     const newMessages = [...messages, { text, sender: 'me' as const, timestamp: Date.now() }];
     setMessages(newMessages);
@@ -193,7 +193,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       onHistoryUpdate(newMessages);
     }
 
-    if (waitingForBot) return;
+    if (botAlreadyScheduled) return;
 
     const isRepetido = !!notification?.alerta;
 
