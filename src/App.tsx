@@ -174,6 +174,12 @@ function ChatApp() {
   };
 
   const handleChatBack = () => {
+    if (chatNotification) {
+      const hist = chatHistories[chatNotification.id];
+      const lastMsg = hist && hist.length > 0 ? hist[hist.length - 1] : null;
+      const flowDone = lastMsg?.sender === 'them';
+      setNotifications(prev => prev.map(n => n.id === chatNotification.id ? { ...n, typing: flowDone ? false : n.typing } : n));
+    }
     setChatNotification(null);
     setNubankCompleted(false);
     if (flowCompletedRef.current) {
