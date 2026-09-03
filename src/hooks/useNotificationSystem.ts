@@ -173,10 +173,8 @@ export const useNotificationSystem = (modoMeses: boolean = false) => {
         aguardarIdxRef.current++;
       }
 
-      if (modoMesesRef.current) {
-        const poolConfirmacao = RESPOSTAS_MESES_CONFIRMACAO.filter(m => m.genero === genero);
-        fraseConfirmacao = poolConfirmacao[Math.floor(Math.random() * poolConfirmacao.length)].texto;
-      }
+      const poolConfirmacao = RESPOSTAS_MESES_CONFIRMACAO.filter(m => m.genero === genero);
+      fraseConfirmacao = poolConfirmacao[Math.floor(Math.random() * poolConfirmacao.length)].texto;
     }
 
     const newNotif: Notification = {

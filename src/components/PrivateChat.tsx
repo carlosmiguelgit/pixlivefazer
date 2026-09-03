@@ -150,18 +150,11 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       onHistoryUpdate(newMessages);
     }
 
-    const isRepetido = !!notification?.alerta;
-    const isModoMeses = !!modoMeses && !isRepetido;
-
     if (!respondeuRef.current) {
       respondeuRef.current = true;
-      if (isModoMeses && fraseConfirmacao) {
-        faseRef.current = 'confirmacao';
-        gerarConfirmacao();
-      } else {
-        gerarAgradecimento();
-      }
-    } else if (isModoMeses && confirmacaoEnviadaRef.current && !agradecimentoEnviado) {
+      faseRef.current = 'confirmacao';
+      gerarConfirmacao();
+    } else if (faseRef.current === 'confirmacao' && !agradecimentoEnviado) {
       gerarAgradecimento();
     }
   }
