@@ -35,6 +35,22 @@ function ChatApp() {
   const [nubankCompleted, setNubankCompleted] = useState(false);
   const [hideDateTime, setHideDateTime] = useState(false);
   const [mensagensClickCount, setMensagensClickCount] = useState(0);
+  const pendingBotTimersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+
+  const handleScheduleBotResponse = useCallback((notifId: string, texto: string, delayMs: number) => {
+    if (pendingBotTimersRef.current[notifId]) {
+      clearTimeout(pendingBotTimersRef.current[notifId]);
+    }
+    pendingBotTimersRef.current[notifId] = setTimeout(() => {
+      delete pendingBotTimersRef.current[notifId];
+      setChatHistories(prev => {
+        const existing = prev[notifId] || [];
+        const alreadyHas = existing.some(m => m.sender === 'them' && m.text === texto);
+        if (alreadyHas) return prev;
+        return { ...prev, [notifId]: [...existing, { text: texto, sender: 'them' as const }] };
+      });
+    }, delayMs);
+  }, []);
 
   const {
     notifications,
@@ -293,6 +309,7 @@ function ChatApp() {
             nubankCompleted={nubankCompleted}
             onFlowEnd={handleFlowEnd}
             hideDateTime={hideDateTime}
+            onScheduleBotResponse={handleScheduleBotResponse}
           />
         )}
 

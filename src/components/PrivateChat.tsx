@@ -25,9 +25,10 @@ interface PrivateChatProps {
   nubankCompleted?: boolean;
   onFlowEnd?: () => void;
   hideDateTime?: boolean;
+  onScheduleBotResponse?: (notifId: string, texto: string, delayMs: number) => void;
 }
 
-export default function PrivateChat({ username, nickname, fullName, avatar, followingCount, followerCount, pixKey, initialMessage, onComplete, onBack, onBotMessage, fraseAgradecimento, fraseConfirmacao, modoMeses, notification, onOpenNubank, historyMessages, onHistoryUpdate, nubankCompleted, onFlowEnd, hideDateTime = false }: PrivateChatProps) {
+export default function PrivateChat({ username, nickname, fullName, avatar, followingCount, followerCount, pixKey, initialMessage, onComplete, onBack, onBotMessage, fraseAgradecimento, fraseConfirmacao, modoMeses, notification, onOpenNubank, historyMessages, onHistoryUpdate, nubankCompleted, onFlowEnd, hideDateTime = false, onScheduleBotResponse }: PrivateChatProps) {
   const [messages, setMessages] = useState<{ text: string; sender: 'me' | 'them'; timestamp: number }[]>(
     historyMessages && historyMessages.length > 0
       ? historyMessages.map((m, i) => ({ ...m, timestamp: m.timestamp || Date.now() - (historyMessages.length - i) * 60000 }))
@@ -101,6 +102,12 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     const baseDelay = isRepetido ? 9000 : 5000;
     const randomDelay = 3000;
     const typingStart = isRepetido ? 2000 + Math.random() * 1000 : 1500 + Math.random() * 1000;
+    const totalDelay = typingStart + 1000 + baseDelay + Math.random() * randomDelay;
+
+    if (notification?.id && onScheduleBotResponse) {
+      onScheduleBotResponse(notification.id, texto, totalDelay);
+    }
+
     timerRef.current = setTimeout(() => {
       setIsTyping(true);
       timerRef.current = setTimeout(() => {
@@ -109,7 +116,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
         setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
         onBotMessage?.(texto);
         onComplete?.();
-      }, 1000 + baseDelay + Math.random() * randomDelay);
+      }, totalDelay - typingStart);
     }, typingStart);
   }
 
