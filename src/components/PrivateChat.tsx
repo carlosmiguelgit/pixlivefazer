@@ -217,6 +217,12 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     }
   }, [messages]);
 
+  useEffect(() => {
+    if (historyMessages && historyMessages.length > messages.length) {
+      setMessages(historyMessages.map((m, i) => ({ ...m, timestamp: m.timestamp || Date.now() - (historyMessages.length - i) * 60000 })));
+    }
+  }, [historyMessages]);
+
   return (
     <div className="fixed inset-0 z-[100] flex flex-col bg-[#0a0a0a] text-white overflow-hidden">
       <div className="flex items-center gap-1.5 px-3 pt-[50px] pb-2.5 bg-[#0a0a0a] shrink-0">
