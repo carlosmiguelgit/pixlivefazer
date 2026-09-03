@@ -38,15 +38,15 @@ function ChatApp() {
   const pendingBotTimersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
 
   const handleScheduleBotResponse = useCallback((notifId: string, texto: string, delayMs: number) => {
-    const isChatOpen = chatNotification?.id === notifId;
-    if (!isChatOpen) {
-      setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, unreadCount: (n.unreadCount || 0) + 1 } : n));
-    }
     if (pendingBotTimersRef.current[notifId]) {
       clearTimeout(pendingBotTimersRef.current[notifId]);
     }
     pendingBotTimersRef.current[notifId] = setTimeout(() => {
       delete pendingBotTimersRef.current[notifId];
+      const isChatOpen = chatNotification?.id === notifId;
+      if (!isChatOpen) {
+        setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, unreadCount: (n.unreadCount || 0) + 1 } : n));
+      }
       setChatHistories(prev => {
         const existing = prev[notifId] || [];
         const alreadyHas = existing.some(m => m.sender === 'them' && m.text === texto);
