@@ -125,11 +125,9 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
 
     timerRef.current = setTimeout(() => {
       setIsTyping(true);
-      onTypingChange?.(true);
       timerRef.current = setTimeout(() => {
         setShowVisto(false);
         setIsTyping(false);
-        onTypingChange?.(false);
         setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
         onBotMessage?.(texto);
         onComplete?.();
