@@ -199,7 +199,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
-                {!hideDateTime && (
+                {!hideDateTime && formatTimeAgo(notif.timestamp) && (
                   <span className="text-[12px] text-white/40">
                     {formatTimeAgo(notif.timestamp)}
                   </span>
