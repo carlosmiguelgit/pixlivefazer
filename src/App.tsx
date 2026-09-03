@@ -33,6 +33,8 @@ function ChatApp() {
   const [nubankNotification, setNubankNotification] = useState<Notification | null>(null);
   const [chatHistories, setChatHistories] = useState<Record<string, { text: string; sender: 'me' | 'them' }[]>>(loadHistories);
   const [nubankCompleted, setNubankCompleted] = useState(false);
+  const [hideDateTime, setHideDateTime] = useState(false);
+  const [mensagensClickCount, setMensagensClickCount] = useState(0);
 
   const {
     notifications,
@@ -77,6 +79,18 @@ function ChatApp() {
       return next;
     });
     setTimeout(() => setSearchClickCount(0), 3000);
+  };
+
+  const handleMensagensClick = () => {
+    setMensagensClickCount(prev => {
+      const next = prev + 1;
+      if (next === 3) {
+        setHideDateTime(prev => !prev);
+        return 0;
+      }
+      return next;
+    });
+    setTimeout(() => setMensagensClickCount(0), 3000);
   };
 
   const handleStartChat = (notif: Notification) => {
@@ -197,6 +211,7 @@ function ChatApp() {
         <StatusBar
           onBatteryClick={handleBatteryClick}
           isDarkMode={true}
+          hideDateTime={hideDateTime}
         />
 
         <main className="relative z-10 flex-1 flex flex-col overflow-y-auto overflow-x-hidden">
@@ -208,6 +223,7 @@ function ChatApp() {
               modoMeses={modoMeses}
               onOpenChat={handleStartChat}
               onSearchClick={handleSearchClick}
+              hideDateTime={hideDateTime}
             />
           )}
           {activeTab === 'dash' && (
@@ -230,6 +246,7 @@ function ChatApp() {
               dynamicTestimonials={dynamicTestimonials}
               isAnonymousMode={isAnonymousMode}
               isDarkMode={true}
+              hideDateTime={hideDateTime}
             />
           )}
           {activeTab === 'ranking' && (
@@ -247,6 +264,7 @@ function ChatApp() {
             setActiveTab={setActiveTab}
             isDarkMode={true}
             unreadCount={notifications.filter(n => !n.read).length}
+            onMensagensClick={handleMensagensClick}
           />
         </div>
 
@@ -274,6 +292,7 @@ function ChatApp() {
             onHistoryUpdate={(messages) => handleHistoryUpdate(chatNotification.id, messages)}
             nubankCompleted={nubankCompleted}
             onFlowEnd={handleFlowEnd}
+            hideDateTime={hideDateTime}
           />
         )}
 
@@ -286,6 +305,7 @@ function ChatApp() {
             onConfirm={handleNubankComplete}
             isAnonymousMode={isAnonymousMode}
             isDarkMode={true}
+            hideDateTime={hideDateTime}
           />
         )}
       </div>

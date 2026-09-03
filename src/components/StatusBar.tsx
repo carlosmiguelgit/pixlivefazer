@@ -4,11 +4,13 @@ import { Signal, Wifi } from 'lucide-react';
 interface StatusBarProps {
   onBatteryClick: () => void;
   isDarkMode: boolean;
+  hideDateTime?: boolean;
 }
 
 export const StatusBar: React.FC<StatusBarProps> = ({ 
   onBatteryClick, 
-  isDarkMode
+  isDarkMode,
+  hideDateTime = false
 }) => {
   const [time, setTime] = useState(() => new Date());
 
@@ -27,9 +29,11 @@ export const StatusBar: React.FC<StatusBarProps> = ({
   return (
     <div className="relative z-30 px-6 pt-4 pb-0 flex justify-between items-start tracking-tight">
       <div className="flex items-center mt-1.5">
-        <span className={`text-xs font-medium tabular-nums ${isDarkMode ? 'text-white/50' : 'text-slate-400'}`}>
-          {formattedTime}
-        </span>
+        {!hideDateTime && (
+          <span className={`text-xs font-medium tabular-nums ${isDarkMode ? 'text-white/50' : 'text-slate-400'}`}>
+            {formattedTime}
+          </span>
+        )}
       </div>
       <div className="flex flex-col items-end">
         <div className={`flex items-center gap-1.5 mt-1 ${isDarkMode ? 'text-white/50' : 'text-slate-400'}`}>

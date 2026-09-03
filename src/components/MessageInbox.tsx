@@ -10,6 +10,7 @@ interface MessageInboxProps {
   modoMeses: boolean;
   onOpenChat: (notif: Notification) => void;
   onSearchClick: (e: React.MouseEvent) => void;
+  hideDateTime?: boolean;
 }
 
 const SUGGESTED_ACCOUNTS = [
@@ -24,6 +25,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
   modoMeses,
   onOpenChat,
   onSearchClick,
+  hideDateTime = false,
 }) => {
   const [now, setNow] = useState(Date.now());
   const [flash, setFlash] = useState(false);
@@ -198,9 +200,11 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
-                <span className="text-[12px] text-white/40">
-                  {formatTimeAgo(notif.timestamp)}
-                </span>
+                {!hideDateTime && (
+                  <span className="text-[12px] text-white/40">
+                    {formatTimeAgo(notif.timestamp)}
+                  </span>
+                )}
                 {!notif.read && <div className="w-2.5 h-2.5 rounded-full bg-[#fe2c55]" />}
               </div>
             </motion.div>

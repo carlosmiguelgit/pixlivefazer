@@ -24,9 +24,10 @@ interface PrivateChatProps {
   onHistoryUpdate?: (messages: { text: string; sender: 'me' | 'them'; timestamp?: number }[]) => void;
   nubankCompleted?: boolean;
   onFlowEnd?: () => void;
+  hideDateTime?: boolean;
 }
 
-export default function PrivateChat({ username, nickname, fullName, avatar, followingCount, followerCount, pixKey, initialMessage, onComplete, onBack, onBotMessage, fraseAgradecimento, fraseConfirmacao, modoMeses, notification, onOpenNubank, historyMessages, onHistoryUpdate, nubankCompleted, onFlowEnd }: PrivateChatProps) {
+export default function PrivateChat({ username, nickname, fullName, avatar, followingCount, followerCount, pixKey, initialMessage, onComplete, onBack, onBotMessage, fraseAgradecimento, fraseConfirmacao, modoMeses, notification, onOpenNubank, historyMessages, onHistoryUpdate, nubankCompleted, onFlowEnd, hideDateTime = false }: PrivateChatProps) {
   const [messages, setMessages] = useState<{ text: string; sender: 'me' | 'them'; timestamp: number }[]>(
     historyMessages && historyMessages.length > 0
       ? historyMessages.map((m, i) => ({ ...m, timestamp: m.timestamp || Date.now() - (historyMessages.length - i) * 60000 }))
@@ -209,7 +210,7 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       <div className="flex-1 bg-[#0a0a0a] overflow-y-auto px-4 py-2 flex flex-col gap-2">
         {messages.map((msg, i) => (
           <div key={i} className="flex flex-col gap-1">
-            {i === 0 && <span className="text-center text-[11px] text-zinc-500 leading-none mt-1">{formatTime(msg.timestamp)}</span>}
+            {i === 0 && !hideDateTime && <span className="text-center text-[11px] text-zinc-500 leading-none mt-1">{formatTime(msg.timestamp)}</span>}
             {msg.sender === 'me' ? (
               <div className="flex flex-col items-end gap-1">
                 <div className="bg-[#7c3aed] text-white text-[14px] px-3 py-2 rounded-[18px] max-w-[280px] leading-snug break-words">{msg.text}</div>

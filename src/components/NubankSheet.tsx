@@ -13,6 +13,7 @@ interface NubankSheetProps {
   onConfirm: (method: 'conta' | 'credito', editedValue: number) => void;
   isAnonymousMode: boolean;
   isDarkMode: boolean;
+  hideDateTime?: boolean;
 }
 
 type FlowStep = 'splash' | 'select' | 'installments' | 'review' | 'pin' | 'processing' | 'success';
@@ -38,7 +39,8 @@ export const NubankSheet: FC<NubankSheetProps> = ({
   nubankBalance,
   onConfirm,
   isAnonymousMode,
-  isDarkMode
+  isDarkMode,
+  hideDateTime = false
 }) => {
   const [step, setStep] = useState<FlowStep>('splash');
   const [processingText, setProcessingText] = useState("Transferindo...");
@@ -582,6 +584,7 @@ export const NubankSheet: FC<NubankSheetProps> = ({
             destBank={destBankData.bank}
             destAgency={destBankData.agency}
             destAccount={destBankData.account}
+            hideDateTime={hideDateTime}
           />
         </motion.div>
       )}

@@ -7,13 +7,15 @@ interface ExtratoProps {
   dynamicTestimonials: Testimonial[];
   isAnonymousMode: boolean;
   isDarkMode?: boolean;
+  hideDateTime?: boolean;
 }
 
 export const Extrato: React.FC<ExtratoProps> = ({ 
   confirmedNotifications, 
   dynamicTestimonials, 
   isAnonymousMode,
-  isDarkMode = true
+  isDarkMode = true,
+  hideDateTime = false
 }) => {
   return (
     <div className="mt-2">
@@ -63,7 +65,7 @@ export const Extrato: React.FC<ExtratoProps> = ({
                       </p>
                     )}
                     <p className={`text-[10px] uppercase ${isDarkMode ? 'text-white/60' : 'text-slate-400'}`}>
-                      {notif.contributionAmount} PARTICIPAÇÃO • {notif.timestamp.toLocaleDateString()}
+                      {notif.contributionAmount} PARTICIPAÇÃO{!hideDateTime && <> • {notif.timestamp.toLocaleDateString()}</>}
                     </p>
                   </div>
                 </div>

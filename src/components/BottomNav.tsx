@@ -5,9 +5,10 @@ interface BottomNavProps {
   setActiveTab: (tab: 'inbox' | 'dash' | 'extrato' | 'ranking') => void;
   isDarkMode?: boolean;
   unreadCount?: number;
+  onMensagensClick?: () => void;
 }
 
-export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab, isDarkMode = true, unreadCount = 0 }) => {
+export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab, isDarkMode = true, unreadCount = 0, onMensagensClick }) => {
   return (
     <nav data-nav className="relative z-20 h-[52px] border-t border-white/10 flex items-center justify-around px-2 bg-[#000000]">
       <button 
@@ -32,6 +33,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab, i
 
       <button 
         className="flex flex-col items-center justify-center flex-1 py-1 relative text-white"
+        onClick={onMensagensClick}
       >
         <div className="relative">
           <img src="/mensagem.png" alt="Mensagens" className="h-[45px] w-auto object-contain translate-x-[5px]" />

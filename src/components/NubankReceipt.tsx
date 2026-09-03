@@ -12,6 +12,7 @@ interface NubankReceiptProps {
   destBank: string;
   destAgency: string;
   destAccount: string;
+  hideDateTime?: boolean;
 }
 
 const DestinoIcon = () => (
@@ -38,7 +39,8 @@ export const NubankReceipt: FC<NubankReceiptProps> = ({
   isAnonymousMode,
   destBank,
   destAgency,
-  destAccount
+  destAccount,
+  hideDateTime = false
 }) => {
   const receiptData = useMemo(() => {
     const randomOriginAccount = Math.floor(10000000 + Math.random() * 90000000).toString() + "-" + Math.floor(Math.random() * 10);
@@ -86,7 +88,9 @@ export const NubankReceipt: FC<NubankReceiptProps> = ({
 
         <div className="space-y-1">
           <h1 className="text-2xl font-bold text-slate-900">Comprovante de transferência</h1>
-          <p className="text-sm font-medium text-slate-500 uppercase tracking-tight">{receiptData.date}</p>
+          {!hideDateTime && (
+            <p className="text-sm font-medium text-slate-500 uppercase tracking-tight">{receiptData.date}</p>
+          )}
         </div>
 
         {/* Valor e Tipo */}
