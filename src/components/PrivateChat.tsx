@@ -150,15 +150,11 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     let texto = fraseAgradecimento;
     if (!texto && notification) {
       const genero = notification.gender;
-      if (isRepetido) {
-        const poolAgradRep = RESPOSTAS_REPETIDO_AGRADECIMENTO.filter(r => r.genero === genero);
-        texto = poolAgradRep[Math.floor(Math.random() * poolAgradRep.length)].texto || "obrigado";
-      } else {
-        const valor = notification.contributionAmount;
-        const faixa = valor <= 90 ? 'baixa' : 'alta';
-        const poolAgrad = RESPOSTAS_AGENUARDAR.filter(r => r.faixa === faixa && r.genero === genero);
-        texto = poolAgrad[Math.floor(Math.random() * poolAgrad.length)].texto || "obrigado";
-      }
+      const pool = isRepetido
+        ? RESPOSTAS_REPETIDO_AGRADECIMENTO.filter(r => r.genero === genero)
+        : RESPOSTAS_AGENUARDAR.filter(r => r.faixa === (notification.contributionAmount <= 90 ? 'baixa' : 'alta') && r.genero === genero);
+      texto = pool[agradFallbackIdxRef.current % pool.length].texto || "obrigado";
+      agradFallbackIdxRef.current = (agradFallbackIdxRef.current + 1) % pool.length;
     }
     texto = texto || "obrigado";
     enviarRespostaBot(texto, () => {
