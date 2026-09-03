@@ -183,26 +183,30 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
     const lastHistMsg = historyMessages && historyMessages.length > 0 ? historyMessages[historyMessages.length - 1] : null;
     const botAlreadyScheduled = lastHistMsg?.sender === 'me';
 
-    const newMessages = [...messages, { text, sender: 'me' as const, timestamp: Date.now() }];
-    setMessages(newMessages);
-    setInputText("");
-    if (onHistoryUpdate) {
-      onHistoryUpdate(newMessages);
-    }
-
-    if (botAlreadyScheduled) return;
-
     const isRepetido = !!notification?.alerta;
 
     if (!respondeuRef.current) {
       respondeuRef.current = true;
+      const newMessages = [...messages, { text, sender: 'me' as const, timestamp: Date.now() }];
+      setMessages(newMessages);
+      setInputText("");
+      if (onHistoryUpdate) onHistoryUpdate(newMessages);
       if (isRepetido) {
         gerarAgradecimento();
       } else {
         faseRef.current = 'confirmacao';
         gerarConfirmacao();
       }
+    } else if (botAlreadyScheduled) {
+      const newMessages = [...messages, { text, sender: 'me' as const, timestamp: Date.now() }];
+      setMessages(newMessages);
+      setInputText("");
+      return;
     } else if (confirmacaoEnviadaRef.current && !agradecimentoEnviado) {
+      const newMessages = [...messages, { text, sender: 'me' as const, timestamp: Date.now() }];
+      setMessages(newMessages);
+      setInputText("");
+      if (onHistoryUpdate) onHistoryUpdate(newMessages);
       gerarAgradecimento();
     }
   }
