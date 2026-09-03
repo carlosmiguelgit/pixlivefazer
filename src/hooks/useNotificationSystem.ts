@@ -197,6 +197,7 @@ export const useNotificationSystem = (modoMeses: boolean = false) => {
       fraseAgradecimento,
       fraseConfirmacao,
       read: false,
+      unreadCount: 1,
       mesesEnviados,
     };
 
