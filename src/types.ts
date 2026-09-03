@@ -21,6 +21,7 @@ export interface Notification {
   fraseConfirmacao?: string;
   read?: boolean;
   unreadCount?: number;
+  typing?: boolean;
   mesesEnviados?: number;
 }
 

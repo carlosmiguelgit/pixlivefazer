@@ -20,8 +20,8 @@ interface PrivateChatProps {
   modoMeses?: boolean;
   notification?: Notification | null;
   onOpenNubank?: (notification: Notification) => void;
-  historyMessages?: { text: string; sender: 'me' | 'them'; timestamp?: number }[];
-  onHistoryUpdate?: (messages: { text: string; sender: 'me' | 'them'; timestamp?: number }[]) => void;
+  historyMessages?: { text: string; sender: 'me' | 'them'; timestamp?: number; showVisto?: boolean; isTyping?: boolean }[];
+  onHistoryUpdate?: (messages: { text: string; sender: 'me' | 'them'; timestamp?: number; showVisto?: boolean; isTyping?: boolean }[]) => void;
   nubankCompleted?: boolean;
   onFlowEnd?: () => void;
   hideDateTime?: boolean;
@@ -29,16 +29,22 @@ interface PrivateChatProps {
 }
 
 export default function PrivateChat({ username, nickname, fullName, avatar, followingCount, followerCount, pixKey, initialMessage, onComplete, onBack, onBotMessage, fraseAgradecimento, fraseConfirmacao, modoMeses, notification, onOpenNubank, historyMessages, onHistoryUpdate, nubankCompleted, onFlowEnd, hideDateTime = false, onScheduleBotResponse }: PrivateChatProps) {
-  const [messages, setMessages] = useState<{ text: string; sender: 'me' | 'them'; timestamp: number }[]>(
+  const [messages, setMessages] = useState<{ text: string; sender: 'me' | 'them'; timestamp: number; showVisto?: boolean; isTyping?: boolean }[]>(
     historyMessages && historyMessages.length > 0
       ? historyMessages.map((m, i) => ({ ...m, timestamp: m.timestamp || Date.now() - (historyMessages.length - i) * 60000 }))
       : initialMessage ? [{ text: initialMessage, sender: 'them', timestamp: Date.now() }] : []
   );
   const [inputText, setInputText] = useState("");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [showVisto, setShowVisto] = useState(false);
+  const [showVisto, setShowVisto] = useState(() => {
+    const lastMsg = historyMessages && historyMessages.length > 0 ? historyMessages[historyMessages.length - 1] : null;
+    return lastMsg?.showVisto ?? false;
+  });
   const [agradecimentoEnviado, setAgradecimentoEnviado] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(() => {
+    const lastMsg = historyMessages && historyMessages.length > 0 ? historyMessages[historyMessages.length - 1] : null;
+    return lastMsg?.isTyping ?? false;
+  });
   const [isOnline, setIsOnline] = useState(() => {
     if (notification?.timestamp) {
       return Date.now() - new Date(notification.timestamp).getTime() < 120000;
@@ -119,9 +125,11 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
 
     timerRef.current = setTimeout(() => {
       setIsTyping(true);
+      onTypingChange?.(true);
       timerRef.current = setTimeout(() => {
         setShowVisto(false);
         setIsTyping(false);
+        onTypingChange?.(false);
         setMessages((prev) => [...prev, { text: texto, sender: 'them', timestamp: Date.now() }]);
         onBotMessage?.(texto);
         onComplete?.();

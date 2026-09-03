@@ -58,6 +58,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
   };
 
   const getMessagePreview = (notif: Notification): string => {
+    if (notif.typing) return 'Digitando...';
     if (isAnonymousMode) return 'Nova mensagem';
     return notif.lastMessage || notif.initialMessage || 'Diga olá para ' + notif.username;
   };
@@ -193,7 +194,7 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
                 <p className="text-[15px] font-semibold text-white leading-tight truncate">
                   {isAnonymousMode ? 'Alguém' : notif.name}
                 </p>
-                <p className="text-[13px] text-white/50 truncate mt-0.5">
+                <p className={`text-[13px] truncate mt-0.5 ${notif.typing ? 'text-white/70 animate-pulse' : 'text-white/50'}`}>
                   {getMessagePreview(notif)}
                 </p>
               </div>

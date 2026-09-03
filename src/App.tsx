@@ -38,15 +38,14 @@ function ChatApp() {
   const pendingBotTimersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
 
   const handleScheduleBotResponse = useCallback((notifId: string, texto: string, delayMs: number) => {
+    setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, typing: true } : n));
     if (pendingBotTimersRef.current[notifId]) {
       clearTimeout(pendingBotTimersRef.current[notifId]);
     }
     pendingBotTimersRef.current[notifId] = setTimeout(() => {
       delete pendingBotTimersRef.current[notifId];
       const isChatOpen = chatNotification?.id === notifId;
-      if (!isChatOpen) {
-        setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, unreadCount: (n.unreadCount || 0) + 1 } : n));
-      }
+      setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, typing: false, ...(isChatOpen ? {} : { unreadCount: (n.unreadCount || 0) + 1 }) } : n));
       setChatHistories(prev => {
         const existing = prev[notifId] || [];
         const alreadyHas = existing.some(m => m.sender === 'them' && m.text === texto);
@@ -115,7 +114,7 @@ function ChatApp() {
 
   const handleStartChat = (notif: Notification) => {
     setChatNotification(notif);
-    setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, read: true, unreadCount: 0 } : n));
+    setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, read: true, unreadCount: 0, typing: false } : n));
     setFraseAgradecimento(notif.fraseAgradecimento || "obrigado");
     setNubankCompleted(false);
   };
