@@ -48,9 +48,11 @@ export const MessageInbox: React.FC<MessageInboxProps> = ({
   const isOnline = (notif: Notification) => {
     return now - new Date(notif.timestamp).getTime() < 120000;
   };
-  const formatTimeAgo = (timestamp: Date): string => {
-    const now = new Date();
-    const diff = Math.floor((now.getTime() - timestamp.getTime()) / 1000);
+  const formatTimeAgo = (timestamp: Date | number | undefined): string => {
+    if (!timestamp) return '';
+    const ts = timestamp instanceof Date ? timestamp.getTime() : timestamp;
+    const now = Date.now();
+    const diff = Math.floor((now - ts) / 1000);
     if (diff < 60) return '';
     if (diff < 3600) return `${Math.floor(diff / 60)}m`;
     if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
