@@ -36,6 +36,8 @@ function ChatApp() {
   const [hideDateTime, setHideDateTime] = useState(false);
   const [mensagensClickCount, setMensagensClickCount] = useState(0);
   const pendingBotTimersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+  const chatNotificationRef = useRef<Notification | null>(null);
+  chatNotificationRef.current = chatNotification;
 
   const handleScheduleBotResponse = useCallback((notifId: string, texto: string, delayMs: number) => {
     setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, typing: true } : n));
@@ -44,7 +46,7 @@ function ChatApp() {
     }
     pendingBotTimersRef.current[notifId] = setTimeout(() => {
       delete pendingBotTimersRef.current[notifId];
-      const isChatOpen = chatNotification?.id === notifId;
+      const isChatOpen = chatNotificationRef.current?.id === notifId;
       setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, typing: false, lastMessage: texto, ...(isChatOpen ? {} : { unreadCount: (n.unreadCount || 0) + 1 }) } : n));
       setChatHistories(prev => {
         const existing = prev[notifId] || [];
@@ -53,7 +55,7 @@ function ChatApp() {
         return { ...prev, [notifId]: [...existing, { text: texto, sender: 'them' as const }] };
       });
     }, delayMs);
-  }, [chatNotification?.id]);
+  }, []);
 
   const {
     notifications,
