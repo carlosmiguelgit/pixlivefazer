@@ -150,10 +150,16 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
       onHistoryUpdate(newMessages);
     }
 
+    const isRepetido = !!notification?.alerta;
+
     if (!respondeuRef.current) {
       respondeuRef.current = true;
-      faseRef.current = 'confirmacao';
-      gerarConfirmacao();
+      if (isRepetido) {
+        gerarAgradecimento();
+      } else {
+        faseRef.current = 'confirmacao';
+        gerarConfirmacao();
+      }
     } else if (faseRef.current === 'confirmacao' && !agradecimentoEnviado) {
       gerarAgradecimento();
     }
