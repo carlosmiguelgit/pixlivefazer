@@ -279,9 +279,6 @@ export default function PrivateChat({ username, nickname, fullName, avatar, foll
                   <div className="bg-[#2a2a2a] text-white text-[14px] px-3 py-2 rounded-[18px] max-w-[280px] leading-snug break-words whitespace-pre-wrap">
                     {msg.text}
                   </div>
-                  {!hideDateTime && formatMsgTimeAgo(msg.timestamp) && (
-                    <span className="text-[12px] text-white/40 pl-1">{formatMsgTimeAgo(msg.timestamp)}</span>
-                  )}
                 </div>
               </div>
             )}
