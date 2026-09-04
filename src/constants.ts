@@ -88,7 +88,7 @@ export const RESPOSTAS_AGENUARDAR: { texto: string; faixa: 'baixa' | 'alta'; gen
   { texto: "chegou certinho to aliviada", faixa: 'alta', genero: 'female' },
   { texto: "isso e um milagre na minha vida", faixa: 'alta', genero: 'female' },
   // Faixa alta (130/180/230/345) Masculino
-  { texto: "irml eu tava skeptic mas veio mesmo", faixa: 'alta', genero: 'male' },
+  { texto: "irmao eu tava sem acreditar mas chegou aqui mesmo pqp", faixa: 'alta', genero: 'male' },
   { texto: "n acreditei quando caiu na conta vlw", faixa: 'alta', genero: 'male' },
   { texto: "ja levei golpe antes achei que ia rolar de novo", faixa: 'alta', genero: 'male' },
   { texto: "caramba funcionou mesmo to chocado", faixa: 'alta', genero: 'male' },
